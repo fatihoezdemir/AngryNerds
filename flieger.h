@@ -12,6 +12,9 @@ public:
 
 private:
     int m_direction;
+
+// signals:
+//    void positionChanged(qreal dx);
 };
 
 #endif // FLIEGER_H
