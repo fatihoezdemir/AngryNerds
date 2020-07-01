@@ -1,0 +1,20 @@
+<RCC>
+    <qresource prefix="/imgs">
+        <file>png/chair.png</file>
+        <file>png/lamp.png</file>
+        <file>png/Floor.png</file>
+        <file>png/bg.png</file>
+        <file>png/Regal.png</file>
+        <file>png/Table.png</file>
+        <file>png/ball.png</file>
+        <file>png/flieger.png</file>
+        <file>png/Person_6.png</file>
+        <file>png/Person_5.png</file>
+        <file>png/Person_4.png</file>
+        <file>png/Person_3.png</file>
+        <file>png/Person_2.png</file>
+        <file>png/Person_1.png</file>
+        <file>png/sky.svg</file>
+        <file>png/sky.png</file>
+    </qresource>
+</RCC>
