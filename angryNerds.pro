@@ -27,12 +27,24 @@ SOURCES += \
         main.cpp \
     bib.cpp \
     backgrounditem.cpp \
-    flieger.cpp
+    flieger.cpp \
+    level.cpp \
+    goal.cpp
 
 HEADERS += \
     bib.h \
     backgrounditem.h \
-    flieger.h
+    flieger.h \
+    level.h \
+    box2d/box2d.h \
+    goal.h
 
 RESOURCES += \
     anresources.qrc
+
+unix:!macx: LIBS += -L$$PWD/../GAME/200623/gruppe-3/ -lBox2D
+
+INCLUDEPATH += $$PWD/../GAME/200623/gruppe-3
+DEPENDPATH += $$PWD/../GAME/200623/gruppe-3
+
+unix:!macx: PRE_TARGETDEPS += $$PWD/../GAME/200623/gruppe-3/libBox2D.a
