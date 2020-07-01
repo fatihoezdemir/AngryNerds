@@ -25,19 +25,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-        widget.cpp \
     bib.cpp \
     backgrounditem.cpp \
     flieger.cpp
 
 HEADERS += \
-        widget.h \
     bib.h \
     backgrounditem.h \
     flieger.h
-
-FORMS += \
-        widget.ui
 
 RESOURCES += \
     anresources.qrc
