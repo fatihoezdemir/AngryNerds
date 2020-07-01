@@ -1,0 +1,22 @@
+#include <QApplication>
+#include <QGraphicsView>
+#include <QDateTime>
+#include "bib.h"
+
+int main(int argc, char *argv[])
+{
+    QApplication a(argc, argv);
+    qsrand(QDateTime::currentMSecsSinceEpoch());
+
+    Bib scene;
+    QGraphicsView view;
+
+    view.setRenderHint(QPainter::Antialiasing);
+    view.setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    view.setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    view.setScene(&scene);
+    view.setFixedSize(scene.sceneRect().size().toSize());
+    view.show();
+
+    return a.exec();
+}
