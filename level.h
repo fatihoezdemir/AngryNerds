@@ -11,6 +11,7 @@
 #include "backgrounditem.h"
 #include "flieger.h"
 #include "goal.h"
+#include "staticobject.h"
 
 class Level : public QGraphicsScene
 {
@@ -52,9 +53,11 @@ private slots:
     void checkColliding();
 
 private:
+    // initializes PlayField
     void initPlayField();
 
-
+    // ViewPort setup to be FHD and start at the left
+    void viewportSetup(QRectF sceneRect = QRectF(0,0,1920,1080), int height = 1080, int width=1920);
 
     int m_fieldWidth;
     int m_worldShift;
@@ -67,16 +70,22 @@ private:
 
     qreal lastX;
 
-    // Projectile
+    // Player and Target
     Flieger* m_flieger;
     Goal* m_goal;
+
     QTimer m_timer;
 
+    // Background Items no physics interactions
     BackgroundItem* m_wall; // should be in every level
     BackgroundItem* m_sky; // should be in every level
     BackgroundItem* m_lamp; // could be put into Vector
     BackgroundItem* m_table; // could be put into Vector
     QVector<BackgroundItem*> bgItems;
+
+    // Static Objects
+    QVector<staticObject*> staticObjects;
+
 
 private:
 

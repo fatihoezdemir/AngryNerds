@@ -1,12 +1,13 @@
 #include "level.h"
-#include "backgrounditem.h"
-#include <QKeyEvent>
+#include <QGraphicsPixmapItem>
 #include <QPropertyAnimation>
 #include <QGraphicsView>
+#include <QKeyEvent>
 #include <QPen>
-#include <QGraphicsPixmapItem>
 #include "flieger.h"
 #include "goal.h"
+#include "backgrounditem.h"
+#include "staticobject.h"
 
 Level::Level(QObject* parent):
     QGraphicsScene(parent),
@@ -23,15 +24,123 @@ Level::Level(QObject* parent):
     m_jumpHeight(600)
 {
     initPlayField();
+
+    // Timer used for key control can be removed once physics engine is implemented
     m_timer.setInterval(10);
     connect(&m_timer, &QTimer::timeout, this, &Level::movePlayer);
-
-    //this->startTimer (10);
 }
 
 
-// Testing
+void Level::initPlayField() {
+
+    setSceneRect(0, 0, 3840, 1080); // Scene Dimensions
+
+    m_sky = new BackgroundItem(QPixmap(":/imgs/png/sky.png").scaled(3800,1080), QPointF(0.0,0.0), -400);
+    bgItems.append(m_sky);
+    m_sky->setZValue(-3);
+    addItem(m_sky);
+    m_wall = new BackgroundItem(QPixmap(":/imgs/png/bg.png"), QPointF(0.0,0.0), 100.0);
+    m_wall->setZValue(-2);
+    bgItems.append(m_wall);
+    addItem(m_wall);
+    BackgroundItem* ground = new BackgroundItem(QPixmap(":/imgs/png/Floor.png"),
+                                                QPointF(0,m_groundLevel), 0.0, m_wall);
+    //ground->setPos(0, m_groundLevel);
+    bgItems.append(ground);
+    addItem(ground);
+    m_table = new BackgroundItem(QPixmap(":/imgs/png/Table.png").scaled(250,200),
+                                 QPointF(1000, m_groundLevel -200),
+                                 200.0, m_wall);
+    bgItems.append(m_table);
+    addItem(m_table);
+    m_lamp = new BackgroundItem(QPixmap(":/imgs/png/lamp.png"),
+                                QPointF(1000.0,0.0), 800.0,
+                                m_wall);
+    bgItems.append(m_lamp);
+    addItem(m_lamp);
+
+    bgItems.append(new BackgroundItem(QPixmap(":/imgs/png/lamp.png"),
+                                       QPointF(2000.0,0.0), 800.0,
+                                       m_wall));
+    addItem(bgItems.last());
+
+
+    // static Objects
+    staticObjects.append(new staticObject(QPixmap(":/imgs/png/Person_2.png").scaled(200,600), QPoint(2500.0,700.0)));
+    staticObjects.append(new staticObject(QPixmap(":/imgs/png/Person_5.png").scaled(150,450), QPoint(1200.0,600.0)));
+    QVectorIterator<staticObject*> it(staticObjects);
+    while (it.hasNext())
+    {
+        staticObject* obj = it.next();
+        obj->setZValue(2);
+        addItem(obj);
+    }
+
+    // GOAL
+    m_goal = new Goal(QPixmap(":/imgs/png/Person_1.png").scaled(150,450));
+    m_goal->setTransform(QTransform::fromScale(-1, 1));
+    m_goal->setPos(3500, m_groundLevel - m_goal->boundingRect().bottomLeft().y());
+    addItem(m_goal);
+
+    // PROJECTILE
+    m_flieger = new Flieger();
+    m_minX = m_flieger->boundingRect().width()*0.5;
+    m_maxX = m_fieldWidth - m_flieger->boundingRect().width() * 0.5;
+    m_flieger->setPos(m_minX, m_groundLevel - m_flieger->boundingRect().height() * 0.5);
+    lastX= m_flieger->pos().x();
+    m_currentX = m_minX;
+    addItem(m_flieger);
+
+
+
+    // Testing
+    m_jumpAnimation = new QPropertyAnimation(this);
+    m_jumpAnimation->setTargetObject(this);
+    m_jumpAnimation->setPropertyName("jumpFactor");
+    m_jumpAnimation->setStartValue(0);
+    m_jumpAnimation->setKeyValueAt(0.5, 1);
+    m_jumpAnimation->setEndValue(0);
+    m_jumpAnimation->setDuration(800);
+    m_jumpAnimation->setEasingCurve(QEasingCurve::OutInQuad);
+
+
+    // View Window
+    viewportSetup();
+
+}
+
+void Level::viewportSetup(QRectF sceneRect, int height, int width){
+    view = new QGraphicsView(this);
+    view->setRenderHint(QPainter::Antialiasing);
+    view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    view->setScene(this);
+    view->setFixedSize(width, height);
+    view->setSceneRect(sceneRect);
+}
+
+
+// Timer not used yet, will be used with Box2D steps
+void Level::timerEvent ( QTimerEvent* event )
+{
+}
+
+void Level::applyParallax(qreal xPos, BackgroundItem* item) {
+    item->setX(item->getPos().x() - item->getOffset()*((xPos/width())));
+}
+
+void Level::checkColliding() {
+    for (QGraphicsItem* item : collidingItems(m_flieger)) {
+        if (Goal* target = qgraphicsitem_cast<Goal*>(item)) {
+            target->explode();
+            //target->setTransform(QTransform::fromScale(-1, -1));
+        }
+    }
+}
+
+// These will be gone once the physics engine is put into place
 void Level::keyPressEvent(QKeyEvent *event) {
+    // Funtion reacts to keyboard input and moves plane
     if (event->isAutoRepeat()) {
         return;
     }
@@ -50,9 +159,8 @@ void Level::keyPressEvent(QKeyEvent *event) {
     }
 }
 
-//Testing
 void Level::keyReleaseEvent(QKeyEvent *event)
-{
+{ // Deals also with keyboard Input
     if (event->isAutoRepeat()) {
         return;
     }
@@ -71,15 +179,15 @@ void Level::keyReleaseEvent(QKeyEvent *event)
     }
 }
 
-//Testing
 void Level::addHorizontalInput(int input) {
+    // Keyboard input as well
     m_horizontalInput += input;
     m_flieger->setDirection(qBound(-1, m_horizontalInput, 1));
     checkTimer();
 }
 
-//Testing
 void Level::checkTimer() {
+    // Timer for keyboard input
     if(m_flieger->direction() == 0) {
         m_timer.stop();
     } else if (!m_timer.isActive()) {
@@ -89,6 +197,7 @@ void Level::checkTimer() {
 
 void Level::movePlayer()
 {
+    // move the plane
     const int direction = m_flieger->direction();
     if (0 == direction) {
         return;
@@ -131,96 +240,6 @@ void Level::movePlayer()
     checkColliding();
 }
 
-void Level::checkColliding() {
-    for (QGraphicsItem* item : collidingItems(m_flieger)) {
-        if (Goal* target = qgraphicsitem_cast<Goal*>(item)) {
-            target->explode();
-            //target->setTransform(QTransform::fromScale(-1, -1));
-        }
-    }
-}
-
-void Level::applyParallax(qreal xPos, BackgroundItem* item) {
-    item->setX(item->getPos().x() - item->getOffset()*((xPos/width())));
-}
-/*
-void Level::applyParallax(qreal ratio, QGraphicsItem* item) {
-    item->setX(-ratio * (item->boundingRect().width() - width()));
-}*/
-
-
-
-void Level::initPlayField() {
-    setSceneRect(0, 0, 3840, 1080);
-    m_sky = new BackgroundItem(QPixmap(":/imgs/png/sky.png").scaled(3800,1080), QPointF(0.0,0.0), -400);
-    bgItems.append(m_sky);
-    addItem(m_sky);
-    m_wall = new BackgroundItem(QPixmap(":/imgs/png/bg.png"), QPointF(0.0,0.0), 100.0);
-    bgItems.append(m_wall);
-    addItem(m_wall);
-    BackgroundItem* ground = new BackgroundItem(QPixmap(":/imgs/png/Floor.png"),
-                                                QPointF(0,m_groundLevel), 0.0, m_wall);
-    //ground->setPos(0, m_groundLevel);
-    bgItems.append(ground);
-    addItem(ground);
-    m_table = new BackgroundItem(QPixmap(":/imgs/png/Table.png").scaled(250,200),
-                                 QPointF(1000, m_groundLevel -200),
-                                 200.0, m_wall);
-    bgItems.append(m_table);
-    addItem(m_table);
-    m_lamp = new BackgroundItem(QPixmap(":/imgs/png/lamp.png"),
-                                QPointF(1000.0,0.0), 800.0,
-                                m_wall);
-    bgItems.append(m_lamp);
-    addItem(m_lamp);
-
-    bgItems.append(new BackgroundItem(QPixmap(":/imgs/png/lamp.png"),
-                                       QPointF(2000.0,0.0), 800.0,
-                                       m_wall));
-    addItem(bgItems.last());
-
-
-    m_goal = new Goal(QPixmap(":/imgs/png/Person_1.png").scaled(150,450));
-    m_goal->setTransform(QTransform::fromScale(-1, 1));
-    m_goal->setPos(3500, m_groundLevel - m_goal->boundingRect().bottomLeft().y());
-    addItem(m_goal);
-
-    m_flieger = new Flieger();
-    m_minX = m_flieger->boundingRect().width()*0.5;
-    m_maxX = m_fieldWidth - m_flieger->boundingRect().width() * 0.5;
-    m_flieger->setPos(m_minX, m_groundLevel - m_flieger->boundingRect().height() * 0.5);
-    lastX= m_flieger->pos().x();
-    m_currentX = m_minX;
-    addItem(m_flieger);
-
-    //m_target = new Target(QPixmap(":/imgs/png/Person_1.png").scaled(-200, 600), m_sky);
-    //addItem(m_target);
-
-    m_jumpAnimation = new QPropertyAnimation(this);
-    m_jumpAnimation->setTargetObject(this);
-    m_jumpAnimation->setPropertyName("jumpFactor");
-    m_jumpAnimation->setStartValue(0);
-    m_jumpAnimation->setKeyValueAt(0.5, 1);
-    m_jumpAnimation->setEndValue(0);
-    m_jumpAnimation->setDuration(800);
-    m_jumpAnimation->setEasingCurve(QEasingCurve::OutInQuad);
-
-
-    // View Window
-    view = new QGraphicsView(this);
-    view->setRenderHint(QPainter::Antialiasing);
-    view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    view->setScene(this);
-    //view->setFixedSize(this->sceneRect().size().toSize());
-    view->setFixedSize(1920,1080);
-    view->setSceneRect(0,0,1920,1080);
-    //view->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
-    //view->show();
-
-}
-
-
 void Level::setJumpFactor(const qreal &pos) {
     if (pos == m_jumpFactor) {
         return;
@@ -246,10 +265,4 @@ qreal Level::jumpFactor() const
 }
 
 
-void Level::timerEvent ( QTimerEvent* event )
-{
-    //qreal newX = qBound(300.0, this->m_flieger->pos().x(), this->sceneRect().bottomRight().x()-1920 + 300) - 300.0;
-    //view->acceptDrops()newX,0);
-    //lastX = newX;
-    //QWidget::timerEvent ( event );
-}
+
