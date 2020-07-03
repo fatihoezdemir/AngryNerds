@@ -8,24 +8,13 @@
 #include "flieger.h"
 
 Bib::Bib(QObject* parent):
-    QGraphicsScene(parent),
-    m_minX(0),
-    m_maxX(0),
-    m_fieldWidth(3800),
-    m_groundLevel(987),
-    m_worldShift(0),
-    m_velocity(50),
-    m_wall(0),
-    m_table(0),
-    m_lamp(0),
-    m_horizontalInput(0),
-    m_jumpHeight(600)
+    Level(parent)
 {
     initPlayField();
     m_timer.setInterval(30);
     connect(&m_timer, &QTimer::timeout, this, &Bib::movePlayer);
 }
-
+/*
 // Testing
 void Bib::keyPressEvent(QKeyEvent *event) {
     if (event->isAutoRepeat()) {
@@ -130,7 +119,7 @@ void Bib::applyParallax(qreal ratio, QGraphicsItem* item) {
 
 void Bib::initPlayField() {
     setSceneRect(0, 0, 3840, 1080);
-    /*
+
     m_sky = new BackgroundItem(QPixmap(":/imgs/png/sky.png").scaled(3800,1080));
     m_sky->setPos(0,0);
     addItem(m_sky);
@@ -162,7 +151,7 @@ void Bib::initPlayField() {
     m_jumpAnimation->setEndValue(0);
     m_jumpAnimation->setDuration(800);
     m_jumpAnimation->setEasingCurve(QEasingCurve::OutInQuad);
-*/
+
 }
 
 
@@ -189,3 +178,4 @@ qreal Bib::jumpFactor() const
 {
     return m_jumpFactor;
 }
+*/

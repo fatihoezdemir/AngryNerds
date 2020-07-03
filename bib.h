@@ -8,20 +8,25 @@
 #include <QTimer>
 #include "backgrounditem.h"
 #include "flieger.h"
+#include "level.h"
 #include <QPropertyAnimation>
 
-class Bib : public QGraphicsScene
+class Bib : public Level
 {
     Q_OBJECT
-    Q_PROPERTY(qreal jumpFactor
+    /*Q_PROPERTY(qreal jumpFactor
                READ jumpFactor
                WRITE setJumpFactor
-               NOTIFY jumpFactorChanged)
+               NOTIFY jumpFactorChanged)*/
 
 public:
     explicit Bib(QObject* parent = nullptr);
-
+/*
     qreal jumpFactor() const;
+    int m_worldShift;
+    int m_velocity;
+
+    qreal m_minX;
     void setJumpFactor(const qreal &jumpFactor);
 
 protected:
@@ -65,7 +70,7 @@ private:
     int m_horizontalInput;
     void addHorizontalInput(int input);
     void applyParallax(qreal ratio, QGraphicsItem* item);
-
+*/
 };
 
 #endif // BIB_H
