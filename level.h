@@ -15,7 +15,7 @@
 #include "box2d/box2d.h"
 #include "globalvariables.h"
 #include "dynamicobject.h"
-
+#include "projectile.h"
 
 class Level : public QGraphicsScene
 {
@@ -34,6 +34,8 @@ protected:
     void keyPressEvent(QKeyEvent* event);
     void keyReleaseEvent(QKeyEvent* event);
     void timerEvent(QTimerEvent *event);
+
+    void mousePressEvent(QMouseEvent* event);
 
 protected slots:
     void movePlayer();
@@ -61,6 +63,7 @@ protected:
     // Player and Target
     Flieger* m_flieger;
     Goal* m_goal;
+    Projectile* m_projectile;
 
     QTimer m_timer;
 

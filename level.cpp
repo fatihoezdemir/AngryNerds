@@ -9,6 +9,7 @@
 #include "backgrounditem.h"
 #include "staticobject.h"
 #include "globalvariables.h"
+#include "projectile.h"
 
 Level::Level(QObject* parent):
     QGraphicsScene(parent),
@@ -52,8 +53,11 @@ void Level::initPlayField() {
     }
 
 
-    // Add Ground & other static objects
+    // Add Ground, Walls& other static objects
     staticObjects.append(new staticObject(QPixmap(":/imgs/png/Floor.png"), QPointF(0,m_groundLevel), world));
+    staticObjects.append(new staticObject(QPixmap(":/imgs/png/Floor.png").scaled(10,conv::sceneHeight), QPointF(-10,0), world));
+    staticObjects.append(new staticObject(QPixmap(":/imgs/png/Floor.png").scaled(10,conv::sceneHeight), QPointF(conv::sceneWidth,0), world));
+    staticObjects.append(new staticObject(QPixmap(":/imgs/png/Floor.png").scaled(conv::sceneWidth,10), QPointF(0,-10), world));
     staticObjects.append(new staticObject(QPixmap(":/imgs/png/Person_2.png").scaled(200,600), QPoint(2500.0,700.0), world));
     staticObjects.append(new staticObject(QPixmap(":/imgs/png/Person_5.png").scaled(150,450), QPoint(1200.0,600.0), world));
 
@@ -82,7 +86,7 @@ void Level::initPlayField() {
     m_goal->setPos(3500, m_groundLevel - m_goal->boundingRect().bottomLeft().y());
     addItem(m_goal);
 
-    // PROJECTILE
+    // FLIEGER
     m_flieger = new Flieger();
     m_flieger->setZValue(0);
     m_minX = m_flieger->boundingRect().width()*0.5;
@@ -92,7 +96,9 @@ void Level::initPlayField() {
     m_currentX = m_minX;
     addItem(m_flieger);
 
-
+    //PROJECTILE
+    m_projectile = new Projectile(QPixmap(":/imgs/png/flieger.png").scaled(200, 100), QPointF(400,400), world);
+    addItem(m_projectile);
 
     // Testing
     m_jumpAnimation = new QPropertyAnimation(this);
@@ -108,7 +114,6 @@ void Level::initPlayField() {
     // View Window
     viewportSetup();
     this->startTimer(10);
-
 }
 
 void Level::viewportSetup(QRectF sceneRect, int height, int width){
@@ -132,15 +137,31 @@ void Level::timerEvent ( QTimerEvent* event )
         obj->updatePos(obj->getPos());
         obj->updateRot(obj->getRot());
     }
+    m_projectile->updatePos((m_projectile->getPos()));
+    m_projectile->updateRot((m_projectile->getRot()));
 
+    qreal newX = qBound(1000.0, m_projectile->pos().x(), this->sceneRect().bottomRight().x()-1920 + 900) - 1000.0;
+    view->setSceneRect(newX,0,1920,1080);
+
+    // iterate and apply parallax for all background items
+    QVectorIterator<BackgroundItem*> i(bgItems);
+    while (i.hasNext())
+        applyParallax(newX, i.next());
+
+    //checkColliding();
 }
+
+void Level::mousePressEvent(QMouseEvent* event){
+    //m_projectile->shoot();
+}
+
 
 void Level::applyParallax(qreal xPos, BackgroundItem* item) {
     item->setX(item->getPos().x() - item->getOffset()*((xPos/width())));
 }
 
 void Level::checkColliding() {
-    for (QGraphicsItem* item : collidingItems(m_flieger)) {
+    for (QGraphicsItem* item : collidingItems(m_projectile)) {
         if (Goal* target = qgraphicsitem_cast<Goal*>(item)) {
             target->explode();
         }
@@ -162,6 +183,12 @@ void Level::keyPressEvent(QKeyEvent *event) {
             break;
         case Qt::Key_Space:
             jump();
+            break;
+        case Qt::Key_A:
+            m_projectile->shoot(b2Vec2(-10,5.0));
+            break;
+        case Qt::Key_S:
+            m_projectile->shoot(b2Vec2(10,5.0));
             break;
         default:
             break;
@@ -236,15 +263,15 @@ void Level::movePlayer()
     newX = m_currentX - m_worldShift;
     m_flieger->setX(newX);
 
-    newX = qBound(1000.0, this->m_flieger->pos().x(), this->sceneRect().bottomRight().x()-1920 + 900) - 1000.0;
-    view->setSceneRect(newX,0,1920,1080);
+    //newX = qBound(1000.0, this->m_flieger->pos().x(), this->sceneRect().bottomRight().x()-1920 + 900) - 1000.0;
+    //view->setSceneRect(newX,0,1920,1080);
 
     const qreal ratio = qreal(m_worldShift) / maxWorldShift;
 
     // iterate and apply parallax for all background items
-    QVectorIterator<BackgroundItem*> i(bgItems);
-    while (i.hasNext())
-        applyParallax(newX, i.next());
+    //QVectorIterator<BackgroundItem*> i(bgItems);
+    //while (i.hasNext())
+    //    applyParallax(newX, i.next());
 
     checkColliding();
 }
