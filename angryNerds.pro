@@ -30,7 +30,9 @@ SOURCES += \
     flieger.cpp \
     level.cpp \
     goal.cpp \
-    staticobject.cpp
+    staticobject.cpp \
+    globalvariables.cpp \
+    dynamicobject.cpp
 
 HEADERS += \
     bib.h \
@@ -39,7 +41,9 @@ HEADERS += \
     level.h \
     box2d/box2d.h \
     goal.h \
-    staticobject.h
+    staticobject.h \
+    globalvariables.h \
+    dynamicobject.h
 
 RESOURCES += \
     anresources.qrc
