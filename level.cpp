@@ -8,6 +8,7 @@
 #include "goal.h"
 #include "backgrounditem.h"
 #include "staticobject.h"
+#include "globalvariables.h"
 
 Level::Level(QObject* parent):
     QGraphicsScene(parent),
@@ -16,10 +17,7 @@ Level::Level(QObject* parent):
     m_fieldWidth(3800),
     m_groundLevel(987),
     m_worldShift(0),
-    m_velocity(20),
-    m_wall(0),
-    m_table(0),
-    m_lamp(0),
+    m_velocity(10),
     m_horizontalInput(0),
     m_jumpHeight(600)
 {
@@ -33,48 +31,44 @@ Level::Level(QObject* parent):
 
 void Level::initPlayField() {
 
-    setSceneRect(0, 0, 3840, 1080); // Scene Dimensions
+    setSceneRect(0, 0, conv::sceneWidth, conv::sceneHeight); // Scene Dimensions
 
-    m_sky = new BackgroundItem(QPixmap(":/imgs/png/sky.png").scaled(3800,1080), QPointF(0.0,0.0), -400);
-    bgItems.append(m_sky);
-    m_sky->setZValue(-3);
-    addItem(m_sky);
-    m_wall = new BackgroundItem(QPixmap(":/imgs/png/bg.png"), QPointF(0.0,0.0), 100.0);
-    m_wall->setZValue(-2);
-    bgItems.append(m_wall);
-    addItem(m_wall);
-    BackgroundItem* ground = new BackgroundItem(QPixmap(":/imgs/png/Floor.png"),
-                                                QPointF(0,m_groundLevel), 0.0, m_wall);
-    //ground->setPos(0, m_groundLevel);
-    bgItems.append(ground);
-    addItem(ground);
-    m_table = new BackgroundItem(QPixmap(":/imgs/png/Table.png").scaled(250,200),
-                                 QPointF(1000, m_groundLevel -200),
-                                 200.0, m_wall);
-    bgItems.append(m_table);
-    addItem(m_table);
-    m_lamp = new BackgroundItem(QPixmap(":/imgs/png/lamp.png"),
-                                QPointF(1000.0,0.0), 800.0,
-                                m_wall);
-    bgItems.append(m_lamp);
-    addItem(m_lamp);
+    world = new b2World(b2Vec2(0.0,-10.0));
 
+    // Set up all Background Objects
+    bgItems.append(new BackgroundItem(QPixmap(":/imgs/png/sky.png").scaled(3840,1080), QPointF(0.0,0.0), -400, -2));
+    bgItems.append(new BackgroundItem(QPixmap(":/imgs/png/bg.png"), QPointF(0.0,0.0), 100.0, -1));
+    bgItems.append(new BackgroundItem(QPixmap(":/imgs/png/Table.png").scaled(250,200),
+                                      QPointF(1000, m_groundLevel -200), 200.0,-0.5, bgItems[1]));
     bgItems.append(new BackgroundItem(QPixmap(":/imgs/png/lamp.png"),
-                                       QPointF(2000.0,0.0), 800.0,
-                                       m_wall));
-    addItem(bgItems.last());
+                                      QPointF(1000.0,0.0), 800.0, -0.5));
+    bgItems.append(new BackgroundItem(QPixmap(":/imgs/png/lamp.png"), QPointF(2000.0,0.0), 800.0, -0.5));
+    bgItems.append(new BackgroundItem(QPixmap(":/imgs/png/Table.png").scaled(350,300),
+                                      QPointF(2000, m_groundLevel -100), 1200.0, 4));
+
+    QVectorIterator<BackgroundItem*> bgIt(bgItems);
+    while (bgIt.hasNext()) {
+        addItem(bgIt.next());
+    }
 
 
-    // static Objects
-    staticObjects.append(new staticObject(QPixmap(":/imgs/png/Person_2.png").scaled(200,600), QPoint(2500.0,700.0)));
-    staticObjects.append(new staticObject(QPixmap(":/imgs/png/Person_5.png").scaled(150,450), QPoint(1200.0,600.0)));
+    // Add Ground & other static objects
+    staticObjects.append(new staticObject(QPixmap(":/imgs/png/Floor.png"), QPointF(0,m_groundLevel), world));
+    staticObjects.append(new staticObject(QPixmap(":/imgs/png/Person_2.png").scaled(200,600), QPoint(2500.0,700.0), world));
+    staticObjects.append(new staticObject(QPixmap(":/imgs/png/Person_5.png").scaled(150,450), QPoint(1200.0,600.0), world));
+
     QVectorIterator<staticObject*> it(staticObjects);
     while (it.hasNext())
     {
-        staticObject* obj = it.next();
-        obj->setZValue(2);
-        addItem(obj);
+        staticObject* sObj = it.next();
+        sObj->setZValue(2);
+        addItem(sObj);
     }
+    // dynamic Objects
+    dynamicObjects.append(new DynamicObject(QPixmap(":imgs/png/ball.png"), QPointF(800,300), world));
+    dynamicObjects.append(new DynamicObject(QPixmap(":imgs/png/Person_6.png").scaled(200,400), QPointF(300,200), world));
+    addItem(dynamicObjects[0]);
+    addItem(dynamicObjects[1]);
 
     // GOAL
     m_goal = new Goal(QPixmap(":/imgs/png/Person_1.png").scaled(150,450));
@@ -84,6 +78,7 @@ void Level::initPlayField() {
 
     // PROJECTILE
     m_flieger = new Flieger();
+    m_flieger->setZValue(0);
     m_minX = m_flieger->boundingRect().width()*0.5;
     m_maxX = m_fieldWidth - m_flieger->boundingRect().width() * 0.5;
     m_flieger->setPos(m_minX, m_groundLevel - m_flieger->boundingRect().height() * 0.5);
@@ -106,6 +101,7 @@ void Level::initPlayField() {
 
     // View Window
     viewportSetup();
+    this->startTimer(10);
 
 }
 
@@ -123,6 +119,13 @@ void Level::viewportSetup(QRectF sceneRect, int height, int width){
 // Timer not used yet, will be used with Box2D steps
 void Level::timerEvent ( QTimerEvent* event )
 {
+    world->Step(1/100.0, 4, 4);
+    QVectorIterator<DynamicObject*> dynIt(dynamicObjects);
+    while (dynIt.hasNext()) {
+        DynamicObject* obj = dynIt.next();
+        obj->updatePos(obj->getPos());
+    }
+
 }
 
 void Level::applyParallax(qreal xPos, BackgroundItem* item) {

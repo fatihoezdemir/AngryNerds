@@ -12,6 +12,10 @@
 #include "flieger.h"
 #include "goal.h"
 #include "staticobject.h"
+#include "box2d/box2d.h"
+#include "globalvariables.h"
+#include "dynamicobject.h"
+
 
 class Level : public QGraphicsScene
 {
@@ -26,33 +30,17 @@ public:
 
     QGraphicsView* view;
 
-// Jump Stuff - To be removed with physics engine //
-public:
-    qreal jumpFactor() const;
-    void setJumpFactor(const qreal &jumpFactor);
-
-signals:
-    void jumpFactorChanged(qreal);
-
-private:
-    void jump();
-
-    int m_jumpHeight;
-    qreal m_jumpFactor;
-    QPropertyAnimation* m_jumpAnimation;
-//^ Jump Stuff - To be removed with physics engine ^//
-
 protected:
     void keyPressEvent(QKeyEvent* event);
     void keyReleaseEvent(QKeyEvent* event);
     void timerEvent(QTimerEvent *event);
 
-private slots:
+protected slots:
     void movePlayer();
     void checkTimer();
     void checkColliding();
 
-private:
+protected:
     // initializes PlayField
     void initPlayField();
 
@@ -77,26 +65,42 @@ private:
     QTimer m_timer;
 
     // Background Items no physics interactions
-    BackgroundItem* m_wall; // should be in every level
-    BackgroundItem* m_sky; // should be in every level
-    BackgroundItem* m_lamp; // could be put into Vector
-    BackgroundItem* m_table; // could be put into Vector
     QVector<BackgroundItem*> bgItems;
 
     // Static Objects
     QVector<staticObject*> staticObjects;
 
+    // dynamic Objects
+    QVector<DynamicObject*> dynamicObjects;
 
-private:
 
+protected:
     int m_horizontalInput;
     void addHorizontalInput(int input);
-    //void applyParallax(qreal ratio, QGraphicsItem* item);
+
     void applyParallax(qreal xPos, BackgroundItem* item);
 
-// Update Viewport based on position
-//public:
-//    void changeViewport(qreal dx);
+
+// Jump Stuff - To be removed with physics engine //
+public:
+    qreal jumpFactor() const;
+    void setJumpFactor(const qreal &jumpFactor);
+
+signals:
+    void jumpFactorChanged(qreal);
+
+protected:
+        void jump();
+
+    int m_jumpHeight;
+    qreal m_jumpFactor;
+    QPropertyAnimation* m_jumpAnimation;
+//^ Jump Stuff - To be removed with physics engine ^//
+
+//BOX2D PHYSICS//
+protected:
+    b2World* world;
+
 };
 
 #endif // LEVEL_H
