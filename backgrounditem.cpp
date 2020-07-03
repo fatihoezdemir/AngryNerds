@@ -3,12 +3,13 @@
 #include <QPainterPath>
 
 BackgroundItem::BackgroundItem(const QPixmap &pixmap, QPointF pos,
-                               qreal offset, QGraphicsItem* parent)
+                               qreal offset, qreal zVal, QGraphicsItem* parent)
     : QGraphicsPixmapItem(pixmap, parent),
     origPos(pos),
     parOffset(offset)
 {
     this->setPos(origPos);
+    this->setZValue(zVal);
 }
 
 
