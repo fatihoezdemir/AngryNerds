@@ -1,15 +1,16 @@
 #include "projectile.h"
 #include "globalvariables.h"
 //#include "box2d/box2d.h"
-/*
+
 Projectile::Projectile(const QPixmap &pixmap, QPointF pos, b2World* world, QGraphicsItem* parent)
-    :  QGraphicsPixmapItem(pixmap, parent),
-      origPos(pos)
+    :  DynamicObject(pixmap, pos, world, parent)
 {
+    /*
     setPos(pos);
     // Create the object also in box2D
     objectBodyDef = new b2BodyDef();
     objectBodyDef->type = b2_dynamicBody;
+    objectBodyDef->gravityScale = 0.0f; // ensures that object stays in place
     b2Vec2 b2Pos = conv::p2mVec(pos);
     objectBodyDef->position.Set(conv::p2m(pos.x()), conv::p2m(pos.y(), true));
     objectBody = world->CreateBody(objectBodyDef);
@@ -22,6 +23,13 @@ Projectile::Projectile(const QPixmap &pixmap, QPointF pos, b2World* world, QGrap
     objectFixture.density = 1.0f;
     objectFixture.friction = 0.3f;
 
-    objectBody->CreateFixture(&objectFixture);
+    objectBody->CreateFixture(&objectFixture);*/
+    objectBody->SetAwake(false);
+    objectBodyDef->gravityScale = 0.0f;
 }
-*/
+
+void Projectile::shoot(b2Vec2 initVec){
+    //objectBodyDef->gravityScale = 1.0;
+    objectBody->ApplyLinearImpulseToCenter(initVec, true);
+}
+
