@@ -32,7 +32,8 @@ SOURCES += \
     goal.cpp \
     staticobject.cpp \
     globalvariables.cpp \
-    dynamicobject.cpp
+    dynamicobject.cpp \
+    projectile.cpp
 
 HEADERS += \
     bib.h \
@@ -43,7 +44,8 @@ HEADERS += \
     goal.h \
     staticobject.h \
     globalvariables.h \
-    dynamicobject.h
+    dynamicobject.h \
+    projectile.h
 
 RESOURCES += \
     anresources.qrc
