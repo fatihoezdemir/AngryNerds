@@ -8,8 +8,6 @@ DynamicObject::DynamicObject(const QPixmap &pixmap, QPointF pos,
       origPos(pos)
 {
     setPos(pos);
-    qDebug() << boundingRect();
-    qDebug() << boundingRect().width() << boundingRect().height();
     // Create the object also in box2D
     objectBodyDef = new b2BodyDef();
     objectBodyDef->type = b2_dynamicBody;
@@ -32,8 +30,16 @@ QPointF DynamicObject::getPos() {
     return conv::m2pVec(objectBody->GetPosition());
 }
 
+qreal DynamicObject::getRot() {
+    return conv::rad2deg(objectBody->GetAngle());
+}
+
 void DynamicObject::updatePos(QPointF pos) {
     this->setPos(pos.x(), pos.y());
+}
+
+void DynamicObject::updateRot(qreal rot) {
+    this->setRotation(rot);
 }
 
 QPainterPath DynamicObject::shape() const {

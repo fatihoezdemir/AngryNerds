@@ -12,10 +12,13 @@ public:
 
     QPointF getPos();
     qreal getOffset();
+    qreal getRot();
 
-    virtual QPainterPath shape() const; // will be removed
+    virtual QPainterPath shape() const; // might be removed
 
     void updatePos(QPointF pos);
+
+    void updateRot(qreal rot);
 
 private:
     QPointF origPos;
