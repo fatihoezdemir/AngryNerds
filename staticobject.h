@@ -6,18 +6,19 @@
 #include <QPoint>
 #include "box2d/box2d.h"
 
-class staticObject : public QGraphicsPixmapItem
+class StaticObject : public QGraphicsPixmapItem
 {
 public:
-    explicit staticObject(const QPixmap &pixmap, QPointF pos = QPointF(0.0,0.0), b2World* world = nullptr,  QGraphicsItem* parent = nullptr);
+    explicit StaticObject(const QPixmap &pixmap, QPointF pos = QPointF(0.0,0.0), b2World* world = nullptr,  QGraphicsItem* parent = nullptr);
 
-    QPointF getPos();
+    virtual QPointF getPos();
     qreal getOffset();
 
     virtual QPainterPath shape() const; // will be removed
 
-    void setOrigPos(QPointF pos);
-private:
+    //void setOrigPos(QPointF pos);
+    virtual void createB2D(b2World* world);
+protected:
     QPointF origPos;
 
     b2BodyDef* objectBodyDef;
