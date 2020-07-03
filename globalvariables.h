@@ -6,8 +6,8 @@
 namespace conv {
     inline qreal const sceneWidth = 3840;   // px
     inline qreal const sceneHeight = 1080;  // px
-    inline qreal const viewWidth = 1080;    // px
-    inline qreal const viewHeight = 1920;   // px
+    inline qreal const viewWidth = 1920;    // px
+    inline qreal const viewHeight = 1080;   // px
 
     inline float const b2Height = 5;  // meters
 
