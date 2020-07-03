@@ -17,15 +17,12 @@ Projectile::Projectile(const QPixmap &pixmap, QPointF pos, b2World* world, QGrap
     b2PolygonShape objectBox;
     objectBox.SetAsBox(conv::p2m(this->boundingRect().width()/2), conv::p2m(this->boundingRect().height()/2),
                         b2Vec2(conv::p2m(boundingRect().width())/2, conv::p2m(-boundingRect().height())/2), 0);
-
     objectFixture.shape = &objectBox;
     objectFixture.restitution = 0.6;
-    objectFixture.density = 1.0f;
     objectFixture.friction = 0.3f;
-
     objectBody->CreateFixture(&objectFixture);*/
+    objectFixture.density = 1.0f;
     objectBody->SetAwake(false);
-    objectBodyDef->gravityScale = 0.0f;
 }
 
 void Projectile::shoot(b2Vec2 initVec){
@@ -33,3 +30,9 @@ void Projectile::shoot(b2Vec2 initVec){
     objectBody->ApplyLinearImpulseToCenter(initVec, true);
 }
 
+QPainterPath Projectile::shape() const
+{
+    QPainterPath path;
+    path.addRect(boundingRect());
+    return path;
+}
