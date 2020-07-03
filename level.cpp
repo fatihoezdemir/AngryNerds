@@ -33,7 +33,7 @@ void Level::initPlayField() {
 
     setSceneRect(0, 0, conv::sceneWidth, conv::sceneHeight); // Scene Dimensions
 
-    world = new b2World(b2Vec2(0.0,-10.0));
+    world = new b2World(b2Vec2(3.0,-10.0));
 
     // Set up all Background Objects
     bgItems.append(new BackgroundItem(QPixmap(":/imgs/png/sky.png").scaled(3840,1080), QPointF(0.0,0.0), -400, -2));
@@ -65,10 +65,13 @@ void Level::initPlayField() {
         addItem(sObj);
     }
     // dynamic Objects
-    dynamicObjects.append(new DynamicObject(QPixmap(":imgs/png/ball.png"), QPointF(800,300), world));
-    dynamicObjects.append(new DynamicObject(QPixmap(":imgs/png/Person_6.png").scaled(200,400), QPointF(300,200), world));
+    dynamicObjects.append(new DynamicObject(QPixmap(":imgs/png/Floor.png").scaled(50,50), QPointF(800,0), world));
+    dynamicObjects.append(new DynamicObject(QPixmap(":imgs/png/Floor.png").scaled(100,100), QPointF(800,300), world));
+    dynamicObjects.append(new DynamicObject(QPixmap(":imgs/png/Floor.png").scaled(200,200), QPointF(800,600), world));
+    //dynamicObjects.append(new DynamicObject(QPixmap(":imgs/png/Person_6.png").scaled(100,200), QPointF(400,200), world));
     addItem(dynamicObjects[0]);
     addItem(dynamicObjects[1]);
+    addItem(dynamicObjects[2]);
 
     // GOAL
     m_goal = new Goal(QPixmap(":/imgs/png/Person_1.png").scaled(150,450));
@@ -119,7 +122,7 @@ void Level::viewportSetup(QRectF sceneRect, int height, int width){
 // Timer not used yet, will be used with Box2D steps
 void Level::timerEvent ( QTimerEvent* event )
 {
-    world->Step(1/100.0, 4, 4);
+    world->Step(1/100.0, 6, 6);
     QVectorIterator<DynamicObject*> dynIt(dynamicObjects);
     while (dynIt.hasNext()) {
         DynamicObject* obj = dynIt.next();

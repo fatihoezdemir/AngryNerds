@@ -45,7 +45,7 @@ protected:
     void initPlayField();
 
     // ViewPort setup to be FHD and start at the left
-    void viewportSetup(QRectF sceneRect = QRectF(0,0,1920,1080), int height = 1080, int width=1920);
+    void viewportSetup(QRectF sceneRect = QRectF(0,0,1920,1080), int height = conv::viewHeight, int width=conv::viewWidth);
 
     int m_fieldWidth;
     int m_worldShift;
