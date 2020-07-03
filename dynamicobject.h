@@ -4,6 +4,7 @@
 #include <QPixmap>
 #include <QPoint>
 #include "box2d/box2d.h"
+#include "staticobject.h"
 
 class DynamicObject : public QGraphicsPixmapItem
 {
@@ -30,3 +31,6 @@ protected:
 };
 
 #endif // DYNAMICOBJECT_H
+/*
+ *
+*/

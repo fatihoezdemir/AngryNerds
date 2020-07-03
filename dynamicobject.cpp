@@ -1,7 +1,6 @@
 #include "dynamicobject.h"
 #include "globalvariables.h"
 #include <QDebug>
-
 DynamicObject::DynamicObject(const QPixmap &pixmap, QPointF pos,
                            b2World* world, QGraphicsItem* parent)
     : QGraphicsPixmapItem(pixmap, parent),
