@@ -71,7 +71,7 @@ protected:
     QVector<BackgroundItem*> bgItems;
 
     // Static Objects
-    QVector<staticObject*> staticObjects;
+    QVector<StaticObject*> staticObjects;
 
     // dynamic Objects
     QVector<DynamicObject*> dynamicObjects;

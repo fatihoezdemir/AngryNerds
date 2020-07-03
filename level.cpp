@@ -54,17 +54,17 @@ void Level::initPlayField() {
 
 
     // Add Ground, Walls& other static objects
-    staticObjects.append(new staticObject(QPixmap(":/imgs/png/Floor.png"), QPointF(0,m_groundLevel), world));
-    staticObjects.append(new staticObject(QPixmap(":/imgs/png/Floor.png").scaled(10,conv::sceneHeight), QPointF(-10,0), world));
-    staticObjects.append(new staticObject(QPixmap(":/imgs/png/Floor.png").scaled(10,conv::sceneHeight), QPointF(conv::sceneWidth,0), world));
-    staticObjects.append(new staticObject(QPixmap(":/imgs/png/Floor.png").scaled(conv::sceneWidth,10), QPointF(0,-10), world));
-    staticObjects.append(new staticObject(QPixmap(":/imgs/png/Person_2.png").scaled(200,600), QPoint(2500.0,700.0), world));
-    staticObjects.append(new staticObject(QPixmap(":/imgs/png/Person_5.png").scaled(150,450), QPoint(1200.0,600.0), world));
+    staticObjects.append(new StaticObject(QPixmap(":/imgs/png/Floor.png"), QPointF(0,m_groundLevel), world));
+    staticObjects.append(new StaticObject(QPixmap(":/imgs/png/Floor.png").scaled(10,conv::sceneHeight), QPointF(-10,0), world));
+    staticObjects.append(new StaticObject(QPixmap(":/imgs/png/Floor.png").scaled(10,conv::sceneHeight), QPointF(conv::sceneWidth,0), world));
+    staticObjects.append(new StaticObject(QPixmap(":/imgs/png/Floor.png").scaled(conv::sceneWidth,10), QPointF(0,-10), world));
+    staticObjects.append(new StaticObject(QPixmap(":/imgs/png/Person_2.png").scaled(200,600), QPoint(2500.0,700.0), world));
+    staticObjects.append(new StaticObject(QPixmap(":/imgs/png/Person_5.png").scaled(150,450), QPoint(1200.0,600.0), world));
 
-    QVectorIterator<staticObject*> it(staticObjects);
+    QVectorIterator<StaticObject*> it(staticObjects);
     while (it.hasNext())
     {
-        staticObject* sObj = it.next();
+        StaticObject* sObj = it.next();
         sObj->setZValue(2);
         addItem(sObj);
     }
@@ -148,7 +148,7 @@ void Level::timerEvent ( QTimerEvent* event )
     while (i.hasNext())
         applyParallax(newX, i.next());
 
-    //checkColliding();
+    checkColliding();
 }
 
 void Level::mousePressEvent(QMouseEvent* event){
@@ -185,10 +185,10 @@ void Level::keyPressEvent(QKeyEvent *event) {
             jump();
             break;
         case Qt::Key_A:
-            m_projectile->shoot(b2Vec2(-10,5.0));
+            m_projectile->shoot(b2Vec2(-5,3.0));
             break;
         case Qt::Key_S:
-            m_projectile->shoot(b2Vec2(10,5.0));
+            m_projectile->shoot(b2Vec2(5,3.0));
             break;
         default:
             break;
