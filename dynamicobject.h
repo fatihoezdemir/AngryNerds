@@ -20,7 +20,7 @@ public:
 
     void updateRot(qreal rot);
 
-private:
+protected:
     QPointF origPos;
 
     b2BodyDef* objectBodyDef;

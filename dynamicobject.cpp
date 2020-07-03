@@ -8,6 +8,7 @@ DynamicObject::DynamicObject(const QPixmap &pixmap, QPointF pos,
       origPos(pos)
 {
     setPos(pos);
+
     // Create the object also in box2D
     objectBodyDef = new b2BodyDef();
     objectBodyDef->type = b2_dynamicBody;
