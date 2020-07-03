@@ -13,7 +13,8 @@ staticObject::staticObject(const QPixmap &pixmap, QPointF pos,
     objectBodyDef->position.Set(conv::p2m(pos.x()), conv::p2m(pos.y(), true));
     objectBody = world->CreateBody(objectBodyDef);
     b2PolygonShape objectBox;
-    objectBox.SetAsBox(conv::p2m(boundingRect().width()/2), conv::p2m(boundingRect().height()/2));
+    objectBox.SetAsBox(conv::p2m(boundingRect().width())/2, conv::p2m(boundingRect().height())/2,
+                       b2Vec2(conv::p2m(boundingRect().width())/2, conv::p2m(-boundingRect().height())/2), 0);
     objectBody->CreateFixture(&objectBox, 0.0);
 }
 
