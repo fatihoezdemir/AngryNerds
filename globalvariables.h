@@ -22,6 +22,8 @@ namespace conv {
     float p2m(qreal px, bool isY = false); //  converts a single value from px to meters !!Box2D flips y coordinate, set isY=true for right calc
     QPointF m2pVec(b2Vec2 vec); // converts a b2Vec2 point in px to a QPointF in px
     b2Vec2 p2mVec(QPointF point); // converts QPointD in px to B2Vec2 in m
+    float deg2Rad(qreal deg);
+    qreal rad2deg(float rad);
 }
 
 #endif // GLOBALVARIABLES_H
