@@ -13,20 +13,12 @@
 
 Level::Level(QObject* parent):
     QGraphicsScene(parent),
-    m_minX(100),
-    m_maxX(0),
-    m_fieldWidth(3800),
-    m_groundLevel(987),
-    m_worldShift(0),
-    m_velocity(10),
-    m_horizontalInput(0),
-    m_jumpHeight(600)
+    m_groundLevel(987)
 {
     initPlayField();
 
     // Timer used for key control can be removed once physics engine is implemented
     m_timer.setInterval(10);
-    connect(&m_timer, &QTimer::timeout, this, &Level::movePlayer);
 }
 
 
@@ -53,7 +45,7 @@ void Level::initPlayField() {
     }
 
 
-    // Add Ground, Walls& other static objects
+    // [Ground, Walls & other static objects]
     staticObjects.append(new StaticObject(QPixmap(":/imgs/png/Floor.png"), QPointF(0,m_groundLevel), world));
     staticObjects.append(new StaticObject(QPixmap(":/imgs/png/Floor.png").scaled(10,conv::sceneHeight), QPointF(-10,0), world));
     staticObjects.append(new StaticObject(QPixmap(":/imgs/png/Floor.png").scaled(10,conv::sceneHeight), QPointF(conv::sceneWidth,0), world));
@@ -68,7 +60,8 @@ void Level::initPlayField() {
         sObj->setZValue(2);
         addItem(sObj);
     }
-    // dynamic Objects
+
+    // [Dynamic Objects]
     dynamicObjects.append(new DynamicObject(QPixmap(":imgs/png/Floor.png").scaled(50,50), QPointF(790,0), world));
     dynamicObjects.append(new DynamicObject(QPixmap(":imgs/png/Floor.png").scaled(100,150), QPointF(810,300), world));
     dynamicObjects.append(new DynamicObject(QPixmap(":imgs/png/Floor.png").scaled(200,200), QPointF(740,600), world));
@@ -80,38 +73,19 @@ void Level::initPlayField() {
         addItem(dynIt.next());
     }
 
-    // GOAL
+    // [GOAL]
     m_goal = new Goal(QPixmap(":/imgs/png/Person_1.png").scaled(150,450));
     m_goal->setTransform(QTransform::fromScale(-1, 1));
     m_goal->setPos(3500, m_groundLevel - m_goal->boundingRect().bottomLeft().y());
     addItem(m_goal);
 
-    // FLIEGER
-    m_flieger = new Flieger();
-    m_flieger->setZValue(0);
-    m_minX = m_flieger->boundingRect().width()*0.5;
-    m_maxX = m_fieldWidth - m_flieger->boundingRect().width() * 0.5;
-    m_flieger->setPos(m_minX, m_groundLevel - m_flieger->boundingRect().height() * 0.5);
-    lastX= m_flieger->pos().x();
-    m_currentX = m_minX;
-    addItem(m_flieger);
 
-    //PROJECTILE
+    // [PROJECTILE}
     m_projectile = new Projectile(QPixmap(":/imgs/png/flieger.png").scaled(200, 100), QPointF(400,400), world);
     addItem(m_projectile);
 
-    // Testing
-    m_jumpAnimation = new QPropertyAnimation(this);
-    m_jumpAnimation->setTargetObject(this);
-    m_jumpAnimation->setPropertyName("jumpFactor");
-    m_jumpAnimation->setStartValue(0);
-    m_jumpAnimation->setKeyValueAt(0.5, 1);
-    m_jumpAnimation->setEndValue(0);
-    m_jumpAnimation->setDuration(800);
-    m_jumpAnimation->setEasingCurve(QEasingCurve::OutInQuad);
 
-
-    // View Window
+    // [VIEW WINDOW]
     viewportSetup();
     this->startTimer(10);
 }
@@ -175,15 +149,6 @@ void Level::keyPressEvent(QKeyEvent *event) {
         return;
     }
     switch (event->key()) {
-        case Qt::Key_Right:
-            addHorizontalInput(1);
-            break;
-        case Qt::Key_Left:
-            addHorizontalInput(-1);
-            break;
-        case Qt::Key_Space:
-            jump();
-            break;
         case Qt::Key_A:
             m_projectile->shoot(b2Vec2(-5,3.0));
             break;
@@ -195,110 +160,19 @@ void Level::keyPressEvent(QKeyEvent *event) {
     }
 }
 
+
 void Level::keyReleaseEvent(QKeyEvent *event)
-{ // Deals also with keyboard Input
+{
     if (event->isAutoRepeat()) {
         return;
     }
     switch (event->key()) {
-    case Qt::Key_Right:
-        addHorizontalInput(-1);
-        break;
-    case Qt::Key_Left:
-        addHorizontalInput(1);
-        break;
-        //    case Qt::Key_Space:
+        case Qt::Key_A:
+            break;
+        case Qt::Key_Space:
         //        return;
         //        break;
     default:
         break;
     }
 }
-
-void Level::addHorizontalInput(int input) {
-    // Keyboard input as well
-    m_horizontalInput += input;
-    m_flieger->setDirection(qBound(-1, m_horizontalInput, 1));
-    checkTimer();
-}
-
-void Level::checkTimer() {
-    // Timer for keyboard input
-    if(m_flieger->direction() == 0) {
-        m_timer.stop();
-    } else if (!m_timer.isActive()) {
-        m_timer.start();
-    }
-}
-
-void Level::movePlayer()
-{
-    // move the plane
-    const int direction = m_flieger->direction();
-    if (0 == direction) {
-        return;
-    }
-
-    const int dx = direction * m_velocity;
-    qreal newX = qBound(m_minX, m_currentX + dx, m_maxX);
-    if (newX == m_currentX) {
-        return;
-    }
-    m_currentX = newX;
-
-    const int shiftBorder = 350;
-    int rightShiftBorder = width() - shiftBorder;
-
-    const int visiblePlayerPos = m_currentX - m_worldShift;
-    const int newWorldShiftRight = visiblePlayerPos - rightShiftBorder;
-    if (newWorldShiftRight > 0) {
-        m_worldShift += newWorldShiftRight;
-    }
-    const int newWorldShiftLeft = shiftBorder - visiblePlayerPos;
-    if (newWorldShiftLeft > 0) {
-        m_worldShift -= newWorldShiftLeft;
-    }
-    const int maxWorldShift = m_fieldWidth - qRound(width());
-    m_worldShift = qBound(0, m_worldShift, maxWorldShift);
-    newX = m_currentX - m_worldShift;
-    m_flieger->setX(newX);
-
-    //newX = qBound(1000.0, this->m_flieger->pos().x(), this->sceneRect().bottomRight().x()-1920 + 900) - 1000.0;
-    //view->setSceneRect(newX,0,1920,1080);
-
-    const qreal ratio = qreal(m_worldShift) / maxWorldShift;
-
-    // iterate and apply parallax for all background items
-    //QVectorIterator<BackgroundItem*> i(bgItems);
-    //while (i.hasNext())
-    //    applyParallax(newX, i.next());
-
-    checkColliding();
-}
-
-void Level::setJumpFactor(const qreal &pos) {
-    if (pos == m_jumpFactor) {
-        return;
-    }
-    m_jumpFactor = pos;
-    emit jumpFactorChanged(m_jumpFactor);
-
-    qreal groundY = (m_groundLevel - m_flieger->boundingRect().height() / 2);
-    qreal y = groundY - m_jumpAnimation->currentValue().toReal()*m_jumpHeight;
-    m_flieger->setY(y);
-}
-
-void Level::jump() {
-    if (QAbstractAnimation::Stopped == m_jumpAnimation->state()) {
-        m_jumpAnimation->start();
-    }
-
-}
-
-qreal Level::jumpFactor() const
-{
-    return m_jumpFactor;
-}
-
-
-
