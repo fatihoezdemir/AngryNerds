@@ -16,10 +16,14 @@
 #include "globalvariables.h"
 #include "dynamicobject.h"
 #include "projectile.h"
-
+#include "forcefield.h"
 class Level : public QGraphicsScene
 {
     Q_OBJECT
+    Q_PROPERTY(qreal jumpFactor
+               READ jumpFactor
+               WRITE setJumpFactor
+               NOTIFY jumpFactorChanged)
 
 public:
     explicit Level(QObject* parent = nullptr);
@@ -34,6 +38,8 @@ protected:
     void mousePressEvent(QMouseEvent* event);
 
 protected slots:
+    void movePlayer();
+    void checkTimer();
     void checkColliding();
 
 protected:
@@ -43,14 +49,21 @@ protected:
     // ViewPort setup to be FHD and start at the left
     void viewportSetup(QRectF sceneRect = QRectF(0,0,1920,1080), int height = conv::viewHeight, int width=conv::viewWidth);
 
+    int m_fieldWidth;
+    int m_worldShift;
+    int m_velocity;
+
+    qreal m_minX;
+    qreal m_maxX;
     qreal m_currentX;
     qreal m_groundLevel;
 
     qreal lastX;
 
     // Player and Target
-    Projectile* m_projectile;
+    Flieger* m_flieger;
     Goal* m_goal;
+    Projectile* m_projectile;
 
     QTimer m_timer;
 
@@ -62,13 +75,31 @@ protected:
 
     // dynamic Objects
     QVector<DynamicObject*> dynamicObjects;
-
+    // Force Field
+    QVector <ForceField*> forceFields;
 
 protected:
     int m_horizontalInput;
     void addHorizontalInput(int input);
 
     void applyParallax(qreal xPos, BackgroundItem* item);
+
+
+// Jump Stuff - To be removed with physics engine //
+public:
+    qreal jumpFactor() const;
+    void setJumpFactor(const qreal &jumpFactor);
+
+signals:
+    void jumpFactorChanged(qreal);
+
+protected:
+        void jump();
+
+    int m_jumpHeight;
+    qreal m_jumpFactor;
+    QPropertyAnimation* m_jumpAnimation;    
+//^ Jump Stuff - To be removed with physics engine ^//
 
 //BOX2D PHYSICS//
 protected:
