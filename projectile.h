@@ -9,7 +9,6 @@ public:
     void shoot(b2Vec2 initVec = b2Vec2(5.0,2.0));
 
     virtual QPainterPath shape() const; // might be removed
-
 };
 
 #endif // PROJECTILE_H
