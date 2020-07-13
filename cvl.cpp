@@ -24,13 +24,14 @@ void Cvl::initPlayField(){
     bgItems.append(new BackgroundItem(QPixmap(":/imgs/png/CVL/CVL_HG2.png").scaled(2100,350),QPointF(1800, 1750), 100.0, -1));
     bgItems.append(new BackgroundItem(QPixmap(":/imgs/png/CVL/CVL_HG1.png").scaled(1740,550),QPointF(2150, 1780), 50.0, -1));
     bgItems.append(new BackgroundItem(QPixmap(":/imgs/png/CVL/CVL_HG2.png").scaled(1420,350),QPointF(2500, 2080), 100.0, -1));
-    bgItems.append(new BackgroundItem(QPixmap(":/imgs/png/CVL/VG2.png").scaled(2750,1500),QPointF(0, 930), 0, 0));
+    bgItems.append(new BackgroundItem(QPixmap(":/imgs/png/CVL/VG2.png").scaled(2750,1500),QPointF(0, 930), 10, 0));
     bgItems.append(new BackgroundItem(QPixmap(":/imgs/png/CVL/CVL_beamer.png").scaled(2750,1600), QPointF(2340.0,   350), -200, 3));
 
     QVectorIterator<BackgroundItem*> bgIt(bgItems);
     while (bgIt.hasNext()) {
         addItem(bgIt.next());
     }
+    bgItems[9]->setZValue(10);
     // [Ground, Walls & other static objects]
 
     staticObjects.append(new StaticObject(QPixmap(":/imgs/png/Floor.png").scaled(10, sceneDim.y()), QPointF(-10,0), 10, world));
@@ -71,7 +72,7 @@ void Cvl::initPlayField(){
     while (it.hasNext())
     {
         StaticObject* sObj = it.next();
-        sObj->setZValue(2);
+        //sObj->setZValue(2);
         addItem(sObj);
     }
 
