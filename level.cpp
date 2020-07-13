@@ -185,10 +185,12 @@ void Level::keyReleaseEvent(QKeyEvent *event)
 
 void Level::updateView() {
     qreal newX = qBound(0.0,
-                        m_projectile->pos().x() - conv::xBoundary,
+                        m_projectile->mapToScene(QPointF(100.0,50.0)).x()- conv::xBoundary,
+                        //m_projectile->pos().x() - conv::xBoundary,
                         this->sceneRect().right()- conv::viewWidth + 900 - conv::xBoundary);
     qreal newY = qBound(0.0,
-                        m_projectile->pos().y() - conv::viewHeight + conv::yBoundary,
+                        m_projectile->mapToScene(QPointF(100.0,50.0)).y() - conv::yBoundary,
+                        //m_projectile->pos().y()  - conv::viewHeight + conv::yBoundary,
                         this->sceneRect().bottom() - conv::viewHeight);
 
     view->setSceneRect(newX,newY,1920,1080);
