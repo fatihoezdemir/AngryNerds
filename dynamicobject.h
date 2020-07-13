@@ -5,6 +5,7 @@
 #include <QPoint>
 #include "box2d/box2d.h"
 #include "staticobject.h"
+
 class DynamicObject : public QGraphicsPixmapItem
 {
 public:
