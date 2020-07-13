@@ -1,11 +1,12 @@
 #ifndef MENSA_H
 #define MENSA_H
+#include "level.h"
 
-
-class Mensa
+class Mensa : public Level
 {
 public:
-    Mensa();
+    Mensa(QObject* parent = nullptr, QPointF initDim = QPointF(10000,2000));
+    virtual void initPlayField() override;
 };
 
 #endif // MENSA_H
