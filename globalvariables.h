@@ -11,6 +11,8 @@ namespace conv {
 
     inline float const b2Height = 5;  // meters
 
+    inline qreal const xBoundary = 1000.0;
+    inline qreal const yBoundary = 600.0;
 // Conversion Factors used to calculated between B2D and QT
     inline float const ppm = sceneHeight/b2Height;  // px/m
     inline float const mpp = b2Height/sceneHeight;  //  m/px
