@@ -24,7 +24,7 @@ void Level::initPlayField() {
     m_groundLevel=987;
     setSceneRect(0, 0, sceneDim.x(), sceneDim.y()); // Scene Dimensions
 
-    world = new b2World(b2Vec2(1.0,-10.0));
+    world = new b2World(b2Vec2(0,-10.0));
 
     // Set up all Background Objects
     bgItems.append(new BackgroundItem(QPixmap(":/imgs/png/sky.png").scaled(3840,1080), QPointF(0.0,0.0), -400, -2));
@@ -58,49 +58,34 @@ void Level::initPlayField() {
         sObj->setZValue(2);
         addItem(sObj);
     }
-    // dynamic Objects
+
+    // [Dynamic Objects]
     dynamicObjects.append(new DynamicObject(QPixmap(":imgs/png/Floor.png").scaled(50,50), QPointF(790,0), world));
     dynamicObjects.append(new DynamicObject(QPixmap(":imgs/png/Floor.png").scaled(100,150), QPointF(810,300), world));
     dynamicObjects.append(new DynamicObject(QPixmap(":imgs/png/Floor.png").scaled(200,200), QPointF(740,600), world));
-  //  dynamicObjects.append(new DynamicObject(QPixmap(":imgs/png/Person_6.png").scaled(100,400), QPointF(1500,60), world));
-   // dynamicObjects.append(new DynamicObject(QPixmap(":imgs/png/Person_5.png").scaled(150,350), QPointF(1450,0), world));
+    dynamicObjects.append(new DynamicObject(QPixmap(":imgs/png/Person_6.png").scaled(100,400), QPointF(1500,60), world));
+    dynamicObjects.append(new DynamicObject(QPixmap(":imgs/png/Person_5.png").scaled(150,350), QPointF(1450,0), world));
     //dynamicObjects.append(new DynamicObject(QPixmap(":imgs/png/Person_6.png").scaled(100,200), QPointF(400,200), world));
     QVectorIterator<DynamicObject*> dynIt(dynamicObjects);
     while (dynIt.hasNext()){
         addItem(dynIt.next());
     }
-    // ForceField
-   forceFields.append(new ForceField(QPixmap(":/imgs/png/Floor.png").scaled(400,400), QPointF(2000.0,300.0), 0, 10,b2Vec2(0.0,-0.009)));//,
-   addItem(forceFields[0]);
-    // GOAL
+
+    // [FORCE FIELDS]
+    forceFields.append(new ForceField(QPixmap(":imgs/png/CVL/CVL_beamer.png"), QPointF(1500,400),
+                           0 ,b2Vec2(10,10)));
+    addItem(forceFields[0]);
+
+    // [GOAL]
     m_goal = new Goal(QPixmap(":/imgs/png/Person_1.png").scaled(150,450));
     m_goal->setTransform(QTransform::fromScale(-1, 1));
     m_goal->setPos(3500, m_groundLevel - m_goal->boundingRect().bottomLeft().y());
     addItem(m_goal);
 
-    // FLIEGER
-    m_flieger = new Flieger();
-    m_flieger->setZValue(0);
-    m_minX = m_flieger->boundingRect().width()*0.5;
-    m_maxX = m_fieldWidth - m_flieger->boundingRect().width() * 0.5;
-    m_flieger->setPos(m_minX, m_groundLevel - m_flieger->boundingRect().height() * 0.5);
-    lastX= m_flieger->pos().x();
-    m_currentX = m_minX;
-    addItem(m_flieger);
 
-    //PROJECTILE
+    // [PROJECTILE}
     m_projectile = new Projectile(QPixmap(":/imgs/png/flieger.png").scaled(200, 100), QPointF(400,400), world);
     addItem(m_projectile);
-
-    // Testing
-    m_jumpAnimation = new QPropertyAnimation(this);
-    m_jumpAnimation->setTargetObject(this);
-    m_jumpAnimation->setPropertyName("jumpFactor");
-    m_jumpAnimation->setStartValue(0);
-    m_jumpAnimation->setKeyValueAt(0.5, 1);
-    m_jumpAnimation->setEndValue(0);
-    m_jumpAnimation->setDuration(800);
-    m_jumpAnimation->setEasingCurve(QEasingCurve::OutInQuad);
 
 
     // [USER INPUT]
@@ -118,9 +103,8 @@ void Level::viewportSetup(QRectF sceneRect, int height, int width){
     view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     view->setScene(this);
-    view->setFixedSize(1024, 576);
+    view->setFixedSize(width, height);
     view->setSceneRect(sceneRect);
-    view->scale(0.5,0.5);
 }
 
 
@@ -137,13 +121,6 @@ void Level::timerEvent ( QTimerEvent* event )
     m_projectile->updatePos((m_projectile->getPos()));
     m_projectile->updateRot((m_projectile->getRot()));
     updateView();
-    //qreal newX = qBound(conv::xBoundary, m_projectile->pos().x(), this->sceneRect().bottomRight().x()-1920 + 900) - 1000.0;
-    //view->setSceneRect(newX,0,1920,1080);
-
-    // iterate and apply parallax for all background items
-    //QVectorIterator<BackgroundItem*> i(bgItems);
-    //while (i.hasNext())
-    //    applyParallax(newX, i.next());
 
     checkColliding();
 }
@@ -159,15 +136,13 @@ void Level::applyParallax(qreal xPos, BackgroundItem* item) {
 
 void Level::checkColliding() {
     for (QGraphicsItem* item : collidingItems(m_projectile)) {
-        if (ForceField* field = qgraphicsitem_cast<ForceField*>(item)) {
-            //b2Vec2 initVec = item->getField();
-            m_projectile->shoot(field->getField());
-        }
-        if (Goal* target = dynamic_cast<Goal*>(item)) {
-            target->explode();
-        }
-
-    }
+            if (ForceField* field = qgraphicsitem_cast<ForceField*>(item)) {
+                m_projectile->shoot(field->getField());
+            }
+            if (Goal* target = dynamic_cast<Goal*>(item)) {
+                target->explode();
+            }
+}
 }
 
 // These will be gone once the physics engine is put into place
@@ -177,15 +152,6 @@ void Level::keyPressEvent(QKeyEvent *event) {
         return;
     }
     switch (event->key()) {
-        case Qt::Key_Right:
-            addHorizontalInput(1);
-            break;
-        case Qt::Key_Left:
-            addHorizontalInput(-1);
-            break;
-        case Qt::Key_Space:
-            jump();
-            break;
         case Qt::Key_A:
             m_projectile->shoot(b2Vec2(-5,3.0));
             break;
@@ -195,22 +161,18 @@ void Level::keyPressEvent(QKeyEvent *event) {
         default:
             break;
     }
-
 }
 
+
 void Level::keyReleaseEvent(QKeyEvent *event)
-{ // Deals also with keyboard Input
+{
     if (event->isAutoRepeat()) {
         return;
     }
     switch (event->key()) {
-    case Qt::Key_Right:
-        addHorizontalInput(-1);
-        break;
-    case Qt::Key_Left:
-        addHorizontalInput(1);
-        break;
-        //    case Qt::Key_Space:
+        case Qt::Key_A:
+            break;
+        case Qt::Key_Space:
         //        return;
         //        break;
     default:

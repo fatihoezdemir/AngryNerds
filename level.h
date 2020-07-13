@@ -17,13 +17,10 @@
 #include "dynamicobject.h"
 #include "projectile.h"
 #include "forcefield.h"
+
 class Level : public QGraphicsScene
 {
     Q_OBJECT
-    Q_PROPERTY(qreal jumpFactor
-               READ jumpFactor
-               WRITE setJumpFactor
-               NOTIFY jumpFactorChanged)
 
 public:
     explicit Level(QObject* parent = nullptr, QPointF initDim = QPointF(3840.0, 1080.0));
@@ -39,8 +36,6 @@ protected:
     void mousePressEvent(QGraphicsSceneMouseEvent* event);
 
 protected slots:
-    void movePlayer();
-    void checkTimer();
     void checkColliding();
 
 public:
@@ -58,9 +53,8 @@ protected:
     qreal lastX;
 
     // Player and Target
-    Flieger* m_flieger;
-    Goal* m_goal;
     Projectile* m_projectile;
+    Goal* m_goal;
 
     QTimer m_timer;
     //UserInput* m_input;
@@ -71,29 +65,12 @@ protected:
     QVector<StaticObject*> staticObjects;
     // dynamic Objects
     QVector<DynamicObject*> dynamicObjects;
-    // Force Field
-    QVector <ForceField*> forceFields;
+    // Force Field Objects
+    QVector<ForceField*> forceFields;
 
 protected:
     void applyParallax(qreal xPos, BackgroundItem* item);
     void updateView();
-
-
-// Jump Stuff - To be removed with physics engine //
-public:
-    qreal jumpFactor() const;
-    void setJumpFactor(const qreal &jumpFactor);
-
-signals:
-    void jumpFactorChanged(qreal);
-
-protected:
-        void jump();
-
-    int m_jumpHeight;
-    qreal m_jumpFactor;
-    QPropertyAnimation* m_jumpAnimation;    
-//^ Jump Stuff - To be removed with physics engine ^//
 
 //BOX2D PHYSICS//
 protected:
