@@ -27,7 +27,6 @@ void Goal::explode() {
     scaleAnimation->setEasingCurve(QEasingCurve::OutQuart);
     group->addAnimation(scaleAnimation);
 
-
     QPropertyAnimation *fadeAnimation = new QPropertyAnimation(this, "opacity");
     fadeAnimation->setDuration(700);
     fadeAnimation->setStartValue(1);
