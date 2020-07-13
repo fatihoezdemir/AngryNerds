@@ -25,7 +25,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-    bib.cpp \
     backgrounditem.cpp \
     flieger.cpp \
     level.cpp \
@@ -33,10 +32,11 @@ SOURCES += \
     staticobject.cpp \
     globalvariables.cpp \
     dynamicobject.cpp \
-    projectile.cpp
+    projectile.cpp \
+    userinput.cpp \
+    cvl.cpp
 
 HEADERS += \
-    bib.h \
     backgrounditem.h \
     flieger.h \
     level.h \
@@ -45,7 +45,9 @@ HEADERS += \
     staticobject.h \
     globalvariables.h \
     dynamicobject.h \
-    projectile.h
+    projectile.h \
+    userinput.h \
+    cvl.h
 
 RESOURCES += \
     anresources.qrc
