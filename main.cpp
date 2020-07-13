@@ -4,6 +4,8 @@
 #include "level.h"
 #include "globalvariables.h"
 #include "cvl.h"
+#include "mensa.h"
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
@@ -11,7 +13,8 @@ int main(int argc, char *argv[])
 
     //Level scene;
     //scene.initPlayField();
-    Cvl scene;
+    //Cvl scene;
+    Mensa scene;
     scene.view->show();
     return a.exec();
 }
