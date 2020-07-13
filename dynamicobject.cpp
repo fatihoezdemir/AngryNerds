@@ -26,6 +26,29 @@ DynamicObject::DynamicObject(const QPixmap &pixmap, QPointF pos,
     objectBody->CreateFixture(&objectFixture);
 }
 
+DynamicObject::DynamicObject(const QPixmap &pixmap, b2PolygonShape boundPoly, QPointF pos,
+                           b2World* world, QGraphicsItem* parent)
+    : QGraphicsPixmapItem(pixmap, parent),
+      origPos(pos)
+{
+    setPos(pos);
+
+    // Create the object also in box2D
+    objectBodyDef = new b2BodyDef();
+    objectBodyDef->type = b2_dynamicBody;
+    b2Vec2 b2Pos = conv::p2mVec(pos);
+    objectBodyDef->position.Set(conv::p2m(pos.x()), conv::p2m(pos.y(), true));
+    objectBody = world->CreateBody(objectBodyDef);
+    b2PolygonShape objectBox = boundPoly;
+    objectFixture.shape = &objectBox;
+    objectFixture.restitution = 0.6;
+    objectFixture.density = 1.0f;
+    objectFixture.friction = 0.3f;
+
+    objectBody->CreateFixture(&objectFixture);
+}
+
+
 QPointF DynamicObject::getPos() {
     return conv::m2pVec(objectBody->GetPosition());
 }

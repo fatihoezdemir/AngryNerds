@@ -10,6 +10,7 @@ class DynamicObject : public QGraphicsPixmapItem
 {
 public:
     explicit DynamicObject(const QPixmap &pixmap, QPointF pos = QPointF(0.0,0.0), b2World* world = 0, QGraphicsItem* parent = nullptr);
+    explicit DynamicObject(const QPixmap &pixmap, b2PolygonShape boundPoly, QPointF pos = QPointF(0.0,0.0), b2World* world = 0, QGraphicsItem* parent = nullptr);
 
     QPointF getPos();
     qreal getOffset();
