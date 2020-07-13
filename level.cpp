@@ -58,33 +58,49 @@ void Level::initPlayField() {
         sObj->setZValue(2);
         addItem(sObj);
     }
-
-    // [Dynamic Objects]
+    // dynamic Objects
     dynamicObjects.append(new DynamicObject(QPixmap(":imgs/png/Floor.png").scaled(50,50), QPointF(790,0), world));
     dynamicObjects.append(new DynamicObject(QPixmap(":imgs/png/Floor.png").scaled(100,150), QPointF(810,300), world));
     dynamicObjects.append(new DynamicObject(QPixmap(":imgs/png/Floor.png").scaled(200,200), QPointF(740,600), world));
-    dynamicObjects.append(new DynamicObject(QPixmap(":imgs/png/Person_6.png").scaled(100,400), QPointF(1500,60), world));
-    dynamicObjects.append(new DynamicObject(QPixmap(":imgs/png/Person_5.png").scaled(150,350), QPointF(1450,0), world));
+  //  dynamicObjects.append(new DynamicObject(QPixmap(":imgs/png/Person_6.png").scaled(100,400), QPointF(1500,60), world));
+   // dynamicObjects.append(new DynamicObject(QPixmap(":imgs/png/Person_5.png").scaled(150,350), QPointF(1450,0), world));
     //dynamicObjects.append(new DynamicObject(QPixmap(":imgs/png/Person_6.png").scaled(100,200), QPointF(400,200), world));
     QVectorIterator<DynamicObject*> dynIt(dynamicObjects);
     while (dynIt.hasNext()){
         addItem(dynIt.next());
     }
-
-    // [FORCE FIELDS]
-    //forceObjects.append(new ForceObject(QPixmap(""), QPointF(1,2), world, m_projectile));
-
-
-    // [GOAL]
+    // ForceField
+   forceFields.append(new ForceField(QPixmap(":/imgs/png/Floor.png").scaled(400,400), QPointF(2000.0,300.0), 0, 10,b2Vec2(0.0,-0.009)));//,
+   addItem(forceFields[0]);
+    // GOAL
     m_goal = new Goal(QPixmap(":/imgs/png/Person_1.png").scaled(150,450));
     m_goal->setTransform(QTransform::fromScale(-1, 1));
     m_goal->setPos(3500, m_groundLevel - m_goal->boundingRect().bottomLeft().y());
     addItem(m_goal);
 
+    // FLIEGER
+    m_flieger = new Flieger();
+    m_flieger->setZValue(0);
+    m_minX = m_flieger->boundingRect().width()*0.5;
+    m_maxX = m_fieldWidth - m_flieger->boundingRect().width() * 0.5;
+    m_flieger->setPos(m_minX, m_groundLevel - m_flieger->boundingRect().height() * 0.5);
+    lastX= m_flieger->pos().x();
+    m_currentX = m_minX;
+    addItem(m_flieger);
 
-    // [PROJECTILE}
+    //PROJECTILE
     m_projectile = new Projectile(QPixmap(":/imgs/png/flieger.png").scaled(200, 100), QPointF(400,400), world);
     addItem(m_projectile);
+
+    // Testing
+    m_jumpAnimation = new QPropertyAnimation(this);
+    m_jumpAnimation->setTargetObject(this);
+    m_jumpAnimation->setPropertyName("jumpFactor");
+    m_jumpAnimation->setStartValue(0);
+    m_jumpAnimation->setKeyValueAt(0.5, 1);
+    m_jumpAnimation->setEndValue(0);
+    m_jumpAnimation->setDuration(800);
+    m_jumpAnimation->setEasingCurve(QEasingCurve::OutInQuad);
 
 
     // [USER INPUT]
@@ -102,8 +118,9 @@ void Level::viewportSetup(QRectF sceneRect, int height, int width){
     view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     view->setScene(this);
-    view->setFixedSize(width, height);
+    view->setFixedSize(1024, 576);
     view->setSceneRect(sceneRect);
+    view->scale(0.5,0.5);
 }
 
 
@@ -142,9 +159,14 @@ void Level::applyParallax(qreal xPos, BackgroundItem* item) {
 
 void Level::checkColliding() {
     for (QGraphicsItem* item : collidingItems(m_projectile)) {
-        if (Goal* target = qgraphicsitem_cast<Goal*>(item)) {
+        if (ForceField* field = qgraphicsitem_cast<ForceField*>(item)) {
+            //b2Vec2 initVec = item->getField();
+            m_projectile->shoot(field->getField());
+        }
+        if (Goal* target = dynamic_cast<Goal*>(item)) {
             target->explode();
         }
+
     }
 }
 
@@ -155,6 +177,15 @@ void Level::keyPressEvent(QKeyEvent *event) {
         return;
     }
     switch (event->key()) {
+        case Qt::Key_Right:
+            addHorizontalInput(1);
+            break;
+        case Qt::Key_Left:
+            addHorizontalInput(-1);
+            break;
+        case Qt::Key_Space:
+            jump();
+            break;
         case Qt::Key_A:
             m_projectile->shoot(b2Vec2(-5,3.0));
             break;
@@ -164,18 +195,22 @@ void Level::keyPressEvent(QKeyEvent *event) {
         default:
             break;
     }
+
 }
 
-
 void Level::keyReleaseEvent(QKeyEvent *event)
-{
+{ // Deals also with keyboard Input
     if (event->isAutoRepeat()) {
         return;
     }
     switch (event->key()) {
-        case Qt::Key_A:
-            break;
-        case Qt::Key_Space:
+    case Qt::Key_Right:
+        addHorizontalInput(-1);
+        break;
+    case Qt::Key_Left:
+        addHorizontalInput(1);
+        break;
+        //    case Qt::Key_Space:
         //        return;
         //        break;
     default:

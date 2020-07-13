@@ -24,6 +24,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += \
+    forcefield.cpp \
         main.cpp \
     backgrounditem.cpp \
     flieger.cpp \
@@ -40,6 +41,7 @@ SOURCES += \
 HEADERS += \
     backgrounditem.h \
     flieger.h \
+    forcefield.h \
     level.h \
     box2d/box2d.h \
     goal.h \
@@ -60,3 +62,11 @@ INCLUDEPATH += $$PWD/.
 DEPENDPATH += $$PWD/.
 
 unix:!macx: PRE_TARGETDEPS += $$PWD/./libBox2D.a
+
+
+macx: LIBS += -L$$PWD/./ -lbox2dqt
+
+INCLUDEPATH += $$PWD/.
+DEPENDPATH += $$PWD/.
+
+macx: PRE_TARGETDEPS += $$PWD/./libbox2dqt.a
