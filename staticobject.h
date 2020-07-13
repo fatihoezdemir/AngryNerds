@@ -9,8 +9,8 @@
 class StaticObject : public QGraphicsPixmapItem
 {
 public:
-    explicit StaticObject(const QPixmap &pixmap, QPointF pos = QPointF(0.0,0.0), b2World* world = nullptr,  QGraphicsItem* parent = nullptr);
-
+    explicit StaticObject(const QPixmap &pixmap, QPointF pos = QPointF(0.0,0.0), qreal zVal = 0, b2World* world = nullptr,  QGraphicsItem* parent = nullptr);
+    explicit StaticObject(const QPixmap &pixmap, b2PolygonShape boundPoly, qreal zVal = 0, QPointF pos = QPointF(0.0,0.0), b2World* world = nullptr,  QGraphicsItem* parent = nullptr);
     virtual QPointF getPos();
     qreal getOffset();
 

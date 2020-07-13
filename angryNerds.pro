@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui multimedia
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -24,30 +24,30 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += \
-    forcefield.cpp \
         main.cpp \
-    bib.cpp \
     backgrounditem.cpp \
-    flieger.cpp \
     level.cpp \
     goal.cpp \
     staticobject.cpp \
     globalvariables.cpp \
     dynamicobject.cpp \
-    projectile.cpp
+    projectile.cpp \
+    cvl.cpp \
+    mensa.cpp \
+    forcefield.cpp
 
 HEADERS += \
-    bib.h \
     backgrounditem.h \
-    flieger.h \
-    forcefield.h \
     level.h \
     box2d/box2d.h \
     goal.h \
     staticobject.h \
     globalvariables.h \
     dynamicobject.h \
-    projectile.h
+    projectile.h \
+    cvl.h \
+    mensa.h \
+    forcefield.h
 
 RESOURCES += \
     anresources.qrc
@@ -58,11 +58,3 @@ INCLUDEPATH += $$PWD/.
 DEPENDPATH += $$PWD/.
 
 unix:!macx: PRE_TARGETDEPS += $$PWD/./libBox2D.a
-
-
-macx: LIBS += -L$$PWD/./ -lbox2dqt
-
-INCLUDEPATH += $$PWD/.
-DEPENDPATH += $$PWD/.
-
-macx: PRE_TARGETDEPS += $$PWD/./libbox2dqt.a

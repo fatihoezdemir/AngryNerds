@@ -2,6 +2,47 @@
 #include "globalvariables.h"
 #include <QDebug>
 DynamicObject::DynamicObject(const QPixmap &pixmap, QPointF pos,
+                            b2World* world, QGraphicsItem* parent,
+                            bool isEllipse)
+    : QGraphicsPixmapItem(pixmap, parent),
+      origPos(pos)
+{
+    setPos(pos);
+
+    // Create the object also in box2D
+    objectBodyDef = new b2BodyDef();
+    objectBodyDef->type = b2_dynamicBody;
+    b2Vec2 b2Pos = conv::p2mVec(pos);
+    objectBodyDef->position.Set(conv::p2m(pos.x()), conv::p2m(pos.y(), true));
+    objectBody = world->CreateBody(objectBodyDef);
+
+    if(isEllipse) {
+        b2CircleShape objectBox;
+        objectBox.m_radius = conv::p2m(this->boundingRect().width()/2);
+        objectBox.m_p.Set(conv::p2m(boundingRect().width())/2, conv::p2m(-boundingRect().height())/2);
+
+        objectFixture.shape = &objectBox;
+        objectFixture.restitution = 0.6;
+        objectFixture.density = 1.0f;
+        objectFixture.friction = 0.3f;
+
+        objectBody->CreateFixture(&objectFixture);
+    } else {
+        b2PolygonShape objectBox;
+        objectBox.SetAsBox(conv::p2m(this->boundingRect().width()/2), conv::p2m(this->boundingRect().height()/2),
+                       b2Vec2(conv::p2m(boundingRect().width())/2, conv::p2m(-boundingRect().height())/2), 0);
+
+        objectFixture.shape = &objectBox;
+        objectFixture.restitution = 0.6;
+        objectFixture.density = 1.0f;
+        objectFixture.friction = 0.3f;
+
+        objectBody->CreateFixture(&objectFixture);
+    }
+
+}
+
+DynamicObject::DynamicObject(const QPixmap &pixmap, b2PolygonShape boundPoly, QPointF pos,
                            b2World* world, QGraphicsItem* parent)
     : QGraphicsPixmapItem(pixmap, parent),
       origPos(pos)
@@ -14,10 +55,8 @@ DynamicObject::DynamicObject(const QPixmap &pixmap, QPointF pos,
     b2Vec2 b2Pos = conv::p2mVec(pos);
     objectBodyDef->position.Set(conv::p2m(pos.x()), conv::p2m(pos.y(), true));
     objectBody = world->CreateBody(objectBodyDef);
-    b2PolygonShape objectBox;
-    objectBox.SetAsBox(conv::p2m(this->boundingRect().width()/2), conv::p2m(this->boundingRect().height()/2),
-                       b2Vec2(conv::p2m(boundingRect().width())/2, conv::p2m(-boundingRect().height())/2), 0);
-
+    b2PolygonShape objectBox = boundPoly;
+    objectBox.m_centroid = b2Vec2(conv::p2m(boundingRect().width())/2, conv::p2m(-boundingRect().height())/2);
     objectFixture.shape = &objectBox;
     objectFixture.restitution = 0.6;
     objectFixture.density = 1.0f;
@@ -25,6 +64,7 @@ DynamicObject::DynamicObject(const QPixmap &pixmap, QPointF pos,
 
     objectBody->CreateFixture(&objectFixture);
 }
+
 
 QPointF DynamicObject::getPos() {
     return conv::m2pVec(objectBody->GetPosition());

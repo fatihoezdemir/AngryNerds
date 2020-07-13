@@ -16,5 +16,48 @@
         <file>png/Person_1.png</file>
         <file>png/sky.svg</file>
         <file>png/sky.png</file>
+        <file>png/CVL/CVL_HG8.png</file>
+        <file>png/CVL/CVL_HG7.png</file>
+        <file>png/CVL/CVL_HG6.png</file>
+        <file>png/CVL/CVL_HG5.png</file>
+        <file>png/CVL/CVL_HG3.png</file>
+        <file>png/CVL/CVL_HG2.png</file>
+        <file>png/CVL/CVL_HG1.png</file>
+        <file>png/CVL/CVL_Box.png</file>
+        <file>png/CVL/CVL_VG.png</file>
+        <file>png/CVL/CVL_Tafel.png</file>
+        <file>png/CVL/CVL_Pult.png</file>
+        <file>png/CVL/CVL_beamer.png</file>
+        <file>png/CVL/CVL_Boden.png</file>
+        <file>png/CVL/prof.png</file>
+        <file>png/CVL/All.png</file>
+        <file>png/CVL/VG9.png</file>
+        <file>png/CVL/VG8.png</file>
+        <file>png/CVL/VG7.png</file>
+        <file>png/CVL/VG6.png</file>
+        <file>png/CVL/VG5.png</file>
+        <file>png/CVL/VG4.png</file>
+        <file>png/CVL/VG3.png</file>
+        <file>png/CVL/VG2.png</file>
+        <file>png/CVL/VG1.png</file>
+        <file>png/mensa/Tomate.png</file>
+        <file>png/mensa/kasse.png</file>
+        <file>png/mensa/floor2.png</file>
+        <file>png/mensa/floor.png</file>
+        <file>png/mensa/wall2.png</file>
+        <file>png/mensa/wall.png</file>
+        <file>png/mensa/sky.png</file>
+        <file>png/mensa/Cart4.png</file>
+        <file>png/mensa/hand.png</file>
+        <file>png/mensa/Salami.png</file>
+        <file>png/mensa/Cart3.png</file>
+        <file>png/mensa/Cart2.png</file>
+        <file>png/mensa/Cart1.png</file>
+        <file>png/mensa/Koch.png</file>
+        <file>png/mensa/KochM.png</file>
+    </qresource>
+    <qresource prefix="/sound">
+        <file>sound/Background2.mp3</file>
+        <file>sound/nextLevel.wav</file>
     </qresource>
 </RCC>
