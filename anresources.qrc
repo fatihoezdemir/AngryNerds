@@ -56,4 +56,8 @@
         <file>png/mensa/Koch.png</file>
         <file>png/mensa/KochM.png</file>
     </qresource>
+    <qresource prefix="/sound">
+        <file>sound/Background2.mp3</file>
+        <file>sound/nextLevel.wav</file>
+    </qresource>
 </RCC>
