@@ -34,7 +34,8 @@ SOURCES += \
     dynamicobject.cpp \
     projectile.cpp \
     userinput.cpp \
-    cvl.cpp
+    cvl.cpp \
+    mensa.cpp
 
 HEADERS += \
     backgrounditem.h \
@@ -47,7 +48,8 @@ HEADERS += \
     dynamicobject.h \
     projectile.h \
     userinput.h \
-    cvl.h
+    cvl.h \
+    mensa.h
 
 RESOURCES += \
     anresources.qrc
