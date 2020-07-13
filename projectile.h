@@ -5,7 +5,7 @@
 class Projectile : public DynamicObject
 {
 public:
-    explicit Projectile(const QPixmap &pixmap, QPointF pos = QPointF(0.0,0.0), b2World* world = 0, QGraphicsItem* parent = nullptr);
+    explicit Projectile(const QPixmap &pixmap, QPointF pos = QPointF(0.0,0.0), b2World* world = 0, QGraphicsItem* parent = nullptr, bool isEllipse = false);
     explicit Projectile(const QPixmap &pixmap, b2PolygonShape boundPoly, QPointF pos = QPointF(0.0,0.0), b2World* world = 0, QGraphicsItem* parent = nullptr);
     void shoot(b2Vec2 initVec = b2Vec2(5.0,2.0));
 

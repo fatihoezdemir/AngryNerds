@@ -1,8 +1,8 @@
 #include "projectile.h"
 #include "globalvariables.h"
 
-Projectile::Projectile(const QPixmap &pixmap, QPointF pos, b2World* world, QGraphicsItem* parent)
-    :  DynamicObject(pixmap, pos, world, parent)
+Projectile::Projectile(const QPixmap &pixmap, QPointF pos, b2World* world, QGraphicsItem* parent, bool isEllipse)
+    :  DynamicObject(pixmap, pos, world, parent, isEllipse)
 {
     objectFixture.density = 1.0f;
     objectBody->SetAwake(false);
