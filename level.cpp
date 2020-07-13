@@ -4,14 +4,11 @@
 #include <QGraphicsView>
 #include <QKeyEvent>
 #include <QPen>
-#include "flieger.h"
 #include "goal.h"
 #include "backgrounditem.h"
 #include "staticobject.h"
-
 #include "globalvariables.h"
 #include "projectile.h"
-#include "userinput.h"
 
 Level::Level(QObject* parent, QPointF initDim):
     QGraphicsScene(parent),

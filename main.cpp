@@ -1,6 +1,7 @@
 #include <QApplication>
 #include <QGraphicsView>
 #include <QDateTime>
+#include <QMediaPlayer>
 #include "level.h"
 #include "globalvariables.h"
 #include "cvl.h"

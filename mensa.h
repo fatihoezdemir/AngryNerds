@@ -1,6 +1,7 @@
 #ifndef MENSA_H
 #define MENSA_H
 #include "level.h"
+#include <QMediaPlayer>
 
 class Mensa : public Level
 {

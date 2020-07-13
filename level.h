@@ -8,8 +8,8 @@
 #include <QTimer>
 #include <QPropertyAnimation>
 #include <QVector>
+#include <QMediaPlayer>
 #include "backgrounditem.h"
-#include "flieger.h"
 #include "goal.h"
 #include "staticobject.h"
 #include "box2d/box2d.h"

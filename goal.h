@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QGraphicsPixmapItem>
+#include <QSound>
 
 class Goal : public QObject, public QGraphicsPixmapItem
 {
