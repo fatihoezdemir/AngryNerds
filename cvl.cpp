@@ -56,18 +56,6 @@ void Cvl::initPlayField(){
     // [Floor]
     staticObjects.append(new StaticObject(QPixmap(":/imgs/png/Floor.png").scaled(sceneDim.x(), 100), QPointF(0,sceneDim.y()-100), 10, world));
 
-    b2Vec2 vertices[3];
-    vertices[0].Set(conv::p2m(-100.0), conv::p2m(-50, true));
-    vertices[1].Set(conv::p2m(100), conv::p2m(50, true));
-    vertices[2].Set(conv::p2m(-100), conv::p2m(-50, true));
-    vertices[3].Set(conv::p2m(-100), conv::p2m(0, true));
-
-    int32 count = 4;
-    b2PolygonShape polygon;
-    polygon.Set(vertices, count);
-
-    //staticObjects.append(new StaticObject(QPixmap(":/imgs/png/flieger.png").scaled(200,100), polygon, QPoint(3400,1800), world));
-
     QVectorIterator<StaticObject*> it(staticObjects);
     while (it.hasNext())
     {
@@ -98,19 +86,19 @@ void Cvl::initPlayField(){
     m_goal->setPos(4500, m_groundLevel - m_goal->boundingRect().bottomLeft().y());
     addItem(m_goal);
 
-    b2Vec2 vertices2[3];
-    vertices2[0].Set(conv::p2m(-100.0), conv::p2m(0, true));
-    vertices2[1].Set(conv::p2m(100), conv::p2m(100, true));
-    vertices2[2].Set(conv::p2m(-100), conv::p2m(0, true));
-    vertices2[3].Set(conv::p2m(-100), conv::p2m(50, true));
+    b2Vec2 vertices[3];
+    vertices[0].Set(conv::p2m(0), conv::p2m(0, true));
+    vertices[1].Set(conv::p2m(200), conv::p2m(100, true));
+    vertices[2].Set(conv::p2m(0), conv::p2m(100, true));
+    vertices[3].Set(conv::p2m(20), conv::p2m(30, true));
 
-    //int32 count = 4;
-    b2PolygonShape polygon2;
-    polygon2.Set(vertices2, count);
+    int32 count = 4;
+    b2PolygonShape polygon;
+    polygon.Set(vertices, count);
 
     // [PROJECTILE}
-    m_projectile = new Projectile(QPixmap(":/imgs/png/flieger.png").scaled(200, 100), polygon2, QPointF(400,400), world);
-    m_projectile = new Projectile(QPixmap(":/imgs/png/flieger.png").scaled(200, 100), QPointF(400,400), world);
+    m_projectile = new Projectile(QPixmap(":/imgs/png/flieger.png").scaled(200, 100), polygon, QPointF(400,400), world);
+    //m_projectile = new Projectile(QPixmap(":/imgs/png/flieger.png").scaled(200, 100), QPointF(400,400), world);
     addItem(m_projectile);
 
 
