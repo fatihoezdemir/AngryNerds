@@ -6,6 +6,7 @@
 #include "globalvariables.h"
 #include "cvl.h"
 #include "mensa.h"
+#include "mainwindow.h"
 
 int main(int argc, char *argv[])
 {
@@ -15,8 +16,11 @@ int main(int argc, char *argv[])
     //Level scene;
     //scene.initPlayField();
     //Cvl scene;
-    Mensa scene;
-    scene.initPlayField();
-    scene.view->show();
+//    Mensa scene;
+//    scene.initPlayField();
+//    scene.view->show();
+//    return a.exec();
+    MainWindow w;
+    w.show();
     return a.exec();
 }

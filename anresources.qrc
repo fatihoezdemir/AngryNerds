@@ -55,6 +55,7 @@
         <file>png/mensa/Cart1.png</file>
         <file>png/mensa/Koch.png</file>
         <file>png/mensa/KochM.png</file>
+        <file>png/GUI/tum_map.png</file>
     </qresource>
     <qresource prefix="/sound">
         <file>sound/Background2.mp3</file>

@@ -33,6 +33,8 @@ SOURCES += \
     dynamicobject.cpp \
     projectile.cpp \
     cvl.cpp \
+    mainwindow.cpp \
+    setting.cpp \
     mensa.cpp \
     forcefield.cpp
 
@@ -46,6 +48,8 @@ HEADERS += \
     dynamicobject.h \
     projectile.h \
     cvl.h \
+    mainwindow.h \
+    setting.h \
     mensa.h \
     forcefield.h
 
@@ -58,3 +62,6 @@ INCLUDEPATH += $$PWD/.
 DEPENDPATH += $$PWD/.
 
 unix:!macx: PRE_TARGETDEPS += $$PWD/./libBox2D.a
+FORMS += \
+    mainwindow.ui \
+    setting.ui

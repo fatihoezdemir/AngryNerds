@@ -84,12 +84,5 @@ void Mensa::initPlayField(){
     viewportSetup();
     //view->scale(1.5,1.5);
     this->startTimer(10);
-    audioPlayer = new QMediaPlayer(this);
-    playAudio();
 }
 
-void Mensa::playAudio(){
-    audioPlayer->setMedia(QUrl("qrc:/sound/sound/nextLevel.wav"));
-    audioPlayer->play();
-    audioPlayer->setVolume(1000);
-}
