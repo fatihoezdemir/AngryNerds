@@ -7,13 +7,13 @@
 #include "cvl.h"
 #include "mensa.h"
 #include <iostream>
-
+#include <QSplashScreen>
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     qsrand(QDateTime::currentMSecsSinceEpoch());
     QPixmap pixmap("CVL_Pult.png");
-    QSplashscreen splash(pixmap,Qt::WindowStaysOnTopHint);
+    QSplashScreen splash(pixmap,Qt::WindowStaysOnTopHint);
     splash.show();
     
     //Level scene;
