@@ -104,3 +104,6 @@ void Cvl::initLevel1(){
     this->startTimer(10);
 
 }
+
+
+void Cvl::initLevel2(){ }

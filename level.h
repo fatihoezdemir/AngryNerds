@@ -67,6 +67,7 @@ protected:
     QVector<StaticObject*> staticObjects;
     // dynamic Objects
     QVector<DynamicObject*> dynamicObjects;
+    QVector<DynamicObject*> movingObjects;
     // Force Field Objects
     QVector<ForceField*> forceFields;
 

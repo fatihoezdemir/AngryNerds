@@ -112,6 +112,15 @@ void Level::timerEvent ( QTimerEvent* event )
         obj->updatePos(obj->getPos());
         obj->updateRot(obj->getRot());
     }
+
+    QVectorIterator<DynamicObject*> movingIt(movingObjects);
+    while(movingIt.hasNext()) {
+        DynamicObject* obj = movingIt.next();
+        obj->oscPos();
+        obj->updatePos(obj->getPos());
+        obj->updateRot(obj->getRot());
+    }
+
     // Update Position and Angle of Projectile
     m_projectile->updatePos((m_projectile->getPos()));
     m_projectile->updateRot((m_projectile->getRot()));
@@ -185,6 +194,5 @@ void Level::updateView() {
 }
 
 void Level::on_ProjectileTimeout() {
-    std::cout << "aaaaaaaaa" << std::endl;
     QSound::play(":/sound/sound/nextLevel.wav");
 }
