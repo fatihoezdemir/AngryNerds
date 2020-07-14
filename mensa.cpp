@@ -14,6 +14,7 @@ void Mensa::initPlayField(){
 
     world = new b2World(b2Vec2(1.0,-10.0));
 
+
     // Set up all Background Objects
     bgItems.append(new BackgroundItem(QPixmap(":/imgs/png/mensa/sky.png").scaled(sceneDim.x(),sceneDim.y()),QPointF(0,0), -sceneDim.x()*0.2, -5));
     bgItems.append(new BackgroundItem(QPixmap(":/imgs/png/mensa/wall2.png").scaled(sceneDim.x(), 1200), QPointF(0, 0), 0, -3));

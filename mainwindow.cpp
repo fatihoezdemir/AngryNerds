@@ -13,7 +13,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->label_pic->setPixmap(mypix);
     ui->stackedWidget->insertWidget(1, &_settings);
     connect(&_settings, SIGNAL(HomeClicked()), this, SLOT(move_home()));
-//    connect(ui->cvl_lv_1_button, SIGNAL(clicked(bool)), ui->cvl_lv_2_button,SLOT(setChecked(bool)));
     l2 = new Cvl();
 
 }
@@ -43,18 +42,26 @@ void MainWindow::on_bibliothek_button_clicked()
 
 void MainWindow::on_cvl_button_clicked()
 {
-    Cvl* lvl = new Cvl();
-//    lvl->initPlayField();
-    MainWindow::hide();
-    lvl->view->show();
+    if (is_open == false){
+        Cvl* lvl = new Cvl();
+    //    lvl->initPlayField();
+        MainWindow::hide();
+        lvl->view->show();
+        is_open = true;
+    }
+
 }
 
 void MainWindow::on_projektbeschreibung_clicked()
 {
-    Mensa* lvl = new Mensa();
-    lvl->initPlayField();
-    MainWindow::hide();
-    lvl->view->show();
+    if (is_open == false){
+        Mensa* lvl = new Mensa();
+        lvl->initPlayField();
+        MainWindow::hide();
+        lvl->view->show();
+        is_open = true;
+    }
+
 }
 
 void MainWindow::on_cvl_lv_1_button_clicked()

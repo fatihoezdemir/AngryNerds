@@ -41,6 +41,7 @@ private slots:
     void on_projektbeschreibung_clicked();
 
 private:
+    bool is_open{false};
     Ui::MainWindow *ui;
     Setting _settings;
 };
