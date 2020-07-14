@@ -1,7 +1,6 @@
 #ifndef FORCEFIELD_H
 #define FORCEFIELD_H
 #include "box2d/box2d.h"
-//#include "staticobject.h"
 #include "dynamicobject.h"
 #include "projectile.h"
 #include "backgrounditem.h"

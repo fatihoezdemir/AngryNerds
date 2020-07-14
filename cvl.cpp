@@ -4,17 +4,18 @@
 Cvl::Cvl(QObject* parent, QPointF initDim)
     : Level(parent, initDim)
 {
-    initPlayField();
+    initLevel1();
 }
 
 void Cvl::initPlayField(){
+    /* Sets up Basic Playing Field;
+     * The individual Level has to be loaded with initLevelX(); */
     m_groundLevel=sceneDim.y()-100;
     setSceneRect(0, 0, sceneDim.x(), sceneDim.y()); // Scene Dimensions
 
     world = new b2World(b2Vec2(1.0,-10.0));
 
     // Set up all Background Objects
-    //bgItems.append(new BackgroundItem(QPixmap(":/imgs/png/CVL/All.png").scaled(5000,2500), QPointF(0.0,0.0), -400, -2));
     bgItems.append(new BackgroundItem(QPixmap(":/imgs/png/CVL/VG2.png").scaled(sceneDim.x(),sceneDim.y()),QPointF(0,0), 0, -10));
     bgItems.append(new BackgroundItem(QPixmap(":/imgs/png/CVL/CVL_HG8.png").scaled(5350,3000), QPointF(0.0,0.0), 350.0, -1));
     bgItems.append(new BackgroundItem(QPixmap(":/imgs/png/CVL/CVL_HG7.png").scaled(3500,350),QPointF(400, 930), 300.0, -1));
@@ -31,7 +32,7 @@ void Cvl::initPlayField(){
     while (bgIt.hasNext()) {
         addItem(bgIt.next());
     }
-    bgItems[9]->setZValue(10);
+
     // [Ground, Walls & other static objects]
 
     staticObjects.append(new StaticObject(QPixmap(":/imgs/png/Floor.png").scaled(10, sceneDim.y()), QPointF(-10,0), 10, world));
@@ -64,20 +65,32 @@ void Cvl::initPlayField(){
         addItem(sObj);
     }
 
+    // [PROJECTILE]
+    m_projectile = new Projectile(QPixmap(":/imgs/png/flieger.png").scaled(200, 100), Projectile::PLANE, QPointF(400,400), world, nullptr);
+    addItem(m_projectile);
+
+    // Start level end timer
+    connect(m_projectile->outTimer,SIGNAL(timeout()), this,SLOT(on_ProjectileTimeout()));
+}
+
+void Cvl::initLevel1(){
+    initPlayField(); // Initialize Background and all objects that stay the same
+
     // [Dynamic Objects]
     dynamicObjects.append(new DynamicObject(QPixmap(":imgs/png/CVL/CVL_Pult.png").scaled(400,300), QPointF(3800,m_groundLevel - 300 ), world));
-    /*dynamicObjects.append(new DynamicObject(QPixmap(":imgs/png/Floor.png").scaled(100,150), QPointF(810,300), world));
-    dynamicObjects.append(new DynamicObject(QPixmap(":imgs/png/Floor.png").scaled(200,200), QPointF(740,600), world));
-    dynamicObjects.append(new DynamicObject(QPixmap(":imgs/png/Person_6.png").scaled(100,400), QPointF(1500,60), world));
-    dynamicObjects.append(new DynamicObject(QPixmap(":imgs/png/Person_5.png").scaled(150,350), QPointF(1450,0), world));*/
-    //dynamicObjects.append(new DynamicObject(QPixmap(":imgs/png/Person_6.png").scaled(100,200), QPointF(400,200), world));
     QVectorIterator<DynamicObject*> dynIt(dynamicObjects);
     while (dynIt.hasNext()){
         addItem(dynIt.next());
     }
 
     // [FORCE FIELDS]
-    //forceObjects.append(new ForceObject(QPixmap(""), QPointF(1,2), world, m_projectile));
+    forceFields.append(new ForceField(QPixmap(":imgs/png/mensa/Salami.png").scaled(800,400), QPointF(2800,400), 0 ,b2Vec2(0.01,-0.5)));
+    forceFields[0]->setOpacity(0.5);
+
+    QVectorIterator<ForceField*> forceIt(forceFields);
+    while (forceIt.hasNext()){
+        addItem(forceIt.next());
+    }
 
 
     // [GOAL]
@@ -86,26 +99,11 @@ void Cvl::initPlayField(){
     m_goal->setPos(4500, m_groundLevel - m_goal->boundingRect().bottomLeft().y());
     addItem(m_goal);
 
-    b2Vec2 vertices[3];
-    vertices[0].Set(conv::p2m(0), conv::p2m(0, true));
-    vertices[1].Set(conv::p2m(200), conv::p2m(100, true));
-    vertices[2].Set(conv::p2m(0), conv::p2m(100, true));
-    vertices[3].Set(conv::p2m(20), conv::p2m(30, true));
-
-    int32 count = 4;
-    b2PolygonShape polygon;
-    polygon.Set(vertices, count);
-
-    // [PROJECTILE}
-    m_projectile = new Projectile(QPixmap(":/imgs/png/flieger.png").scaled(200, 100), polygon, QPointF(400,400), world);
-    //m_projectile = new Projectile(QPixmap(":/imgs/png/flieger.png").scaled(200, 100), QPointF(400,400), world);
-    addItem(m_projectile);
-
-
-    // [USER INPUT]
-    //m_input = new UserInput(m_projectile);
-
     // [VIEW WINDOW]
     viewportSetup();
     this->startTimer(10);
+
 }
+
+
+void Cvl::initLevel2(){ }
