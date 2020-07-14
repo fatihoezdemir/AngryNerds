@@ -39,8 +39,8 @@ Projectile::Projectile(const QPixmap &pixmap, projectile proj,QPointF pos, b2Wor
         objectBox.m_radius = conv::p2m(this->boundingRect().width()/2);
         objectBox.m_p.Set(conv::p2m(boundingRect().width())/2, conv::p2m(-boundingRect().height())/2);
         objectFixture.shape = &objectBox;
-        objectFixture.restitution = 0.1;
-        objectFixture.density = 3;
+        objectFixture.restitution = 0.9;
+        objectFixture.density = 0.8;
         objectFixture.friction = 0.3;
         objectBody->CreateFixture(&objectFixture);
     }
@@ -77,4 +77,8 @@ QPainterPath Projectile::shape() const
     QPainterPath path;
     path.addRect(boundingRect());
     return path;
+}
+
+void Projectile::changeB2DRot(qreal angle) {
+    objectBody->SetTransform(objectBody->GetPosition(), conv::deg2Rad(-angle));
 }

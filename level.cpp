@@ -5,6 +5,7 @@
 #include <QKeyEvent>
 #include <QPen>
 #include <iostream>
+#include <QtMath>
 #include "goal.h"
 #include "backgrounditem.h"
 #include "staticobject.h"
@@ -13,7 +14,8 @@
 
 Level::Level(QObject* parent, QPointF initDim):
     QGraphicsScene(parent),
-    sceneDim(initDim)
+    initProj(QPointF((conv::sceneWidth / 2.0) - 1600 ,conv::sceneHeight / 2.0)),
+    sceneDim(initDim), arrowDragged(false), mouseReleased(false), viewOffset(0)
 {
 }
 
@@ -80,7 +82,9 @@ void Level::initPlayField() {
     addItem(m_goal);
 
     // [PROJECTILE}
-     m_projectile = new Projectile(QPixmap(":/imgs/png/flieger.png").scaled(200, 100), Projectile::PLANE, QPointF(400,400), world, nullptr);
+    m_projectile = new Projectile(QPixmap(":/imgs/png/flieger.png").scaled(200, 100), Projectile::PLANE, initProj, world, nullptr);
+    m_projectile->setTransformOriginPoint(m_projectile->boundingRect().width() / 2.0, m_projectile->boundingRect().height() / 2.0);
+    m_projectile->setZValue(10);
     addItem(m_projectile);
 
     // [VIEW WINDOW]
@@ -125,6 +129,25 @@ void Level::timerEvent ( QTimerEvent* event )
     m_projectile->updatePos((m_projectile->getPos()));
     m_projectile->updateRot((m_projectile->getRot()));
 
+    if(arrowDragged){
+        arrowLine->setLine((initProj.x() + m_projectile->boundingRect().width() / 2.0) - 20,
+                            (initProj.y() + m_projectile->boundingRect().height() / 2.0) + 20,
+                            initProj.x() + m_projectile->boundingRect().width() / 2.0 + (QCursor::pos().x() - arrowInitX),
+                            initProj.y() + m_projectile->boundingRect().height() / 2.0 + (QCursor::pos().y() - arrowInitY));
+
+
+        shootingAngle =  qRadiansToDegrees(qAtan((QCursor::pos().y() - arrowInitY) / (arrowInitX - QCursor::pos().x())));
+        qreal deltaY = QCursor::pos().y() - arrowInitY;
+        qreal deltaX = arrowInitX - QCursor::pos().x();
+        if(deltaY > 0 && deltaX < 0) shootingAngle += 180.0;
+        else if(deltaY < 0 && deltaX < 0) shootingAngle += 180.0;
+        else if(deltaY < 0 && deltaX > 0) shootingAngle += 360.0;
+        m_projectile->updateRot(-shootingAngle - 10);
+
+        arrowDot->setPos(initProj.x() + m_projectile->boundingRect().width() / 2.0 + (QCursor::pos().x() - arrowInitX),
+                         initProj.y() + m_projectile->boundingRect().height() / 2.0 + (QCursor::pos().y() - arrowInitY));  //offset of roundabout (150,150), not compensateable in the function-argument
+    }
+
     // Update Viewport position and Parallax
     updateView();
 
@@ -138,10 +161,9 @@ void Level::checkFinish(){
 
 }
 
-void Level::mousePressEvent(QGraphicsSceneMouseEvent* event){
-    m_projectile->shoot();
-}
+void Level::checkFinish(){
 
+}
 
 void Level::applyParallax(qreal xPos, BackgroundItem* item) {
     item->setX(item->getPos().x() - item->getOffset()*((xPos/width())));
@@ -194,5 +216,65 @@ void Level::updateView() {
 }
 
 void Level::on_ProjectileTimeout() {
+    std::cout << "aaaaaaaaa" << std::endl;
     QSound::play(":/sound/sound/nextLevel.wav");
+}
+
+
+// arrow
+void Level::mousePressEvent(QGraphicsSceneMouseEvent *event){
+    arrowInitX = QCursor::pos().x();
+    arrowInitY = QCursor::pos().y();
+
+    viewOffset = 0.0;
+
+    arrowDragged = true;
+
+    arrowLine = new QGraphicsLineItem ((initProj.x() + m_projectile->boundingRect().width() / 2.0) - 20,
+                                       (initProj.y() + m_projectile->boundingRect().height() / 2.0) + 20,
+                                       initProj.x() + m_projectile->boundingRect().width() / 2.0 + (QCursor::pos().x() - arrowInitX),
+                                       initProj.y() + m_projectile->boundingRect().height() / 2.0 + (QCursor::pos().y() - arrowInitY));
+    arrowLine->setPen(QPen(Qt::red, 10));
+    arrowLine->setZValue(0);
+    addItem(arrowLine);
+
+
+    arrowDot = new QGraphicsEllipseItem (initProj.x(), initProj.y(), 40, 40);
+    arrowDot->setBrush(QBrush(Qt::red));
+    arrowDot->setZValue(100);
+    addItem(arrowDot);
+}
+
+void Level::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
+    arrowFinalX = QCursor::pos().x();
+    arrowFinalY = QCursor::pos().y();
+
+    arrowDragged = false;
+
+    m_projectile->setTransformOriginPoint(0.0, 0.0);
+
+    m_projectile->shoot(b2Vec2((arrowInitX - arrowFinalX)/50, (arrowFinalY - arrowInitY)/50));
+    m_projectile->changeB2DRot(shootingAngle);
+    arrowLine->hide();
+}
+
+
+//adjust view position manually
+void Level::keyPressEvent(QKeyEvent *event) {
+    if (event->isAutoRepeat()) {
+        return;
+    }
+    switch (event->key()) {
+        case Qt::Key_Left:
+            viewOffset -= 200;
+            break;
+        case Qt::Key_Right:
+            viewOffset += 200;
+            break;
+        case Qt::Key_Space:
+            viewOffset = 0.0;
+            break;
+        default:
+            break;
+    }
 }
