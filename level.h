@@ -9,6 +9,9 @@
 #include <QPropertyAnimation>
 #include <QVector>
 #include <QMediaPlayer>
+#include <QMouseEvent>
+#include <QPen>
+#include <QPainter>
 #include "backgrounditem.h"
 #include "goal.h"
 #include "staticobject.h"
@@ -17,6 +20,7 @@
 #include "dynamicobject.h"
 #include "projectile.h"
 #include "forcefield.h"
+
 
 class Level : public QGraphicsScene
 {
@@ -28,11 +32,8 @@ public:
     QGraphicsView* view;
 
 protected:
-    void keyPressEvent(QKeyEvent* event);
     void timerEvent(QTimerEvent *event);
-
-    void mouseReleaseEvent(QMouseEvent* event);
-    void mousePressEvent(QGraphicsSceneMouseEvent* event);
+    void checkFinish();
 
     void checkFinish();
 protected slots:
@@ -70,6 +71,26 @@ protected:
     QVector<DynamicObject*> movingObjects;
     // Force Field Objects
     QVector<ForceField*> forceFields;
+
+    //arrow
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent* event);
+    void mousePressEvent(QGraphicsSceneMouseEvent* event);
+    QGraphicsLineItem *arrowLine;
+    QGraphicsEllipseItem *arrowDot;
+    qreal arrowInitX;
+    qreal arrowInitY;
+    qreal arrowFinalX;
+    qreal arrowFinalY;
+    qreal shootingAngle;
+    bool arrowDragged;
+    bool mouseReleased;
+
+    //adjust view position manually
+    void keyPressEvent(QKeyEvent *event);
+    qreal viewOffset;
+
+    //initial position of projectile
+    QPointF initProj;
 
 protected:
     void applyParallax(qreal xPos, BackgroundItem* item);

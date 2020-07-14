@@ -66,7 +66,10 @@ void Cvl::initPlayField(){
     }
 
     // [PROJECTILE]
-    m_projectile = new Projectile(QPixmap(":/imgs/png/flieger.png").scaled(200, 100), Projectile::PLANE, QPointF(400,400), world, nullptr);
+    m_projectile = new Projectile(QPixmap(":/imgs/png/flieger.png").scaled(200, 100),
+                                  Projectile::PLANE, QPointF(initProj.x(), initProj.y() - 20), world, nullptr);
+    m_projectile->setTransformOriginPoint(m_projectile->boundingRect().width() / 2.0, m_projectile->boundingRect().height() / 2.0);
+    m_projectile->setZValue(10);
     addItem(m_projectile);
 
     // Start level end timer

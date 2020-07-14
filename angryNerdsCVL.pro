@@ -52,9 +52,13 @@ HEADERS += \
 RESOURCES += \
     anresources.qrc
 
-unix:!macx: LIBS += -L$$PWD/./ -lBox2D
+
+
+
+win32: LIBS += -L$$PWD/./ -lBox2DLibrary
 
 INCLUDEPATH += $$PWD/.
 DEPENDPATH += $$PWD/.
 
-unix:!macx: PRE_TARGETDEPS += $$PWD/./libBox2D.a
+win32:!win32-g++: PRE_TARGETDEPS += $$PWD/./Box2DLibrary.lib
+else:win32-g++: PRE_TARGETDEPS += $$PWD/./libBox2DLibrary.a

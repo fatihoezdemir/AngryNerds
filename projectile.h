@@ -18,7 +18,10 @@ public:
 
     QTimer* outTimer; //Timer signal has to be connected to level reinitialize
     // connect(timer,SIGNAL(timeout()), this,SLOT(on_TimerTick()));
-private:
+
+    void changeB2DRot(qreal angle); //adjusts angle of projectile at the time of mouseRelease
+
+    private:
 
     bool shot;
     bool running;

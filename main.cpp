@@ -15,8 +15,8 @@ int main(int argc, char *argv[])
 
     //Level scene;
     //scene.initPlayField();
-    //Cvl scene;
-    Mensa scene;
+    Cvl scene;
+    //Mensa scene;
     //scene.initPlayField();
     scene.view->show();
     return a.exec();
