@@ -9,6 +9,9 @@
 #include <QPropertyAnimation>
 #include <QVector>
 #include <QMediaPlayer>
+#include <QMouseEvent>
+#include <QPen>
+#include <QPainter>
 #include "backgrounditem.h"
 #include "goal.h"
 #include "staticobject.h"
@@ -17,6 +20,7 @@
 #include "dynamicobject.h"
 #include "projectile.h"
 #include "forcefield.h"
+
 
 class Level : public QGraphicsScene
 {
@@ -28,19 +32,17 @@ public:
     QGraphicsView* view;
 
 protected:
-    void keyPressEvent(QKeyEvent* event);
-    void keyReleaseEvent(QKeyEvent* event);
     void timerEvent(QTimerEvent *event);
-
-    void mouseReleaseEvent(QMouseEvent* event);
-    void mousePressEvent(QGraphicsSceneMouseEvent* event);
+    void checkFinish();
 
 protected slots:
     void checkColliding();
+    void on_ProjectileTimeout();
 
 public:
     // initializes PlayField
     virtual void initPlayField();
+
 protected:
     // ViewPort setup to be FHD and start at the left
     void viewportSetup(QRectF sceneRect = QRectF(0,0,1920,1080), int height = conv::viewHeight, int width=conv::viewWidth);
@@ -67,6 +69,26 @@ protected:
     QVector<DynamicObject*> dynamicObjects;
     // Force Field Objects
     QVector<ForceField*> forceFields;
+
+    //arrow
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent* event);
+    void mousePressEvent(QGraphicsSceneMouseEvent* event);
+    QGraphicsLineItem *arrowLine;
+    QGraphicsEllipseItem *arrowDot;
+    qreal arrowInitX;
+    qreal arrowInitY;
+    qreal arrowFinalX;
+    qreal arrowFinalY;
+    qreal shootingAngle;
+    bool arrowDragged;
+    bool mouseReleased;
+
+    //adjust view position manually
+    void keyPressEvent(QKeyEvent *event);
+    qreal viewOffset;
+
+    //initial position of projectile
+    QPointF initProj;
 
 protected:
     void applyParallax(qreal xPos, BackgroundItem* item);
