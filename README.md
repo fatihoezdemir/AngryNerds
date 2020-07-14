@@ -43,12 +43,13 @@ You will need the following packages
 At the SDK Platform section , install at least one SDK Platform (e.g. android 10.0+) and the necessary system Images (click at show Package details)
 
 At the SDK Tools section, install all the listed packages
+![a](/uploads/c43687852cada2008111934f6ccbb807/3e9ac3e4-5c3e-4eb3-a24c-1bd44697bd14.jpg)
 #### At Qt
 Now we will set up our Android environment in Qt
 Open the options in Qt Creator and go to the device settings 
 You need to set up the Locations for Android
 This is how I have set up the NDK , SDK and JDK locations .You also need to add the NDK after the JDK
-
+![a](/uploads/be5c2845555db5e3c5489797e06079b3/3c2c33d1-64a1-4f4a-bfc6-1eb804dea53e.jpg)
 Then install the AndroidOpenSSL settings just bit clicking at the download button
 
 You may get some errors here, but you can solve them easily by looking them up
