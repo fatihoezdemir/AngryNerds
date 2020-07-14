@@ -161,9 +161,6 @@ void Level::checkFinish(){
 
 }
 
-void Level::checkFinish(){
-
-}
 
 void Level::applyParallax(qreal xPos, BackgroundItem* item) {
     item->setX(item->getPos().x() - item->getOffset()*((xPos/width())));
@@ -260,7 +257,7 @@ void Level::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
 
 
 //adjust view position manually
-void Level::keyPressEvent(QKeyEvent *event) {
+/*void Level::keyPressEvent(QKeyEvent *event) {
     if (event->isAutoRepeat()) {
         return;
     }
@@ -278,3 +275,4 @@ void Level::keyPressEvent(QKeyEvent *event) {
             break;
     }
 }
+*/
