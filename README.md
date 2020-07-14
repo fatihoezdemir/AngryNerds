@@ -20,13 +20,13 @@ uname -a
 
 First, update yourself and install the following necessary packages
 ```sh
-Sudo apt-get update
-Sudo apt-get upgrade
+sudo apt-get update
+sudo apt-get upgrade
 sudo apt-get install libstdc++6:i386 libgcc++6:i386 libgcc1:i386
 libncurses5:i386 zlib1g:i386 libsdl1.2debian:i386 mesa-vulkan-drivers 
 ```
 You will need Openjdk Version 8 (Java JDk for MacOs and Windows) and the newest [Android Studio](https://developer.android.com/studio/) and [Android NDK](https://developer.android.com/ndk/downloads)  
-Note: Download Openjdk or Java JDK Version 8 and not newer, since the newer ones may cause compiling errors
+Note: Download Openjdk or Java JDK Version 8 and not newer, since the newer ones may cause building errors
 For installing open JDK
 ```sh
 sudo apt-get install openjdk-8-jdk
@@ -40,7 +40,7 @@ cd Downloads/android-studio/bin
 After the installation, open configure and then open SDK Manager.
 You will need the following packages
 
-At the SDK Platform section , install at least one SDK Platform (e.g. android 10.0+) and the necessary system Images (click at show Package details)
+At the SDK Platform section , install at least one SDK Platform (e.g. android 10.0+) and the necessary system images (click at show Package details) if you want to use an emulator
 
 At the SDK Tools section, install all the listed packages
 ![a](/uploads/c43687852cada2008111934f6ccbb807/3e9ac3e4-5c3e-4eb3-a24c-1bd44697bd14.jpg)
@@ -77,5 +77,12 @@ For Box2d Integration in Qt, I refer to the following [video](https://www.youtub
 
 Note: Since we want to create an Android app, we are going to choose the android Kit additionally at around 04:00 of the video.
 We take the static library (the .a file ) from the release folder of the project after having build it, and then we integrate it in our project 
+
+# Layout and Design
+
+Follow the instructions from 14:00 onwards from this [video](https://www.youtube.com/watch?v=w2RRgRGHsDA&t=141s)
+
+
+
 
 subscribe, hit the like button and we see us next time!
