@@ -42,10 +42,6 @@ QPointF StaticObject::getPos() {
     return origPos;
 }
 
-/*void StaticObject::setOrigPos(QPointF pos) {
-    origPos = pos;
-}*/
-
 QPainterPath StaticObject::shape() const {
     return QPainterPath();
 }

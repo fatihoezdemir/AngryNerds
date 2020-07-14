@@ -7,6 +7,7 @@ DynamicObject::DynamicObject(const QPixmap &pixmap, QPointF pos,
     : QGraphicsPixmapItem(pixmap, parent),
       origPos(pos)
 {
+    //setTransformOriginPoint(boundingRect().width()/2, boundingRect().height()/2);
     setPos(pos);
 
     // Create the object also in box2D
@@ -16,29 +17,16 @@ DynamicObject::DynamicObject(const QPixmap &pixmap, QPointF pos,
     objectBodyDef->position.Set(conv::p2m(pos.x()), conv::p2m(pos.y(), true));
     objectBody = world->CreateBody(objectBodyDef);
 
-    if(isEllipse) {
-        b2CircleShape objectBox;
-        objectBox.m_radius = conv::p2m(this->boundingRect().width()/2);
-        objectBox.m_p.Set(conv::p2m(boundingRect().width())/2, conv::p2m(-boundingRect().height())/2);
+    b2PolygonShape objectBox;
+    objectBox.SetAsBox(conv::p2m(this->boundingRect().width()/2), conv::p2m(this->boundingRect().height()/2),
+                        b2Vec2(conv::p2m(boundingRect().width())/2, conv::p2m(-boundingRect().height())/2), 0);
+    //objectBox.SetAsBox(conv::p2m(this->boundingRect().width()/2), conv::p2m(this->boundingRect().height()/2));
+    objectFixture.shape = &objectBox;
+    objectFixture.restitution = 0.6;
+    objectFixture.density = 1.0f;
+    objectFixture.friction = 0.3f;
 
-        objectFixture.shape = &objectBox;
-        objectFixture.restitution = 0.6;
-        objectFixture.density = 1.0f;
-        objectFixture.friction = 0.3f;
-
-        objectBody->CreateFixture(&objectFixture);
-    } else {
-        b2PolygonShape objectBox;
-        objectBox.SetAsBox(conv::p2m(this->boundingRect().width()/2), conv::p2m(this->boundingRect().height()/2),
-                       b2Vec2(conv::p2m(boundingRect().width())/2, conv::p2m(-boundingRect().height())/2), 0);
-
-        objectFixture.shape = &objectBox;
-        objectFixture.restitution = 0.6;
-        objectFixture.density = 1.0f;
-        objectFixture.friction = 0.3f;
-
-        objectBody->CreateFixture(&objectFixture);
-    }
+    objectBody->CreateFixture(&objectFixture);
 
 }
 
@@ -85,3 +73,29 @@ void DynamicObject::updateRot(qreal rot) {
 QPainterPath DynamicObject::shape() const {
     return QPainterPath();
 }
+/*
+
+    if(isEllipse) {
+        b2CircleShape objectBox;
+        objectBox.m_radius = conv::p2m(this->boundingRect().width()/2);
+        objectBox.m_p.Set(conv::p2m(boundingRect().width())/2, conv::p2m(-boundingRect().height())/2);
+
+        objectFixture.shape = &objectBox;
+        objectFixture.restitution = 0.6;
+        objectFixture.density = 1.0f;
+        objectFixture.friction = 0.3f;
+
+        objectBody->CreateFixture(&objectFixture);
+    } else {
+        b2PolygonShape objectBox;
+        objectBox.SetAsBox(conv::p2m(this->boundingRect().width()/2), conv::p2m(this->boundingRect().height()/2),
+                           b2Vec2(conv::p2m(boundingRect().width())/2, conv::p2m(-boundingRect().height())/2), 0);
+        objectFixture.shape = &objectBox;
+        objectFixture.restitution = 0.6;
+        objectFixture.density = 1.0f;
+        objectFixture.friction = 0.3f;
+
+        objectBody->CreateFixture(&objectFixture);
+    }
+
+*/
