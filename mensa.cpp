@@ -1,15 +1,15 @@
 #include "mensa.h"
-#include <QSound>
-#include <QDebug>
 
 Mensa::Mensa(QObject* parent, QPointF initDim)
     : Level(parent, initDim)
 {
-    //initPlayField();
+    initLevel1();
 }
 
 void Mensa::initPlayField(){
-    m_groundLevel=sceneDim.y()-100;
+    // Initializes Background and all objects that stay the same
+
+    m_groundLevel=sceneDim.y()-100; // Set ground level
     setSceneRect(0, 0, sceneDim.x(), sceneDim.y()); // Scene Dimensions
 
     world = new b2World(b2Vec2(1.0,-10.0));
@@ -37,14 +37,24 @@ void Mensa::initPlayField(){
     staticObjects.append(new StaticObject(QPixmap(":/imgs/png/Floor.png").scaled(sceneDim.x(),10), QPointF(0,-10), 10, world));
     staticObjects.append(new StaticObject(QPixmap(":/imgs/png/mensa/kasse.png").scaled(500,500), QPointF(7000, 800), 0, world));
 
-    //staticObjects.append(new StaticObject(QPixmap(":/imgs/png/mensa/Cart2.png"), QPointF(1600,sceneDim.y() - 800), 0, world));
-
     QVectorIterator<StaticObject*> it(staticObjects);
     while (it.hasNext())
     {
         StaticObject* sObj = it.next();
         addItem(sObj);
     }
+
+    // [PROJECTILE}
+    m_projectile = new Projectile(QPixmap(":/imgs/png/mensa/Tomate.png").scaled(150,150), Projectile::TOMATO, QPointF(400,800), world);
+    addItem(m_projectile);
+
+    connect(m_projectile->outTimer,SIGNAL(timeout()), this,SLOT(on_ProjectileTimeout()));
+}
+
+void Mensa::initLevel1(){
+
+    // Initialize Background and all objects that stay the same throughout the levels
+    initPlayField();
 
     // [Dynamic Objects]
     qreal x = 3200;
@@ -76,20 +86,8 @@ void Mensa::initPlayField(){
     m_goal->setPos(sceneDim.x() - 400, m_groundLevel - m_goal->boundingRect().bottomLeft().y() - 20);
     addItem(m_goal);
 
-    // [PROJECTILE}
-    m_projectile = new Projectile(QPixmap(":/imgs/png/mensa/Tomate.png").scaled(150, 150), QPointF(400,800), world, nullptr, true);
-    addItem(m_projectile);
-
     // [VIEW WINDOW]
     viewportSetup();
     //view->scale(1.5,1.5);
     this->startTimer(10);
-    audioPlayer = new QMediaPlayer(this);
-    playAudio();
-}
-
-void Mensa::playAudio(){
-    audioPlayer->setMedia(QUrl("qrc:/sound/sound/nextLevel.wav"));
-    audioPlayer->play();
-    audioPlayer->setVolume(1000);
 }
