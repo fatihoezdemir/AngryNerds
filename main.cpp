@@ -11,11 +11,12 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    qsrand(QDateTime::currentMSecsSinceEpoch());
-    QPixmap pixmap("CVL_Pult.png");
-    QSplashScreen splash(pixmap,Qt::WindowStaysOnTopHint);
-    splash.show();
-    
+  //  qsrand(QDateTime::currentMSecsSinceEpoch());
+   // QPixmap pixmap(":/imgs/png/Person_1.png");
+    QSplashScreen *splash=new QSplashScreen;
+    splash->setPixmap(QPixmap(":/imgs/png/Person_1.png"));
+    splash->show();
+
     //Level scene;
     //scene.initPlayField();
     Cvl scene;
