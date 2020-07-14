@@ -29,18 +29,20 @@ public:
 
 protected:
     void keyPressEvent(QKeyEvent* event);
-    void keyReleaseEvent(QKeyEvent* event);
     void timerEvent(QTimerEvent *event);
 
     void mouseReleaseEvent(QMouseEvent* event);
     void mousePressEvent(QGraphicsSceneMouseEvent* event);
 
+    void checkFinish();
 protected slots:
     void checkColliding();
+    void on_ProjectileTimeout();
 
 public:
     // initializes PlayField
     virtual void initPlayField();
+
 protected:
     // ViewPort setup to be FHD and start at the left
     void viewportSetup(QRectF sceneRect = QRectF(0,0,1920,1080), int height = conv::viewHeight, int width=conv::viewWidth);
@@ -65,6 +67,7 @@ protected:
     QVector<StaticObject*> staticObjects;
     // dynamic Objects
     QVector<DynamicObject*> dynamicObjects;
+    QVector<DynamicObject*> movingObjects;
     // Force Field Objects
     QVector<ForceField*> forceFields;
 

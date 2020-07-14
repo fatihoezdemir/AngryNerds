@@ -18,8 +18,10 @@ public:
     virtual QPainterPath shape() const; // might be removed
 
     void updatePos(QPointF pos);
-
     void updateRot(qreal rot);
+
+    void oscPos();
+    void setOscillation(QPointF amp, qreal freq);
 
 protected:
     QPointF origPos;
@@ -28,9 +30,11 @@ protected:
     b2Body* objectBody;
     b2PolygonShape objectBox;
     b2FixtureDef objectFixture;
+
+    QPointF amplitude;
+    qreal frequency;
+    qreal timestep;
+    bool moving;
 };
 
 #endif // DYNAMICOBJECT_H
-/*
- *
-*/
