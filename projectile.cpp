@@ -9,7 +9,6 @@ Projectile::Projectile(const QPixmap &pixmap, projectile proj,QPointF pos, b2Wor
 {
     objectBody->DestroyFixture(&objectBody->GetFixtureList()[0]); //
 
-    //setTransformOriginPoint(boundingRect().width()/2, boundingRect().height()/2);
     if(proj == Projectile::PLANE) {
         b2Vec2 vertices[3];
         vertices[0].Set(conv::p2m(0), conv::p2m(0, true));
@@ -24,10 +23,10 @@ Projectile::Projectile(const QPixmap &pixmap, projectile proj,QPointF pos, b2Wor
         objectFixture.restitution = 0.5;
         objectBody->CreateFixture(&objectFixture);
         objectBody->SetAngularDamping(5.0);
-    } else if ( proj == Projectile::TOMATO) {
+    } else if (proj == Projectile::TOMATO) {
         b2CircleShape objectBox;
         objectBox.m_radius = conv::p2m(this->boundingRect().width()/2);
-        //objectBox.m_p.Set(conv::p2m(boundingRect().width())/2, conv::p2m(-boundingRect().height())/2);
+        objectBox.m_p.Set(conv::p2m(boundingRect().width())/2, conv::p2m(-boundingRect().height())/2);
         objectFixture.shape = &objectBox;
         objectFixture.restitution = 0.2;
         objectFixture.density = 0.8;
@@ -57,6 +56,7 @@ void Projectile::shoot(b2Vec2 initVec){
 }
 
 void Projectile::checkVelocity(){
+    // checks if objects is not moving anymore
     float speedNow = objectBody->GetLinearVelocity().Length();
     recentSpeed = 0.1 * speedNow + 0.9 * recentSpeed;
     // start Timer if projectile was shot and is not moving anymore

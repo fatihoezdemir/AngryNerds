@@ -12,7 +12,7 @@ void Mensa::initPlayField(){
     m_groundLevel=sceneDim.y()-100; // Set ground level
     setSceneRect(0, 0, sceneDim.x(), sceneDim.y()); // Scene Dimensions
 
-    world = new b2World(b2Vec2(1.0,-10.0));
+    world = new b2World(b2Vec2(0,-10.0));
 
     // Set up all Background Objects
     bgItems.append(new BackgroundItem(QPixmap(":/imgs/png/mensa/sky.png").scaled(sceneDim.x(),sceneDim.y()),QPointF(0,0), -sceneDim.x()*0.2, -5));
@@ -72,6 +72,11 @@ void Mensa::initLevel1(){
     while (dynIt.hasNext()){
         addItem(dynIt.next());
     }
+
+    movingObjects.append(new DynamicObject(QPixmap(":imgs/png/Person_1.png").scaled(200,80), QPointF(1000,500), world));
+    movingObjects.back()->setOscillation(QPointF(200.0,200),0.08);
+    addItem(movingObjects.back());
+
 
     // [FORCE FIELDS]
     forceFields.append(new ForceField(QPixmap(":imgs/png/mensa/Salami.png").scaled(800,400), QPointF(2800,400), 0 ,b2Vec2(0.01,-0.5)));

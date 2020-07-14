@@ -116,6 +116,15 @@ void Level::timerEvent ( QTimerEvent* event )
         obj->updatePos(obj->getPos());
         obj->updateRot(obj->getRot());
     }
+
+    QVectorIterator<DynamicObject*> movingIt(movingObjects);
+    while(movingIt.hasNext()) {
+        DynamicObject* obj = movingIt.next();
+        obj->oscPos();
+        obj->updatePos(obj->getPos());
+        obj->updateRot(obj->getRot());
+    }
+
     // Update Position and Angle of Projectile
     m_projectile->updatePos((m_projectile->getPos()));
     m_projectile->updateRot((m_projectile->getRot()));
@@ -152,6 +161,10 @@ void Level::checkFinish(){
 
 }
 
+void Level::checkFinish(){
+
+}
+
 void Level::applyParallax(qreal xPos, BackgroundItem* item) {
     item->setX(item->getPos().x() - item->getOffset()*((xPos/width())));
 }
@@ -164,6 +177,24 @@ void Level::checkColliding() {
             if (Goal* target = dynamic_cast<Goal*>(item)) {
                 target->explode();
             }
+}
+}
+
+// These will be gone once the physics engine is put into place
+void Level::keyPressEvent(QKeyEvent *event) {
+    // Funtion reacts to keyboard input and moves plane
+    if (event->isAutoRepeat()) {
+        return;
+    }
+    switch (event->key()) {
+        case Qt::Key_A:
+            m_projectile->shoot(b2Vec2(-5,3.0));
+            break;
+        case Qt::Key_S:
+            m_projectile->shoot(b2Vec2(5,3.0));
+            break;
+        default:
+            break;
     }
 }
 

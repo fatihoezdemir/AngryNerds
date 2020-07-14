@@ -1,6 +1,7 @@
 #include "dynamicobject.h"
 #include "globalvariables.h"
 #include <QDebug>
+#include <iostream>
 DynamicObject::DynamicObject(const QPixmap &pixmap, QPointF pos,
                             b2World* world, QGraphicsItem* parent,
                             bool isEllipse)
@@ -73,6 +74,24 @@ void DynamicObject::updateRot(qreal rot) {
 QPainterPath DynamicObject::shape() const {
     return QPainterPath();
 }
+
+void DynamicObject::setOscillation(QPointF amp, qreal freq) {
+    objectBody->SetAwake(false);
+    moving = true;
+    amplitude = amp;
+    frequency = freq;
+    timestep = 0;
+}
+
+void DynamicObject::oscPos() {
+    b2Vec2 newPos = conv::p2mVec(QPointF(origPos.x() + amplitude.x()*sin(frequency*timestep),
+                      origPos.y() + amplitude.y()*sin(frequency*timestep)));
+    timestep += 1;
+    //std::cout << timestep <<std::endl;
+    std::cout << conv::m2pVec(newPos).x() <<std::endl;
+    objectBody->SetTransform(newPos,0);
+}
+
 /*
 
     if(isEllipse) {
