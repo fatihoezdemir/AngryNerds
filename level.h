@@ -28,14 +28,13 @@ class Level : public QGraphicsScene
 
 public:
     explicit Level(QObject* parent = nullptr, QPointF initDim = QPointF(3840.0, 1080.0));
-
     QGraphicsView* view;
 
+    enum levelNum{ONE, TWO, THREE};
 protected:
     void timerEvent(QTimerEvent *event);
     void checkFinish();
 
-    void checkFinish();
 protected slots:
     void checkColliding();
     void on_ProjectileTimeout();
@@ -44,35 +43,39 @@ public:
     // initializes PlayField
     virtual void initPlayField();
 
+signals:
+    void playerDeath();
+    void playerWin();
+
 protected:
     // ViewPort setup to be FHD and start at the left
     void viewportSetup(QRectF sceneRect = QRectF(0,0,1920,1080), int height = conv::viewHeight, int width=conv::viewWidth);
 
     QPointF sceneDim;
+    levelNum m_level;
 
+    // [Positioning Information]
     qreal m_currentX;
     qreal m_groundLevel;
-
+    QPointF initProj;
     qreal lastX;
 
     // Player and Target
     Projectile* m_projectile;
     Goal* m_goal;
 
+    // Timer for updating physics
     QTimer m_timer;
-    //UserInput* m_input;
 
-    // Background Items no physics interactions
+    // [Scene Objects]
     QVector<BackgroundItem*> bgItems;
-    // Static Objects
     QVector<StaticObject*> staticObjects;
-    // dynamic Objects
     QVector<DynamicObject*> dynamicObjects;
     QVector<DynamicObject*> movingObjects;
-    // Force Field Objects
     QVector<ForceField*> forceFields;
 
-    //arrow
+
+    // Arrow [ Nico ]
     void mouseReleaseEvent(QGraphicsSceneMouseEvent* event);
     void mousePressEvent(QGraphicsSceneMouseEvent* event);
     QGraphicsLineItem *arrowLine;
@@ -88,9 +91,6 @@ protected:
     //adjust view position manually
     void keyPressEvent(QKeyEvent *event);
     qreal viewOffset;
-
-    //initial position of projectile
-    QPointF initProj;
 
 protected:
     void applyParallax(qreal xPos, BackgroundItem* item);
