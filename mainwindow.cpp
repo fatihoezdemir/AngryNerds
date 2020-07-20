@@ -56,7 +56,6 @@ void MainWindow::on_projektbeschreibung_clicked()
 {
     if (is_open == false){
         Mensa* lvl = new Mensa();
-        lvl->initPlayField();
         MainWindow::hide();
         lvl->view->show();
         is_open = true;

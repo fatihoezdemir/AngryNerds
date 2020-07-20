@@ -7,6 +7,7 @@
 #include "cvl.h"
 #include "mensa.h"
 #include "mainwindow.h"
+#include <QSplashScreen>
 
 int main(int argc, char *argv[])
 {
