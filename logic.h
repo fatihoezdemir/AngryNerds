@@ -13,7 +13,6 @@ public:
     enum location{BIB, CVL, MENSA};
     explicit Logic(location loc = Logic::MENSA, Level::levelNum lev = Level::ONE, QObject *parent = nullptr);
 
-
 private:
     Mensa* mensa_1;
     Cvl* cvl_1;
@@ -21,7 +20,7 @@ private:
     Level::levelNum cur_lev;
 
 signals:
-
+    void levelOver();
 public slots:
     void restart();
     void nextLevel();
