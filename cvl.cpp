@@ -1,10 +1,16 @@
 #include "cvl.h"
 #include "level.h"
 
-Cvl::Cvl(QObject* parent, QPointF initDim)
+Cvl::Cvl(levelNum lev, QObject* parent, QPointF initDim)
     : Level(parent, initDim)
 {
-    initLevel1();
+    if (lev == ONE) {
+        initLevel1();
+    } else if (lev == TWO) {
+        initLevel1();
+    } else if (lev == THREE) {
+        initLevel1();
+    }
 }
 
 void Cvl::initPlayField(){

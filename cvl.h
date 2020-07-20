@@ -5,7 +5,7 @@
 class Cvl : public Level
 {
 public:
-    Cvl(QObject* parent = nullptr, QPointF initDim = QPointF(5000, 2500));
+    Cvl(levelNum lev = ONE, QObject* parent = nullptr, QPointF initDim = QPointF(5000, 2500));
 
     virtual void initPlayField() override;
     void initLevel1();

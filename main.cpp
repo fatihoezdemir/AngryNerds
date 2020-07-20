@@ -6,22 +6,16 @@
 #include "globalvariables.h"
 #include "cvl.h"
 #include "mensa.h"
+#include "logic.h"
 #include <iostream>
 #include <QSplashScreen>
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-  //  qsrand(QDateTime::currentMSecsSinceEpoch());
-   // QPixmap pixmap(":/imgs/png/Person_1.png");
     QSplashScreen *splash=new QSplashScreen;
     splash->setPixmap(QPixmap(":/imgs/png/Person_1.png"));
     splash->show();
 
-    //Level scene;
-    //scene.initPlayField();
-    Cvl scene;
-    //Mensa scene;
-    //scene.initPlayField();
-    scene.view->show();
+    Logic* log = new Logic(Logic::MENSA, Level::TWO);
     return a.exec();
 }

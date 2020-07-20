@@ -61,8 +61,8 @@ void Level::initPlayField() {
 
     // [Dynamic Objects]
     dynamicObjects.append(new DynamicObject(QPixmap(":imgs/png/Floor.png").scaled(50,50), QPointF(790,0), world));
-    dynamicObjects.append(new DynamicObject(QPixmap(":imgs/png/Floor.png").scaled(100,150), QPointF(810,300), world));
-    dynamicObjects.append(new DynamicObject(QPixmap(":imgs/png/Floor.png").scaled(200,200), QPointF(740,600), world));
+    //dynamicObjects.append(new DynamicObject(QPixmap(":imgs/png/Floor.png").scaled(100,150), QPointF(810,300), world));
+    //dynamicObjects.append(new DynamicObject(QPixmap(":imgs/png/Floor.png").scaled(200,200), QPointF(740,600), world));
     dynamicObjects.append(new DynamicObject(QPixmap(":imgs/png/Person_6.png").scaled(100,400), QPointF(1500,60), world));
     dynamicObjects.append(new DynamicObject(QPixmap(":imgs/png/Person_5.png").scaled(150,350), QPointF(1450,0), world));
     QVectorIterator<DynamicObject*> dynIt(dynamicObjects);
@@ -130,10 +130,10 @@ void Level::timerEvent ( QTimerEvent* event )
     m_projectile->updateRot((m_projectile->getRot()));
 
     if(arrowDragged){
-        arrowLine->setLine((initProj.x() + m_projectile->boundingRect().width() / 2.0) - 20,
-                            (initProj.y() + m_projectile->boundingRect().height() / 2.0) + 20,
-                            initProj.x() + m_projectile->boundingRect().width() / 2.0 + (QCursor::pos().x() - arrowInitX),
-                            initProj.y() + m_projectile->boundingRect().height() / 2.0 + (QCursor::pos().y() - arrowInitY));
+        arrowLine->setLine((m_projectile->pos().x() + m_projectile->boundingRect().width() / 2.0) - 20,
+                            (m_projectile->pos().y() + m_projectile->boundingRect().height() / 2.0) + 20,
+                            m_projectile->pos().x() + m_projectile->boundingRect().width() / 2.0 + (QCursor::pos().x() - arrowInitX),
+                            m_projectile->pos().y() + m_projectile->boundingRect().height() / 2.0 + (QCursor::pos().y() - arrowInitY));
 
 
         shootingAngle =  qRadiansToDegrees(qAtan((QCursor::pos().y() - arrowInitY) / (arrowInitX - QCursor::pos().x())));
@@ -176,6 +176,8 @@ void Level::checkColliding() {
             }
             if (Goal* target = dynamic_cast<Goal*>(item)) {
                 target->explode();
+                delete m_projectile;
+                emit playerWin();
             }
     }
 }
@@ -194,6 +196,9 @@ void Level::keyPressEvent(QKeyEvent *event) {
         case Qt::Key_S:
             m_projectile->shoot(b2Vec2(5,3.0));
             break;
+        case Qt::Key_R:
+            emit playerDeath();
+            break;
         default:
             break;
     }
@@ -203,11 +208,9 @@ void Level::keyPressEvent(QKeyEvent *event) {
 void Level::updateView() {
     qreal newX = qBound(0.0,
                         m_projectile->mapToScene(QPointF(100.0,50.0)).x()- conv::xBoundary,
-                        //m_projectile->pos().x() - conv::xBoundary,
                         this->sceneRect().right()- conv::viewWidth + 900 - conv::xBoundary);
     qreal newY = qBound(0.0,
                         m_projectile->mapToScene(QPointF(100.0,50.0)).y() - conv::yBoundary,
-                        //m_projectile->pos().y()  - conv::viewHeight + conv::yBoundary,
                         this->sceneRect().bottom() - conv::viewHeight);
 
     view->setSceneRect(newX,newY,1920,1080);
@@ -219,7 +222,8 @@ void Level::updateView() {
 
 void Level::on_ProjectileTimeout() {
     std::cout << "aaaaaaaaa" << std::endl;
-    QSound::play(":/sound/sound/nextLevel.wav");
+    //QSound::play(":/sound/sound/nextLevel.wav");
+    emit playerDeath();
 }
 
 

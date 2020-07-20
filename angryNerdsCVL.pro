@@ -34,7 +34,8 @@ SOURCES += \
     projectile.cpp \
     cvl.cpp \
     mensa.cpp \
-    forcefield.cpp
+    forcefield.cpp \
+    logic.cpp
 
 HEADERS += \
     backgrounditem.h \
@@ -47,7 +48,8 @@ HEADERS += \
     projectile.h \
     cvl.h \
     mensa.h \
-    forcefield.h
+    forcefield.h \
+    logic.h
 
 RESOURCES += \
     anresources.qrc
@@ -62,3 +64,10 @@ DEPENDPATH += $$PWD/.
 
 win32:!win32-g++: PRE_TARGETDEPS += $$PWD/./Box2DLibrary.lib
 else:win32-g++: PRE_TARGETDEPS += $$PWD/./libBox2DLibrary.a
+
+unix:!macx: LIBS += -L$$PWD/./ -lBox2D
+
+INCLUDEPATH += $$PWD/.
+DEPENDPATH += $$PWD/.
+
+unix:!macx: PRE_TARGETDEPS += $$PWD/./libBox2D.a
