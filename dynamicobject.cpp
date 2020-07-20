@@ -87,34 +87,6 @@ void DynamicObject::oscPos() {
     b2Vec2 newPos = conv::p2mVec(QPointF(origPos.x() + amplitude.x()*sin(frequency*timestep),
                       origPos.y() + amplitude.y()*sin(frequency*timestep)));
     timestep += 1;
-    //std::cout << timestep <<std::endl;
     std::cout << conv::m2pVec(newPos).x() <<std::endl;
     objectBody->SetTransform(newPos,0);
 }
-
-/*
-
-    if(isEllipse) {
-        b2CircleShape objectBox;
-        objectBox.m_radius = conv::p2m(this->boundingRect().width()/2);
-        objectBox.m_p.Set(conv::p2m(boundingRect().width())/2, conv::p2m(-boundingRect().height())/2);
-
-        objectFixture.shape = &objectBox;
-        objectFixture.restitution = 0.6;
-        objectFixture.density = 1.0f;
-        objectFixture.friction = 0.3f;
-
-        objectBody->CreateFixture(&objectFixture);
-    } else {
-        b2PolygonShape objectBox;
-        objectBox.SetAsBox(conv::p2m(this->boundingRect().width()/2), conv::p2m(this->boundingRect().height()/2),
-                           b2Vec2(conv::p2m(boundingRect().width())/2, conv::p2m(-boundingRect().height())/2), 0);
-        objectFixture.shape = &objectBox;
-        objectFixture.restitution = 0.6;
-        objectFixture.density = 1.0f;
-        objectFixture.friction = 0.3f;
-
-        objectBody->CreateFixture(&objectFixture);
-    }
-
-*/

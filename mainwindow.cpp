@@ -3,6 +3,7 @@
 #include "ui_mainwindow.h"
 #include "cvl.h"
 #include "mensa.h"
+#include "logic.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -43,28 +44,26 @@ void MainWindow::on_bibliothek_button_clicked()
 void MainWindow::on_cvl_button_clicked()
 {
     if (is_open == false){
-        Cvl* lvl = new Cvl();
-    //    lvl->initPlayField();
+        Logic* cvl_level = new Logic(Logic::CVL, Level::ONE);
         MainWindow::hide();
-        lvl->view->show();
         is_open = true;
+        connect(cvl_level, SIGNAL(levelOver()), this, SLOT(levelClose()));
     }
-
 }
 
 void MainWindow::on_projektbeschreibung_clicked()
 {
     if (is_open == false){
-        Mensa* lvl = new Mensa();
+        Logic* mensa_level = new Logic(Logic::MENSA, Level::TWO);
         MainWindow::hide();
-        lvl->view->show();
         is_open = true;
+        connect(mensa_level, SIGNAL(levelOver()),this, SLOT(levelClose()));
     }
-
 }
 
 void MainWindow::on_cvl_lv_1_button_clicked()
 {
+
     ui->cvl_lv_2_button->setChecked(false);
     ui->cvl_lv_3_button->setChecked(false);
 }
@@ -117,5 +116,10 @@ void MainWindow::on_bib_lv_3_button_clicked()
 {
     ui->bib_lv_1_button->setChecked(false);
     ui->bib_lv_2_button->setChecked(false);
+}
+
+void MainWindow::levelClose(){
+    show();
+    is_open = false;
 }
 

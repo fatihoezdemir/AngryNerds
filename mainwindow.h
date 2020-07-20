@@ -5,6 +5,9 @@
 #include <setting.h>
 #include "level.h"
 #include "cvl.h"
+#include "level.h"
+#include "logic.h"
+
 namespace Ui {
 class MainWindow;
 }
@@ -40,10 +43,17 @@ private slots:
 
     void on_projektbeschreibung_clicked();
 
+    void levelClose();
+
 private:
     bool is_open{false};
     Ui::MainWindow *ui;
     Setting _settings;
+
+    Level::levelNum cvl_level;
+    Level::levelNum mensa_level;
+    Level::levelNum bib_level;
+
 };
 
 #endif // MAINWINDOW_H
