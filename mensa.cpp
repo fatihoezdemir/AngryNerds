@@ -54,6 +54,7 @@ void Mensa::initPlayField(){
     m_projectile->setZValue(100);
     addItem(m_projectile);
     connect(m_projectile->outTimer,SIGNAL(timeout()), this,SLOT(on_ProjectileTimeout()));
+    connect(win_timer, SIGNAL(timeout()), this, SLOT(levelOver()));
 }
 
 void Mensa::initLevel1(){
@@ -78,12 +79,14 @@ void Mensa::initLevel1(){
         addItem(dynIt.next());
     }
 
-
-
     // [FORCE FIELDS]
     forceFields.append(new ForceField(QPixmap(":imgs/png/mensa/Salami.png").scaled(800,400), QPointF(2800,400), 0 ,b2Vec2(0.01,-0.5)));
     forceFields[0]->setOpacity(0.5);
-    addItem(forceFields[0]);
+
+    QVectorIterator<ForceField*> forceIt(forceFields);
+    while (forceIt.hasNext()){
+        addItem(forceIt.next());
+    }
 
 
     // [GOAL]
@@ -112,8 +115,6 @@ void Mensa::initLevel2(){
     for (int i = 1; i <= 3; i++) {
         addItem(bgItems[bgItems.size()-i]);
     }
-
-
 
     // [Dynamic Objects]
     // [TOMATOES 1]

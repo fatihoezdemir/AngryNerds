@@ -17,6 +17,7 @@ Level::Level(QObject* parent, QPointF initDim):
     initProj(QPointF((conv::sceneWidth / 2.0) - 1600 ,conv::sceneHeight / 2.0)),
     sceneDim(initDim), arrowDragged(false), mouseReleased(false), viewOffset(0)
 {
+     win_timer = new QTimer();
 }
 
 
@@ -160,11 +161,8 @@ void Level::timerEvent ( QTimerEvent* event )
 void Level::checkFinish(){
 
 }
-/*
-void Level::checkFinish(){
 
-}
-*/
+
 void Level::applyParallax(qreal xPos, BackgroundItem* item) {
     item->setX(item->getPos().x() - item->getOffset()*((xPos/width())));
 }
@@ -175,35 +173,13 @@ void Level::checkColliding() {
                 m_projectile->shoot(field->getField());
             }
             if (Goal* target = dynamic_cast<Goal*>(item)) {
+                //QSound::play(":/sound/sound/nextLevel.wav");
                 target->explode();
-                delete m_projectile;
-                emit playerWin();
+                //emit playerWin();
+                win_timer->start(1000);
             }
     }
 }
-
-/*
-// These will be gone once the physics engine is put into place
-void Level::keyPressEvent(QKeyEvent *event) {
-    // Funtion reacts to keyboard input and moves plane
-    if (event->isAutoRepeat()) {
-        return;
-    }
-    switch (event->key()) {
-        case Qt::Key_A:
-            m_projectile->shoot(b2Vec2(-5,3.0));
-            break;
-        case Qt::Key_S:
-            m_projectile->shoot(b2Vec2(5,3.0));
-            break;
-        case Qt::Key_R:
-            emit playerDeath();
-            break;
-        default:
-            break;
-    }
-}
-*/
 
 void Level::updateView() {
     qreal newX = qBound(0.0,
@@ -221,8 +197,6 @@ void Level::updateView() {
 }
 
 void Level::on_ProjectileTimeout() {
-    std::cout << "aaaaaaaaa" << std::endl;
-    //QSound::play(":/sound/sound/nextLevel.wav");
     emit playerDeath();
 }
 
@@ -284,4 +258,8 @@ void Level::keyPressEvent(QKeyEvent *event) {
         default:
             break;
     }
+}
+
+void Level::levelOver(){
+    emit playerWin();
 }

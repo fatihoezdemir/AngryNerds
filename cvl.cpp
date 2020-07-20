@@ -4,13 +4,15 @@
 Cvl::Cvl(levelNum lev, QObject* parent, QPointF initDim)
     : Level(parent, initDim)
 {
+    /*
     if (lev == ONE) {
         initLevel1();
     } else if (lev == TWO) {
         initLevel1();
     } else if (lev == THREE) {
         initLevel1();
-    }
+    }*/
+    initLevel1();
 }
 
 void Cvl::initPlayField(){
@@ -79,7 +81,8 @@ void Cvl::initPlayField(){
     addItem(m_projectile);
 
     // Start level end timer
-    connect(m_projectile->outTimer,SIGNAL(timeout()), this,SLOT(on_ProjectileTimeout()));
+    connect(m_projectile->outTimer, SIGNAL(timeout()), this, SLOT(on_ProjectileTimeout()));
+    connect(win_timer, SIGNAL(timeout()), this, SLOT(levelOver()));
 }
 
 void Cvl::initLevel1(){

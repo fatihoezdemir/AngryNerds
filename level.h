@@ -38,6 +38,7 @@ protected:
 protected slots:
     void checkColliding();
     void on_ProjectileTimeout();
+    void levelOver();
 
 public:
     // initializes PlayField
@@ -66,6 +67,7 @@ protected:
 
     // Timer for updating physics
     QTimer m_timer;
+    QTimer* win_timer;
 
     // [Scene Objects]
     QVector<BackgroundItem*> bgItems;
