@@ -45,9 +45,10 @@ void Mensa::initPlayField(){
     }
 
     // [PROJECTILE}
-    m_projectile = new Projectile(QPixmap(":/imgs/png/mensa/Tomate.png").scaled(150,150), Projectile::TOMATO, QPointF(400,800), world);
+    m_projectile = new Projectile(QPixmap(":/imgs/png/mensa/Tomate.png").scaled(150,150), Projectile::TOMATO, initProj, world);
+    m_projectile->setTransformOriginPoint(m_projectile->boundingRect().width() / 2.0, m_projectile->boundingRect().height() / 2.0);
+    m_projectile->setZValue(100);
     addItem(m_projectile);
-
     connect(m_projectile->outTimer,SIGNAL(timeout()), this,SLOT(on_ProjectileTimeout()));
 }
 
