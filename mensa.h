@@ -2,6 +2,7 @@
 #define MENSA_H
 #include "level.h"
 #include <QMediaPlayer>
+#include <QMenuBar>
 
 class Mensa : public Level
 {

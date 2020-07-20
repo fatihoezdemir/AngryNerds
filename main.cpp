@@ -6,9 +6,8 @@
 #include "globalvariables.h"
 #include "cvl.h"
 #include "mensa.h"
-#include "logic.h"
-#include <iostream>
-#include <QSplashScreen>
+#include "mainwindow.h"
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
@@ -16,6 +15,14 @@ int main(int argc, char *argv[])
     splash->setPixmap(QPixmap(":/imgs/png/Person_1.png"));
     splash->show();
 
-    Logic* log = new Logic(Logic::MENSA, Level::TWO);
+    //Level scene;
+    //scene.initPlayField();
+    //Cvl scene;
+//    Mensa scene;
+//    scene.initPlayField();
+//    scene.view->show();
+//    return a.exec();
+    MainWindow w;
+    w.show();
     return a.exec();
 }
