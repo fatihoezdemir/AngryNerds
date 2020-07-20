@@ -144,8 +144,8 @@ void Level::timerEvent ( QTimerEvent* event )
         else if(deltaY < 0 && deltaX > 0) shootingAngle += 360.0;
         m_projectile->updateRot(-shootingAngle - 10);
 
-        //arrowDot->setPos(initProj.x() + m_projectile->boundingRect().width() / 2.0 + (QCursor::pos().x() - arrowInitX),
-        //                 initProj.y() + m_projectile->boundingRect().height() / 2.0 + (QCursor::pos().y() - arrowInitY));  //offset of roundabout (150,150), not compensateable in the function-argument
+        arrowDot->setPos((initProj.x() + m_projectile->boundingRect().width() / 2.0) + (QCursor::pos().x() - arrowInitX) - 345,
+                          initProj.y() + m_projectile->boundingRect().height() / 2.0 + (QCursor::pos().y() - arrowInitY) - 565);  //offset of roundabout (150,150), not compensateable in the function-argument
     }
 
     // Update Viewport position and Parallax
@@ -160,8 +160,11 @@ void Level::timerEvent ( QTimerEvent* event )
 void Level::checkFinish(){
 
 }
+/*
+void Level::checkFinish(){
 
-
+}
+*/
 void Level::applyParallax(qreal xPos, BackgroundItem* item) {
     item->setX(item->getPos().x() - item->getOffset()*((xPos/width())));
 }
@@ -176,9 +179,10 @@ void Level::checkColliding() {
                 delete m_projectile;
                 emit playerWin();
             }
-}
+    }
 }
 
+/*
 // These will be gone once the physics engine is put into place
 void Level::keyPressEvent(QKeyEvent *event) {
     // Funtion reacts to keyboard input and moves plane
@@ -199,6 +203,7 @@ void Level::keyPressEvent(QKeyEvent *event) {
             break;
     }
 }
+*/
 
 void Level::updateView() {
     qreal newX = qBound(0.0,
@@ -239,11 +244,11 @@ void Level::mousePressEvent(QGraphicsSceneMouseEvent *event){
     arrowLine->setZValue(0);
     addItem(arrowLine);
 
-/*
-    arrowDot = new QGraphicsEllipseItem (initProj.x(), initProj.y(), 40, 40);
+
+    arrowDot = new QGraphicsEllipseItem (initProj.x(), initProj.y(), 50, 50);
     arrowDot->setBrush(QBrush(Qt::red));
-    arrowDot->setZValue(100);
-    addItem(arrowDot);*/
+    arrowDot->setZValue(150);
+    addItem(arrowDot);
 }
 
 void Level::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
@@ -257,4 +262,26 @@ void Level::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
     m_projectile->shoot(b2Vec2((arrowInitX - arrowFinalX)/50, (arrowFinalY - arrowInitY)/50));
     m_projectile->changeB2DRot(shootingAngle);
     arrowLine->hide();
+    arrowDot->hide();
+}
+
+
+//adjust view position manually
+void Level::keyPressEvent(QKeyEvent *event) {
+    if (event->isAutoRepeat()) {
+        return;
+    }
+    switch (event->key()) {
+        case Qt::Key_Left:
+            viewOffset -= 200;
+            break;
+        case Qt::Key_Right:
+            viewOffset += 200;
+            break;
+        case Qt::Key_Space:
+            viewOffset = 0.0;
+            break;
+        default:
+            break;
+    }
 }
