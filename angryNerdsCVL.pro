@@ -37,7 +37,8 @@ SOURCES += \
     setting.cpp \
     mensa.cpp \
     forcefield.cpp \
-    logic.cpp
+    logic.cpp \
+    bib.cpp
 
 HEADERS += \
     backgrounditem.h \
@@ -53,7 +54,8 @@ HEADERS += \
     setting.h \
     mensa.h \
     forcefield.h \
-    logic.h
+    logic.h \
+    bib.h
 
 RESOURCES += \
     anresources.qrc
