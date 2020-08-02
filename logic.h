@@ -14,6 +14,7 @@ public:
     explicit Logic(location loc = Logic::MENSA, Level::levelNum lev = Level::ONE, QObject *parent = nullptr);
 
 private:
+    /// Hold a level of each room and the level number
     Mensa* mensa_1;
     Cvl* cvl_1;
     location cur_loc;

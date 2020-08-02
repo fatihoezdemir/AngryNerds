@@ -6,7 +6,7 @@ class Projectile : public DynamicObject
 {
 public:
     enum projectile{PLANE, TOMATO, BALL};
-
+    /// [Constructor based on each Projectile]
     explicit Projectile(const QPixmap &pixmap, QPointF pos = QPointF(0.0,0.0), b2World* world = 0, QGraphicsItem* parent = nullptr, bool isEllipse = false);
     explicit Projectile(const QPixmap &pixmap, b2PolygonShape boundPoly, QPointF pos = QPointF(0.0,0.0), b2World* world = 0, QGraphicsItem* parent = nullptr);
     explicit Projectile(const QPixmap &pixmap, projectile proj, QPointF pos, b2World* world, QGraphicsItem* parent = nullptr);
