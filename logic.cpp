@@ -14,7 +14,10 @@ Logic::Logic(location loc, Level::levelNum lev, QObject *parent)
         connect(cvl_1 ,SIGNAL(playerDeath()), this,SLOT(restart()));
         connect(cvl_1, SIGNAL(playerWin()), this, SLOT(nextLevel()));
     } else if (cur_loc == BIB) {
-
+        bib_1 = new Bib(cur_lev);
+        bib_1->view->show();
+        connect(bib_1 ,SIGNAL(playerDeath()), this,SLOT(restart()));
+        connect(bib_1, SIGNAL(playerWin()), this, SLOT(nextLevel()));
     }
 
 }
@@ -35,7 +38,12 @@ void Logic::restart() {
         connect(cvl_1, SIGNAL(playerWin()), this, SLOT(nextLevel()));
         cvl_1->view->show();
     } else if (cur_loc == BIB) {
-
+        bib_1->view->hide();
+        delete bib_1;
+        bib_1 = new Bib(cur_lev);
+        connect(bib_1 ,SIGNAL(playerDeath()), this,SLOT(restart()));
+        connect(bib_1, SIGNAL(playerWin()), this, SLOT(nextLevel()));
+        bib_1->view->show();
     }
 }
 
@@ -54,7 +62,8 @@ void Logic::nextLevel(){
         cvl_1->view->hide();
         delete cvl_1;
     } else if (cur_loc == BIB) {
-
+        bib_1->view->hide();
+        delete bib_1;
     }
 
     emit levelOver();

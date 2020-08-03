@@ -12,5 +12,6 @@ public:
     virtual void initPlayField() override;
     void initLevel1();
     void initLevel2();
+    void initLevel3();
 };
 #endif // BIB_H

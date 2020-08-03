@@ -3,6 +3,7 @@
 #include "level.h"
 #include "mensa.h"
 #include "cvl.h"
+#include "bib.h"
 
 #include <QObject>
 
@@ -17,6 +18,7 @@ private:
     /// Hold a level of each room and the level number
     Mensa* mensa_1;
     Cvl* cvl_1;
+    Bib* bib_1;
     location cur_loc;
     Level::levelNum cur_lev;
 
