@@ -7,11 +7,10 @@ Cvl::Cvl(levelNum lev, QObject* parent, QPointF initDim)
     if (lev == ONE) {
         initLevel1();
     } else if (lev == TWO) {
-        initLevel1();
+        initLevel2();
     } else if (lev == THREE) {
-        initLevel1();
+        initLevel3();
     }
-    //initLevel1();
 }
 
 void Cvl::initPlayField(){
@@ -117,4 +116,66 @@ void Cvl::initLevel1(){
 }
 
 
-void Cvl::initLevel2(){ }
+void Cvl::initLevel2(){
+    initPlayField(); // Initialize Background and all objects that stay the same
+
+    // [Dynamic Objects]
+    dynamicObjects.append(new DynamicObject(QPixmap(":imgs/png/CVL/CVL_Pult.png").scaled(400,300), QPointF(3800,m_groundLevel - 300 ), world));
+    QVectorIterator<DynamicObject*> dynIt(dynamicObjects);
+    dynamicObjects.append(new DynamicObject(QPixmap(":imgs/png/mensa/Tomate.png").scaled(100,100), QPointF(3600, m_groundLevel - 350 ), world));
+    while (dynIt.hasNext()){
+        addItem(dynIt.next());
+    }
+
+    // [FORCE FIELDS]
+    forceFields.append(new ForceField(QPixmap(":imgs/png/mensa/Salami.png").scaled(800,400), QPointF(2800,400), 0 ,b2Vec2(0.01,-0.5)));
+    forceFields[0]->setOpacity(0.5);
+
+    QVectorIterator<ForceField*> forceIt(forceFields);
+    while (forceIt.hasNext()){
+        addItem(forceIt.next());
+    }
+
+
+    // [GOAL]
+    m_goal = new Goal(QPixmap(":/imgs/png/CVL/prof.png").scaled(150,450));
+    m_goal->setTransform(QTransform::fromScale(-1, 1));
+    m_goal->setPos(4500, m_groundLevel - m_goal->boundingRect().bottomLeft().y());
+    addItem(m_goal);
+
+    // [VIEW WINDOW]
+    viewportSetup();
+    this->startTimer(10);
+
+}
+
+void Cvl::initLevel3(){
+    initPlayField(); // Initialize Background and all objects that stay the same
+
+    // [Dynamic Objects]
+    QVectorIterator<DynamicObject*> dynIt(dynamicObjects);
+    while (dynIt.hasNext()){
+        addItem(dynIt.next());
+    }
+
+    // [FORCE FIELDS]
+    forceFields.append(new ForceField(QPixmap(":imgs/png/mensa/Salami.png").scaled(800,400), QPointF(2800,400), 0 ,b2Vec2(0.01,-0.5)));
+    forceFields[0]->setOpacity(0.5);
+
+    QVectorIterator<ForceField*> forceIt(forceFields);
+    while (forceIt.hasNext()){
+        addItem(forceIt.next());
+    }
+
+
+    // [GOAL]
+    m_goal = new Goal(QPixmap(":/imgs/png/CVL/prof.png").scaled(150,450));
+    m_goal->setTransform(QTransform::fromScale(-1, 1));
+    m_goal->setPos(4500, m_groundLevel - m_goal->boundingRect().bottomLeft().y());
+    addItem(m_goal);
+
+    // [VIEW WINDOW]
+    viewportSetup();
+    this->startTimer(10);
+
+}

@@ -8,7 +8,7 @@ Mensa::Mensa(levelNum lev, QObject* parent, QPointF initDim)
     } else if (lev == TWO) {
         initLevel2();
     } else if (lev == THREE) {
-        initLevel2();
+        initLevel3();
     }
 }
 
@@ -196,4 +196,39 @@ void Mensa::initLevel2(){
     viewportSetup();
     //view->scale(1.5,1.5);
     this->startTimer(20);
+}
+
+void Mensa::initLevel3(){
+    m_level = Level::THREE;
+    initPlayField();
+
+    qreal x = 3200;
+    dynamicObjects.append(new DynamicObject(QPixmap(":imgs/png/CVL/CVL_Pult.png").scaled(400,300), QPointF(x,m_groundLevel - 300 ), world));
+    // [TOMATOES]
+    dynamicObjects.append(new DynamicObject(QPixmap(":imgs/png/mensa/Tomate.png").scaled(100,100), QPointF(x, m_groundLevel - 350 ), world));
+    dynamicObjects.append(new DynamicObject(QPixmap(":imgs/png/mensa/Tomate.png").scaled(100,100), QPointF(x+100, m_groundLevel - 400 ), world));
+    dynamicObjects.append(new DynamicObject(QPixmap(":imgs/png/mensa/Tomate.png").scaled(100,100), QPointF(x+200, m_groundLevel - 400 ), world));
+    dynamicObjects.append(new DynamicObject(QPixmap(":imgs/png/mensa/Tomate.png").scaled(100,100), QPointF(x+300, m_groundLevel - 400 ), world));
+    dynamicObjects.append(new DynamicObject(QPixmap(":imgs/png/mensa/Tomate.png").scaled(100,100), QPointF(x+50, m_groundLevel - 500 ), world));
+    dynamicObjects.append(new DynamicObject(QPixmap(":imgs/png/mensa/Tomate.png").scaled(100,100), QPointF(x+150, m_groundLevel - 500 ), world));
+    dynamicObjects.append(new DynamicObject(QPixmap(":imgs/png/mensa/Tomate.png").scaled(100,100), QPointF(x+250, m_groundLevel - 500 ), world));
+
+    movingObjects.append(new DynamicObject(QPixmap(":imgs/png/mensa/Tomate.png").scaled(100,100), QPointF(1300,m_groundLevel-450), world));
+    movingObjects.back()->setOscillation(QPointF(500.0,0),0.02);
+
+
+    QVectorIterator<DynamicObject*> dynIt(dynamicObjects);
+    while (dynIt.hasNext()){
+        addItem(dynIt.next());
+    }
+
+    m_goal = new Goal(QPixmap(":/imgs/png/CVL/prof.png").scaled(150,450));
+    m_goal->setTransform(QTransform::fromScale(-1, 1));
+    m_goal->setZValue(10);
+    m_goal->setPos(sceneDim.x() - 400, m_groundLevel - m_goal->boundingRect().bottomLeft().y() - 20);
+    addItem(m_goal);
+
+    viewportSetup();
+    this->startTimer(10);
+
 }

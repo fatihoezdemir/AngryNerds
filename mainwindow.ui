@@ -117,7 +117,7 @@
        <item>
         <layout class="QVBoxLayout" name="verticalLayout_2">
          <item>
-          <widget class="QPushButton" name="projektbeschreibung">
+          <widget class="QPushButton" name="mensa_button">
            <property name="text">
             <string>Mensa</string>
            </property>

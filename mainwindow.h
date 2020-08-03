@@ -41,9 +41,11 @@ private slots:
     void on_bib_lv_2_button_clicked();
     void on_bib_lv_3_button_clicked();
 
+    void levelClose();
+
     void on_projektbeschreibung_clicked();
 
-    void levelClose();
+    void on_mensa_button_clicked();
 
 private:
     bool is_open{false};
