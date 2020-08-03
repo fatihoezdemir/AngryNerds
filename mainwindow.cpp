@@ -4,6 +4,7 @@
 #include "cvl.h"
 #include "mensa.h"
 #include "logic.h"
+#include "bib.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -38,7 +39,26 @@ void MainWindow::move_home()
 
 void MainWindow::on_bibliothek_button_clicked()
 {
-
+    if (is_open == false){
+        if(ui->bib_lv_1_button->isChecked() == true){
+            Logic* bib_level = new Logic(Logic::BIB, Level::ONE);
+            MainWindow::hide();
+            is_open = true;
+            connect(bib_level, SIGNAL(levelOver()), this, SLOT(levelClose()));
+        }
+        else if(ui->bib_lv_2_button->isChecked() == true){
+            Logic* bib_level = new Logic(Logic::BIB, Level::TWO);
+            MainWindow::hide();
+            is_open = true;
+            connect(bib_level, SIGNAL(levelOver()), this, SLOT(levelClose()));
+        }
+        else if(ui->bib_lv_3_button->isChecked() == true){
+            Logic* bib_level = new Logic(Logic::BIB, Level::THREE);
+            MainWindow::hide();
+            is_open = true;
+            connect(bib_level, SIGNAL(levelOver()), this, SLOT(levelClose()));
+        }
+    }
 }
 
 void MainWindow::on_cvl_button_clicked()
