@@ -13,7 +13,7 @@ public:
     /// [Level Initializers]
     void initLevel1();
     void initLevel2();
-    //void initLevel3();
+    void initLevel3();
 };
 
 #endif // CVL_H

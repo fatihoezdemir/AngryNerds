@@ -44,20 +44,46 @@ void MainWindow::on_bibliothek_button_clicked()
 void MainWindow::on_cvl_button_clicked()
 {
     if (is_open == false){
-        Logic* cvl_level = new Logic(Logic::CVL, Level::ONE);
-        MainWindow::hide();
-        is_open = true;
-        connect(cvl_level, SIGNAL(levelOver()), this, SLOT(levelClose()));
+        if(ui->cvl_lv_1_button->isChecked() == true){
+            Logic* cvl_level = new Logic(Logic::CVL, Level::ONE);
+            MainWindow::hide();
+            is_open = true;
+            connect(cvl_level, SIGNAL(levelOver()), this, SLOT(levelClose()));
+        }
+        else if(ui->cvl_lv_2_button->isChecked() == true){
+            Logic* cvl_level = new Logic(Logic::CVL, Level::TWO);
+            MainWindow::hide();
+            is_open = true;
+            connect(cvl_level, SIGNAL(levelOver()), this, SLOT(levelClose()));
+        }
+        else if(ui->cvl_lv_3_button->isChecked() == true){
+            Logic* cvl_level = new Logic(Logic::CVL, Level::THREE);
+            MainWindow::hide();
+            is_open = true;
+            connect(cvl_level, SIGNAL(levelOver()), this, SLOT(levelClose()));
+        }
     }
 }
 
-void MainWindow::on_projektbeschreibung_clicked()
+void MainWindow::on_mensa_button_clicked()
 {
     if (is_open == false){
-        Logic* mensa_level = new Logic(Logic::MENSA, Level::TWO);
-        MainWindow::hide();
-        is_open = true;
-        connect(mensa_level, SIGNAL(levelOver()),this, SLOT(levelClose()));
+        if(ui->mensa_lv_1_button->isChecked() == true){
+            Logic* mensa_level = new Logic(Logic::MENSA, Level::ONE);
+            MainWindow::hide();
+            is_open = true;
+            connect(mensa_level, SIGNAL(levelOver()),this, SLOT(levelClose()));
+        }else if(ui->mensa_lv_2_button->isChecked() == true){
+            Logic* mensa_level = new Logic(Logic::MENSA, Level::TWO);
+            MainWindow::hide();
+            is_open = true;
+            connect(mensa_level, SIGNAL(levelOver()),this, SLOT(levelClose()));
+        }else if(ui->mensa_lv_3_button->isChecked() == true){
+            Logic* mensa_level = new Logic(Logic::MENSA, Level::THREE);
+            MainWindow::hide();
+            is_open = true;
+            connect(mensa_level, SIGNAL(levelOver()),this, SLOT(levelClose()));
+        }
     }
 }
 
@@ -122,4 +148,7 @@ void MainWindow::levelClose(){
     show();
     is_open = false;
 }
+
+
+
 
