@@ -87,7 +87,7 @@ protected:
     QVector<ForceField*> forceFields;
 
 
-    // Arrow [ Nico ]
+    // Arrow
     void mouseReleaseEvent(QGraphicsSceneMouseEvent* event);
     void mousePressEvent(QGraphicsSceneMouseEvent* event);
     QGraphicsLineItem *arrowLine;
@@ -100,9 +100,10 @@ protected:
     bool arrowDragged;
     bool mouseReleased;
 
-    // adjust view position manually
+    //adjust view position manually
     void keyPressEvent(QKeyEvent *event);
-    qreal viewOffset;
+    qreal viewOffsetX;
+    qreal viewOffsetY;
 
 protected:
     void applyParallax(qreal xPos, BackgroundItem* item);
