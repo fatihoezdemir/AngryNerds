@@ -21,11 +21,23 @@
 #include "projectile.h"
 #include "forcefield.h"
 
+/*
+ * A Level object holds all the necessary objects and parameters for a playable level.
+ * It serves as a template for each level/room.
+ * To Design a Room, create all background items with their respective parallax offsets,
+ * the player and goal object and everything that is always present in the room
+ * in the initPlayField() function.
+
+ * Then use the initLevelX() Functions to design specific levels in that room.
+
+ * To add an object, just add them to their corresponding Object Vector. Static objects
+ * are added to the staticObjects Vector. etc.
+
+*/
 
 class Level : public QGraphicsScene
 {
     Q_OBJECT
-
 public:
     explicit Level(QObject* parent = nullptr, QPointF initDim = QPointF(3840.0, 1080.0));
     QGraphicsView* view;
@@ -59,7 +71,7 @@ signals:
     void playerWin();
 
 protected:
-    // ViewPort setup to be FHD and start at the left
+    // [ViewPort setup to be FHD and start at the left]
     void viewportSetup(QRectF sceneRect = QRectF(0,0,1920,1080), int height = conv::viewHeight, int width=conv::viewWidth);
 
     QPointF sceneDim; // Scene Dimensions
@@ -71,11 +83,11 @@ protected:
     QPointF initProj;
     qreal lastX;
 
-    // Player and Target
+    // [Player and Target]
     Projectile* m_projectile;
     Goal* m_goal;
 
-    // Timer for updating physics
+    // [Timer for updating physics]
     QTimer m_timer;
     QTimer* win_timer;
 

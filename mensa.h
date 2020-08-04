@@ -4,6 +4,10 @@
 #include <QMediaPlayer>
 #include <QMenuBar>
 
+/*
+ * The Mensa-Room classes which extends the level class.
+*/
+
 class Mensa : public Level
 {
 public:

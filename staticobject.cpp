@@ -6,6 +6,7 @@ StaticObject::StaticObject(const QPixmap &pixmap, QPointF pos, qreal zVal,
     : QGraphicsPixmapItem(pixmap, parent),
       origPos(pos)
 {
+    // Set up the Graphics and create a body in the Box2D Physics world
     setPos(pos);
     setZValue(zVal);
     createB2D(world);

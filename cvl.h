@@ -2,6 +2,10 @@
 #define CVL_H
 #include "level.h"
 
+/*
+ * The Carl-Von-Linde-Room classes which extends the level class.
+*/
+
 class Cvl : public Level
 {
 public:

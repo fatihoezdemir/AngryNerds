@@ -5,6 +5,10 @@
 #include <QMediaPlayer>
 #include <QMenuBar>
 
+/*
+ * The Bib-Room classes which extends the level class.
+*/
+
 class Bib : public Level
 {
 public:

@@ -2,6 +2,10 @@
 #define PROJECTILE_H
 #include "dynamicobject.h"
 
+/*
+ * A projectile class to hold the main "character" object.
+*/
+
 class Projectile : public DynamicObject
 {
 public:
@@ -17,7 +21,6 @@ public:
     void checkVelocity();
 
     QTimer* outTimer; //Timer signal has to be connected to level reinitialize
-    // connect(timer,SIGNAL(timeout()), this,SLOT(on_TimerTick()));
 
     void changeB2DRot(qreal angle); //adjusts angle of projectile at the time of mouseRelease
 

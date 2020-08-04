@@ -6,12 +6,12 @@
 #include "box2d/box2d.h"
 #include "staticobject.h"
 
+/*
+ * dynamic Objects interact with static objects and each other using Box2D physics and change their positions
+*/
+
 class DynamicObject : public QGraphicsPixmapItem
 {
-    /*
-    Dynamic Object class
-    dynamic Objects interact with static objects and each other using Box2D physics and change their positions
-    */
 public:
     // [Constructors]
     /// Constructor for square or ellipse bounding box

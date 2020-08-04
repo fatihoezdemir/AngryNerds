@@ -7,15 +7,19 @@ Goal::Goal(const QPixmap &pixmap, QGraphicsItem *parent) :
     QGraphicsPixmapItem(pixmap, parent),
     m_explosion(false)
 {
+    // Center the Goals Coordinates
     setOffset(-pixmap.width()/2,-pixmap.height()/2);
 }
 
 void Goal::explode() {
     if (m_explosion) {
+        // Goal was already hit
         return;
     }
+    // Set the explosion flag on first hit by projectile
     m_explosion = true;
 
+    // Set Up Goal Animation
     QParallelAnimationGroup *group = new QParallelAnimationGroup(this);
 
     QPropertyAnimation *scaleAnimation = new QPropertyAnimation(this, "rect");

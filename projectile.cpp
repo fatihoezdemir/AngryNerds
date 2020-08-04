@@ -9,6 +9,7 @@ Projectile::Projectile(const QPixmap &pixmap, projectile proj,QPointF pos, b2Wor
 {
     objectBody->DestroyFixture(&objectBody->GetFixtureList()[0]); //
 
+    // Set Up the right projectile based on the level
     if(proj == Projectile::PLANE) {
         b2Vec2 vertices[3];
         vertices[0].Set(conv::p2m(0), conv::p2m(0, true));
@@ -34,7 +35,6 @@ Projectile::Projectile(const QPixmap &pixmap, projectile proj,QPointF pos, b2Wor
 
         objectBody->CreateFixture(&objectFixture);
     } else if ( proj == Projectile::BALL) {
-        // HAS TO BE CHANGED ... PROBABLY
         b2CircleShape objectBox;
         objectBox.m_radius = conv::p2m(this->boundingRect().width()/2);
         objectBox.m_p.Set(conv::p2m(boundingRect().width())/2, conv::p2m(-boundingRect().height())/2);
@@ -74,11 +74,13 @@ void Projectile::checkVelocity(){
 
 QPainterPath Projectile::shape() const
 {
+    // Add QPainterPath so Projectile can detect goal and forcefields
     QPainterPath path;
     path.addRect(boundingRect());
     return path;
 }
 
 void Projectile::changeB2DRot(qreal angle) {
+    // Change the projectiles Rotation in box2D used for the Arrow
     objectBody->SetTransform(objectBody->GetPosition(), conv::deg2Rad(-angle));
 }

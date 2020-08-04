@@ -5,6 +5,10 @@
 #include <QGraphicsPixmapItem>
 #include <QSound>
 
+/*
+ * Class to hold a goal object which runs an animation and sends a win signal, when it is hit by the projectile.
+*/
+
 class Goal : public QObject, public QGraphicsPixmapItem
 {
     // Goal Animation

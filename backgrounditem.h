@@ -5,6 +5,10 @@
 #include <QPixmap>
 #include <QPoint>
 
+/*
+ * A background item which doesn't interact with the projectile or any other dynamic object.
+*/
+
 class BackgroundItem : public QGraphicsPixmapItem
 {
 public:

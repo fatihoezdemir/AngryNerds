@@ -3,6 +3,7 @@
 Logic::Logic(location loc, Level::levelNum lev, QObject *parent)
     : QObject(parent), cur_loc(loc), cur_lev(lev)
 {
+    // Set Up the correct Level based on the users input in the GUI
     if (cur_loc == MENSA) {
         mensa_1 = new Mensa(cur_lev);
         mensa_1->view->show();
@@ -23,6 +24,7 @@ Logic::Logic(location loc, Level::levelNum lev, QObject *parent)
 }
 
 void Logic::restart() {
+    // Restart the level if it was lost
     if (cur_loc == MENSA) {
         mensa_1->view->hide();
         delete mensa_1;
@@ -48,6 +50,7 @@ void Logic::restart() {
 }
 
 void Logic::nextLevel(){
+    // Load the next Level if the goal was hit
     if (cur_lev == Level::ONE) {
         cur_lev = Level::TWO;
     } else if (cur_lev == Level::TWO) {

@@ -7,10 +7,18 @@
 
 #include <QObject>
 
+/*
+ * The logic class is responsible for handleing the gameplay, once the player wins or looses.
+ * An instance of each room is held and the used levels are re-loaded when a player dies and the
+ * next level is loaded when a player wins.
+*/
+
+
 class Logic : public QObject
 {
     Q_OBJECT
 public:
+    // Data-Type for the available rooms
     enum location{BIB, CVL, MENSA};
     explicit Logic(location loc = Logic::MENSA, Level::levelNum lev = Level::ONE, QObject *parent = nullptr);
 
