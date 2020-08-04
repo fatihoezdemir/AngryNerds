@@ -129,6 +129,9 @@ void Level::timerEvent ( QTimerEvent* event )
         obj->updateRot(obj->getRot());
     }
 
+    m_projectile->updatePos((m_projectile->getPos()));
+    m_projectile->updateRot((m_projectile->getRot()));
+
     //Only while mouse is pressed: Update Arrow
     if(arrowDragged){
         qreal deltaX = QCursor::pos().x() - arrowInitX;
@@ -149,6 +152,7 @@ void Level::timerEvent ( QTimerEvent* event )
         arrowDot->setPos((initProj.x() + m_projectile->boundingRect().width() / 2.0) + (deltaX) - 345,
                           initProj.y() + m_projectile->boundingRect().height() / 2.0 + (deltaY - 585));
     }
+
 
     // Update Viewport position and Parallax
     updateView();
