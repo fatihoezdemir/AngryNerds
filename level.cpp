@@ -76,6 +76,8 @@ void Level::initPlayField() {
                            0, b2Vec2(10,10)));
     addItem(forceFields[0]);
 
+
+
     // [GOAL]
     m_goal = new Goal(QPixmap(":/imgs/png/Person_1.png").scaled(150,450));
     m_goal->setTransform(QTransform::fromScale(-1, 1));
