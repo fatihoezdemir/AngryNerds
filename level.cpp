@@ -15,7 +15,8 @@
 Level::Level(QObject* parent, QPointF initDim):
     QGraphicsScene(parent),
     initProj(QPointF((conv::sceneWidth / 2.0) - 1600 ,conv::sceneHeight / 2.0)),
-    sceneDim(initDim), arrowDragged(false), mouseReleased(false), viewOffset(0)
+    sceneDim(initDim), arrowDragged(false), mouseReleased(false),
+    viewOffsetX(0), viewOffsetY(0)
 {
      win_timer = new QTimer();
 }
@@ -130,23 +131,25 @@ void Level::timerEvent ( QTimerEvent* event )
     m_projectile->updatePos((m_projectile->getPos()));
     m_projectile->updateRot((m_projectile->getRot()));
 
+    //Only while mouse is pressed: Update Arrow
     if(arrowDragged){
-        arrowLine->setLine((m_projectile->pos().x() + m_projectile->boundingRect().width() / 2.0) - 20,
-                            (m_projectile->pos().y() + m_projectile->boundingRect().height() / 2.0) + 20,
-                            m_projectile->pos().x() + m_projectile->boundingRect().width() / 2.0 + (QCursor::pos().x() - arrowInitX),
-                            m_projectile->pos().y() + m_projectile->boundingRect().height() / 2.0 + (QCursor::pos().y() - arrowInitY));
-
-
-        shootingAngle =  qRadiansToDegrees(qAtan((QCursor::pos().y() - arrowInitY) / (arrowInitX - QCursor::pos().x())));
+        qreal deltaX = QCursor::pos().x() - arrowInitX;
         qreal deltaY = QCursor::pos().y() - arrowInitY;
-        qreal deltaX = arrowInitX - QCursor::pos().x();
-        if(deltaY > 0 && deltaX < 0) shootingAngle += 180.0;
-        else if(deltaY < 0 && deltaX < 0) shootingAngle += 180.0;
-        else if(deltaY < 0 && deltaX > 0) shootingAngle += 360.0;
+
+        //Update Angle of Projectile
+        shootingAngle =  qRadiansToDegrees(qAtan(deltaY / (-deltaX)));
+        if(deltaX > 0) shootingAngle += 180.0;
         m_projectile->updateRot(-shootingAngle - 10);
 
-        arrowDot->setPos((initProj.x() + m_projectile->boundingRect().width() / 2.0) + (QCursor::pos().x() - arrowInitX) - 345,
-                          initProj.y() + m_projectile->boundingRect().height() / 2.0 + (QCursor::pos().y() - arrowInitY) - 565);  //offset of roundabout (150,150), not compensateable in the function-argument
+        //Update Angle & Length of ArrowLine
+        arrowLine->setLine((m_projectile->pos().x() + m_projectile->boundingRect().width() / 2.0) - 20,
+                        (m_projectile->pos().y() + m_projectile->boundingRect().height() / 2.0) + 20,
+                        m_projectile->pos().x() + m_projectile->boundingRect().width() / 2.0 + (deltaX),
+                        m_projectile->pos().y() + m_projectile->boundingRect().height() / 2.0 + (deltaY));
+
+        //Update Position of Arrow Dot
+        arrowDot->setPos((initProj.x() + m_projectile->boundingRect().width() / 2.0) + (deltaX) - 345,
+                          initProj.y() + m_projectile->boundingRect().height() / 2.0 + (deltaY - 585));
     }
 
     // Update Viewport position and Parallax
@@ -183,10 +186,10 @@ void Level::checkColliding() {
 
 void Level::updateView() {
     qreal newX = qBound(0.0,
-                        m_projectile->mapToScene(QPointF(100.0,50.0)).x()- conv::xBoundary,
+                        m_projectile->mapToScene(QPointF(100.0,50.0)).x()- conv::xBoundary + viewOffsetX,
                         this->sceneRect().right()- conv::viewWidth + 900 - conv::xBoundary);
     qreal newY = qBound(0.0,
-                        m_projectile->mapToScene(QPointF(100.0,50.0)).y() - conv::yBoundary,
+                        m_projectile->mapToScene(QPointF(100.0,50.0)).y() - conv::yBoundary + viewOffsetY,
                         this->sceneRect().bottom() - conv::viewHeight);
 
     view->setSceneRect(newX,newY,1920,1080);
@@ -206,7 +209,8 @@ void Level::mousePressEvent(QGraphicsSceneMouseEvent *event){
     arrowInitX = QCursor::pos().x();
     arrowInitY = QCursor::pos().y();
 
-    viewOffset = 0.0;
+    viewOffsetX = 0.0;
+    viewOffsetY = 0.0;
 
     arrowDragged = true;
 
@@ -221,7 +225,7 @@ void Level::mousePressEvent(QGraphicsSceneMouseEvent *event){
 
     arrowDot = new QGraphicsEllipseItem (initProj.x(), initProj.y(), 50, 50);
     arrowDot->setBrush(QBrush(Qt::red));
-    arrowDot->setZValue(150);
+    arrowDot->setZValue(0);
     addItem(arrowDot);
 }
 
@@ -240,20 +244,26 @@ void Level::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
 }
 
 
-//adjust view position manually
+//adjust view position manually // reset view position via clicking backspace or leftMouseButton
 void Level::keyPressEvent(QKeyEvent *event) {
     if (event->isAutoRepeat()) {
         return;
     }
     switch (event->key()) {
         case Qt::Key_Left:
-            viewOffset -= 200;
+            if(viewOffsetX > 0) viewOffsetX -= 300;
             break;
         case Qt::Key_Right:
-            viewOffset += 200;
+            if(viewOffsetX < this->sceneRect().right()- conv::viewWidth + 900 - conv::xBoundary + 500) viewOffsetX += 300;
+                break;
+        case Qt::Key_Up:
+            if(viewOffsetY > 0) viewOffsetY -= 300;
+            break;
+        case Qt::Key_Down:
+            if(viewOffsetY < this->sceneRect().bottom() - conv::viewHeight) viewOffsetY += 300;
             break;
         case Qt::Key_Space:
-            viewOffset = 0.0;
+            viewOffsetX = 0.0;
             break;
         default:
             break;
