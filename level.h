@@ -30,22 +30,14 @@ public:
     explicit Level(QObject* parent = nullptr, QPointF initDim = QPointF(3840.0, 1080.0));
     QGraphicsView* view;
 
-    /// DataType to hold level
     enum levelNum{ONE, TWO, THREE};
-
-
 protected:
-    /// function that gets called at each level-timer step
     void timerEvent(QTimerEvent *event);
-    /// Function to check if projectile is still moving
     void checkFinish();
 
 protected slots:
-    /// Check for collisions with Goal or Forcefield
     void checkColliding();
-    /// Reaction if projectile is not moving anymore
     void on_ProjectileTimeout();
-    /// close level, when game is over
     void levelOver();
 
 public:
@@ -53,16 +45,14 @@ public:
     virtual void initPlayField();
 
 signals:
-    /// Player looses the game -> restart the level
     void playerDeath();
-    /// Player wins the Game -> load next Level
     void playerWin();
 
 protected:
     // ViewPort setup to be FHD and start at the left
     void viewportSetup(QRectF sceneRect = QRectF(0,0,1920,1080), int height = conv::viewHeight, int width=conv::viewWidth);
 
-    QPointF sceneDim; // Scene Dimensions
+    QPointF sceneDim;
     levelNum m_level;
 
     // [Positioning Information]
@@ -100,15 +90,16 @@ protected:
     bool arrowDragged;
     bool mouseReleased;
 
-    // adjust view position manually
+    //adjust view position manually
     void keyPressEvent(QKeyEvent *event);
-    qreal viewOffset;
+    qreal viewOffsetX;
+    qreal viewOffsetY;
 
 protected:
     void applyParallax(qreal xPos, BackgroundItem* item);
     void updateView();
 
-    // [BOX2D PHYSICS]
+//BOX2D PHYSICS//
 protected:
     b2World* world;
 
