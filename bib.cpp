@@ -26,6 +26,7 @@ void Bib::initPlayField(){
     bgItems.append(new BackgroundItem(QPixmap(":/imgs/png/mensa/wall2.png").scaled(sceneDim.x(), 1200), QPointF(0, 0), 0, -3));
     bgItems.append(new BackgroundItem(QPixmap(":/imgs/png/mensa/floor.png").scaled(sceneDim.x(), 300), QPointF(0, sceneDim.y()-300), 0,-2));
 
+
     for (int i = 0; i<5; i++) {
         bgItems.append(new BackgroundItem(QPixmap(":/imgs/png/lamp.png").scaled(200,300), QPoint(sceneDim.x()/5*(i+0.5),0), sceneDim.x()*0.1, -2));
         bgItems.append(new BackgroundItem(QPixmap(":/imgs/png/lamp.png").scaled(200,300), QPoint(sceneDim.x()/5*(i),0), sceneDim.x()*0.2, 2));
