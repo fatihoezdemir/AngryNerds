@@ -150,6 +150,24 @@ void Mensa::initLevel2(){
     dynamicObjects.append(new DynamicObject(QPixmap(":imgs/png/mensa/Tomate.png").scaled(100,100), QPointF(x3+150, m_groundLevel - 500 ), world));
     dynamicObjects.append(new DynamicObject(QPixmap(":imgs/png/mensa/Tomate.png").scaled(100,100), QPointF(x3+250, m_groundLevel - 500 ), world));
 
+
+    // [MOVING OBJECTS]
+    movingObjects.append(new DynamicObject(QPixmap(":imgs/png/Person_1.png").scaled(150,450), QPointF(1300,m_groundLevel-450), world));
+    movingObjects.back()->setOscillation(QPointF(500.0,0),0.02);
+    movingObjects.append(new DynamicObject(QPixmap(":imgs/png/Person_5.png").scaled(150,450), QPointF(3000,m_groundLevel-450), world));
+    movingObjects.back()->setOscillation(QPointF(400.0,0),0.01);
+    movingObjects.append(new DynamicObject(QPixmap(":imgs/png/Person_3.png").scaled(150,450), QPointF(3400,m_groundLevel-450), world));
+    movingObjects.back()->setOscillation(QPointF(200.0,0),0.03);
+    movingObjects.append(new DynamicObject(QPixmap(":imgs/png/Person_6.png").scaled(150,450), QPointF(6700,m_groundLevel-450), world));
+    movingObjects.back()->setOscillation(QPointF(200.0,0),0.002);
+    movingObjects.append(new DynamicObject(QPixmap(":imgs/png/Person_4.png").scaled(150,450), QPointF(6900,m_groundLevel-450), world));
+    movingObjects.back()->setOscillation(QPointF(200.0,0),0.002);
+
+    QVectorIterator<DynamicObject*> movIt(movingObjects);
+    while (movIt.hasNext()){
+        addItem(movIt.next());
+    }
+
     QVectorIterator<DynamicObject*> dynIt(dynamicObjects);
     while (dynIt.hasNext()){
         addItem(dynIt.next());
