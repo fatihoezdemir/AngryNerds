@@ -43,8 +43,6 @@ private slots:
 
     void levelClose();
 
-    void on_projektbeschreibung_clicked();
-
     void on_mensa_button_clicked();
 
 private:

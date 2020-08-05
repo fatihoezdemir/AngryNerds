@@ -169,6 +169,5 @@ void MainWindow::levelClose(){
     is_open = false;
 }
 
-void MainWindow::on_projektbeschreibung_clicked(){}
 
 
