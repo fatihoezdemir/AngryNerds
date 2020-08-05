@@ -60,11 +60,11 @@ void Projectile::checkVelocity(){
     float speedNow = objectBody->GetLinearVelocity().Length();
     recentSpeed = 0.1 * speedNow + 0.9 * recentSpeed;
     // start Timer if projectile was shot and is not moving anymore
-    if ((recentSpeed <= 1.0 ) && !running && shot) {
-        outTimer->start(1000); // starts timer with 1s timeout
+    if ((recentSpeed <= 1.5 ) && !running && shot) {
+        outTimer->start(1500); // starts timer with 1s timeout
         running = true;
         std::cout << "Timer started" << std::endl;
-    } else if ((recentSpeed > 0.1) && running && shot) {
+    } else if ((recentSpeed > 1.5) && running && shot) {
         // timer gets deleted if object is moving again
         outTimer->stop();
         running = false;

@@ -155,22 +155,6 @@ void Mensa::initLevel2(){
         addItem(dynIt.next());
     }
 
-    // [MOVING OBJECTS]
-    movingObjects.append(new DynamicObject(QPixmap(":imgs/png/Person_1.png").scaled(150,450), QPointF(1300,m_groundLevel-450), world));
-    movingObjects.back()->setOscillation(QPointF(500.0,0),0.02);
-    movingObjects.append(new DynamicObject(QPixmap(":imgs/png/Person_5.png").scaled(150,450), QPointF(3000,m_groundLevel-450), world));
-    movingObjects.back()->setOscillation(QPointF(400.0,0),0.01);
-    movingObjects.append(new DynamicObject(QPixmap(":imgs/png/Person_3.png").scaled(150,450), QPointF(3400,m_groundLevel-450), world));
-    movingObjects.back()->setOscillation(QPointF(200.0,0),0.03);
-    movingObjects.append(new DynamicObject(QPixmap(":imgs/png/Person_6.png").scaled(150,450), QPointF(6700,m_groundLevel-450), world));
-    movingObjects.back()->setOscillation(QPointF(200.0,0),0.002);
-    movingObjects.append(new DynamicObject(QPixmap(":imgs/png/Person_4.png").scaled(150,450), QPointF(6900,m_groundLevel-450), world));
-    movingObjects.back()->setOscillation(QPointF(200.0,0),0.002);
-
-    QVectorIterator<DynamicObject*> movIt(movingObjects);
-    while (movIt.hasNext()){
-        addItem(movIt.next());
-    }
 
     // [FORCE FIELDS]
     //forceFields.append(new ForceField(QPixmap(":imgs/png/mensa/Salami.png").scaled(400,400), QPointF(800,600), 0,b2Vec2(0.01,0.1)));

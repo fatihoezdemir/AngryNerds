@@ -23,8 +23,8 @@ void Bib::initPlayField(){
 
     // Set up all Background Objects
     bgItems.append(new BackgroundItem(QPixmap(":/imgs/png/mensa/sky.png").scaled(sceneDim.x(),sceneDim.y()),QPointF(0,0), -sceneDim.x()*0.2, -5));
-    bgItems.append(new BackgroundItem(QPixmap(":/imgs/png/mensa/wall2.png").scaled(sceneDim.x(), 1200), QPointF(0, 0), 0, -3));
-    bgItems.append(new BackgroundItem(QPixmap(":/imgs/png/mensa/floor.png").scaled(sceneDim.x(), 300), QPointF(0, sceneDim.y()-300), 0,-2));
+    bgItems.append(new BackgroundItem(QPixmap(":/imgs/png/bg.png").scaled(sceneDim.x(), 1200), QPointF(0, 0), 0, -3));
+    bgItems.append(new BackgroundItem(QPixmap(":/imgs/png/Floor.png").scaled(sceneDim.x(), 300), QPointF(0, sceneDim.y()-300), 0,-2));
 
 
     for (int i = 0; i<5; i++) {
@@ -40,7 +40,7 @@ void Bib::initPlayField(){
     staticObjects.append(new StaticObject(QPixmap(":/imgs/png/Floor.png").scaled(10, sceneDim.y()), QPointF(-10,0), 10, world));
     staticObjects.append(new StaticObject(QPixmap(":/imgs/png/Floor.png").scaled(10,sceneDim.y()), QPointF(sceneDim.x(),0),10, world));
     staticObjects.append(new StaticObject(QPixmap(":/imgs/png/Floor.png").scaled(sceneDim.x(),10), QPointF(0,-10), 10, world));
-    staticObjects.append(new StaticObject(QPixmap(":/imgs/png/mensa/kasse.png").scaled(500,500), QPointF(7000, 800), 0, world));
+    staticObjects.append(new StaticObject(QPixmap(":/imgs/png/CVL/CVL_Pult.png").scaled(400,400), QPointF(7000, m_groundLevel - 300), 0, world));
 
     QVectorIterator<StaticObject*> it(staticObjects);
     while (it.hasNext())
@@ -50,7 +50,7 @@ void Bib::initPlayField(){
     }
 
     // [PROJECTILE}
-    m_projectile = new Projectile(QPixmap(":/imgs/png/mensa/Tomate.png").scaled(150,150), Projectile::TOMATO, initProj, world);
+    m_projectile = new Projectile(QPixmap(":/imgs/png/ball.png").scaled(150,150), Projectile::TOMATO, initProj, world);
     m_projectile->setTransformOriginPoint(m_projectile->boundingRect().width() / 2.0, m_projectile->boundingRect().height() / 2.0);
     m_projectile->setZValue(100);
     addItem(m_projectile);
@@ -65,15 +65,20 @@ void Bib::initLevel1(){
 
     // [Dynamic Objects]
     qreal x = 3200;
-    dynamicObjects.append(new DynamicObject(QPixmap(":imgs/png/CVL/CVL_Pult.png").scaled(400,300), QPointF(x,m_groundLevel - 300 ), world));
-    // [TOMATOES]
-    dynamicObjects.append(new DynamicObject(QPixmap(":imgs/png/mensa/Tomate.png").scaled(100,100), QPointF(x, m_groundLevel - 350 ), world));
-    dynamicObjects.append(new DynamicObject(QPixmap(":imgs/png/mensa/Tomate.png").scaled(100,100), QPointF(x+100, m_groundLevel - 400 ), world));
-    dynamicObjects.append(new DynamicObject(QPixmap(":imgs/png/mensa/Tomate.png").scaled(100,100), QPointF(x+200, m_groundLevel - 400 ), world));
+    dynamicObjects.append(new DynamicObject(QPixmap(":/imgs/png/chair.png").scaled(200,400), QPointF(x + 1150,m_groundLevel - 300 ), world));
+    dynamicObjects.append(new DynamicObject(QPixmap(":/imgs/png/chair.png").scaled(200,400), QPointF(x - 650,m_groundLevel - 300 ), world));
+    dynamicObjects.append(new DynamicObject(QPixmap(":/imgs/png/chair.png").scaled(200,400), QPointF(x - 1550,m_groundLevel - 300 ), world));
+    dynamicObjects.append(new DynamicObject(QPixmap(":/imgs/png/chair.png").scaled(200,400), QPointF(x + 2050,m_groundLevel - 300 ), world));
+    dynamicObjects.append(new DynamicObject(QPixmap(":/imgs/png/Table.png").scaled(400,300), QPointF(x,m_groundLevel - 300 ), world));
+    dynamicObjects.append(new DynamicObject(QPixmap(":/imgs/png/Table.png").scaled(400,300), QPointF(x - 900,m_groundLevel - 300 ), world));
+    dynamicObjects.append(new DynamicObject(QPixmap(":/imgs/png/Table.png").scaled(400,300), QPointF(x + 900,m_groundLevel - 300 ), world));
+    dynamicObjects.append(new DynamicObject(QPixmap(":/imgs/png/Table.png").scaled(400,300), QPointF(x - 1800,m_groundLevel - 300 ), world));
+    dynamicObjects.append(new DynamicObject(QPixmap(":/imgs/png/Table.png").scaled(400,300), QPointF(x + 1800,m_groundLevel - 300 ), world));
+
+
+
+    dynamicObjects.append(new DynamicObject(QPixmap(":/imgs/png/flieger.png").scaled(200,100), QPointF(x, m_groundLevel - 350 ), world));
     dynamicObjects.append(new DynamicObject(QPixmap(":imgs/png/mensa/Tomate.png").scaled(100,100), QPointF(x+300, m_groundLevel - 400 ), world));
-    dynamicObjects.append(new DynamicObject(QPixmap(":imgs/png/mensa/Tomate.png").scaled(100,100), QPointF(x+50, m_groundLevel - 500 ), world));
-    dynamicObjects.append(new DynamicObject(QPixmap(":imgs/png/mensa/Tomate.png").scaled(100,100), QPointF(x+150, m_groundLevel - 500 ), world));
-    dynamicObjects.append(new DynamicObject(QPixmap(":imgs/png/mensa/Tomate.png").scaled(100,100), QPointF(x+250, m_groundLevel - 500 ), world));
 
     QVectorIterator<DynamicObject*> dynIt(dynamicObjects);
     while (dynIt.hasNext()){
