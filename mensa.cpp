@@ -167,7 +167,6 @@ void Mensa::initLevel2(){
     while (movIt.hasNext()){
         addItem(movIt.next());
     }
-
     QVectorIterator<DynamicObject*> dynIt(dynamicObjects);
     while (dynIt.hasNext()){
         addItem(dynIt.next());
@@ -178,8 +177,8 @@ void Mensa::initLevel2(){
     //forceFields.append(new ForceField(QPixmap(":imgs/png/mensa/Salami.png").scaled(400,400), QPointF(800,600), 0,b2Vec2(0.01,0.1)));
     forceFields.append(new ForceField(QPixmap(":imgs/png/mensa/Salami.png").scaled(800,800), QPointF(3000,300), 0,b2Vec2(0.01,-0.5)));
     forceFields.append(new ForceField(QPixmap(":imgs/png/mensa/Salami.png").scaled(600,600), QPointF(5500,200), 0,b2Vec2(0.01,-0.5)));
-    forceFields[0]->setOpacity(0.1);
-    forceFields[1]->setOpacity(0.1);
+    forceFields[0]->setOpacity(0.3);
+    forceFields[1]->setOpacity(0.5);
     //forceFields[1]->setOpacity(0.5);
 
     QVectorIterator<ForceField*> forceIt(forceFields);

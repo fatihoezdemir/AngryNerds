@@ -15,7 +15,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->label_pic->setPixmap(mypix);
     ui->stackedWidget->insertWidget(1, &_settings);
     connect(&_settings, SIGNAL(HomeClicked()), this, SLOT(move_home()));
-    l2 = new Cvl();
 
 }
 
@@ -28,17 +27,20 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_settings_button_clicked()
 {
+    // Move to settings menue
     ui->stackedWidget->setCurrentIndex(1);
 }
 
 
 void MainWindow::move_home()
 {
+    // Move to Home Screen
     ui->stackedWidget->setCurrentIndex(0);
 }
 
 void MainWindow::on_bibliothek_button_clicked()
 {
+    // Level selection logic for BIB
     if (is_open == false){
         if(ui->bib_lv_1_button->isChecked() == true){
             Logic* bib_level = new Logic(Logic::BIB, Level::ONE);
@@ -63,6 +65,7 @@ void MainWindow::on_bibliothek_button_clicked()
 
 void MainWindow::on_cvl_button_clicked()
 {
+    // Level selection logic for CVL
     if (is_open == false){
         if(ui->cvl_lv_1_button->isChecked() == true){
             Logic* cvl_level = new Logic(Logic::CVL, Level::ONE);
@@ -87,6 +90,7 @@ void MainWindow::on_cvl_button_clicked()
 
 void MainWindow::on_mensa_button_clicked()
 {
+    // Level selection logic for Mensa
     if (is_open == false){
         if(ui->mensa_lv_1_button->isChecked() == true){
             Logic* mensa_level = new Logic(Logic::MENSA, Level::ONE);
@@ -107,6 +111,7 @@ void MainWindow::on_mensa_button_clicked()
     }
 }
 
+// Logic for level selection Buttons
 void MainWindow::on_cvl_lv_1_button_clicked()
 {
 

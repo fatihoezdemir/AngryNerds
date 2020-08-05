@@ -5,6 +5,7 @@
 
 namespace Ui {
 class Setting;
+// Class for audio settings page (audio not implemented yet)
 }
 
 class Setting : public QWidget

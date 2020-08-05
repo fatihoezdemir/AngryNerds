@@ -15,5 +15,6 @@ Setting::~Setting()
 
 void Setting::on_home_button_clicked()
 {
+   // Return home form audio settings page
     emit HomeClicked();
 }

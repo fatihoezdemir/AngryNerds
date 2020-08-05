@@ -174,6 +174,17 @@ void Cvl::initLevel3(){
     m_goal->setPos(4500, m_groundLevel - m_goal->boundingRect().bottomLeft().y());
     addItem(m_goal);
 
+    movingObjects.append(new DynamicObject(QPixmap(":imgs/png/Person_6.png").scaled(150,550), QPointF(3900,m_groundLevel - 500), world));
+    movingObjects.back()->setOscillation(QPointF(200.0,0),0.009);
+    movingObjects.append(new DynamicObject(QPixmap(":imgs/png/Person_4.png").scaled(150,550), QPointF(3600,m_groundLevel - 500), world));
+    movingObjects.back()->setOscillation(QPointF(200.0,0),0.002);
+
+    QVectorIterator<DynamicObject*> movIt(movingObjects);
+    while (movIt.hasNext()){
+        addItem(movIt.next());
+    }
+
+
     // [VIEW WINDOW]
     viewportSetup();
     this->startTimer(10);
