@@ -1,4 +1,3 @@
-[![N|Solid](https://cldup.com/dTxpPi9lDf.thumb.png)](https://nodesource.com/products/nsolid)
 
 [![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)](https://travis-ci.org/joemccann/dillinger)
 
@@ -79,9 +78,8 @@ Note: Since we want to create an Android app, we are going to choose the android
 We take the static library (the .a file ) from the release folder of the project after having build it, and then we integrate it in our project 
 
 # Layout and Design
-
-Follow the instructions from 14:00 onwards from this [video](https://www.youtube.com/watch?v=w2RRgRGHsDA&t=141s)
-
+If you want to add features such as an app name, a protecting keystore etc, then follow the instructions from 14:00 onwards from this [video](https://www.youtube.com/watch?v=w2RRgRGHsDA&t=141s)
+But by creating an android template, don't include the gradle directory into your qt project. This may cause deployment errors
 
 
 
