@@ -1,4 +1,10 @@
 
+#ANGRY NERDS
+Welcome to our game. This branch is for the Pc-Version. If you want to see the android version, please switch to the android branch. 
+There are the apk versions which you can download directly for your phone as well as the necessary anroid packages
+
+
+
 [![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)](https://travis-ci.org/joemccann/dillinger)
 
 
